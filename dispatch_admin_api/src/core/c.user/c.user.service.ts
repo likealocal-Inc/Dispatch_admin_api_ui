@@ -38,7 +38,7 @@ export class CUserService {
     }
   }
 
-  async findAll(
+  async findAllPaging(
     findUserDto: FindUserDto,
   ): Promise<FindResposeDto<CUserEntity[]>> {
     let count;
@@ -63,14 +63,30 @@ export class CUserService {
     };
   }
 
-  async findOne(id: number): Promise<CUserEntity> {
+  // 아이디로 조회
+  async findId(id: number): Promise<CUserEntity> {
     return await this.prisma.user.findUnique({ where: { id } });
+  }
+
+  // 화사이름으로 조회
+  async findCompany(company: string): Promise<CUserEntity> {
+    return await this.prisma.user.findUnique({ where: { company } });
   }
 
   async update(
     id: number,
     updateCUserDto: UpdateCUserDto,
   ): Promise<CUserEntity> {
+    const user = await this.findCompany(updateCUserDto.company);
+
+    // 회사이름으로 조회한 사용자 아이디가 현재 아이디와 다르다면 이미 존재하는 회사명
+    if (user !== null) {
+      if (user.id !== id) {
+        throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_COMPANY);
+      }
+    }
+
+    // 패스워드값이 안넘어 왔으면 업데이트 안함
     if (
       updateCUserDto.password === undefined ||
       updateCUserDto.password.trim() === ''
@@ -130,5 +146,18 @@ export class CUserService {
     } catch {
       throw new CustomException(ExceptionCodeList.COMMON.WRONG_REQUEST);
     }
+  }
+
+  /**
+   * 이메일로 조회
+   * @param emailLoginDto
+   * @returns
+   */
+  async findOneByEmail(email: string): Promise<CUserEntity | undefined> {
+    const dbUser: CUserEntity = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    return dbUser;
   }
 }

@@ -68,6 +68,11 @@ export const APIURLs = {
     method: METHOD.PATCH,
     desc: "사용자수정",
   },
+  USER_DELETE: <APIURLType>{
+    url: makeAPIURL("c.user"),
+    method: METHOD.DELTE,
+    desc: "사용자삭제",
+  },
 };
 
 /**

@@ -9,7 +9,10 @@ import { CAuthUtils } from './c.auth.utils';
 import { EmailLoginDto } from './dto/email.login.dto';
 import { Role } from '@prisma/client';
 import { CUserEntity } from '../c.user/entities/c.user.entity';
-import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
+import {
+  ExceptionCode,
+  ExceptionCodeList,
+} from 'src/config/core/exceptions/exception.code';
 import { DefaultConfig } from 'src/config/default.config';
 import { CustomException } from 'src/config/core/exceptions/custom.exception';
 import { LoginResponseDto } from './dto/login.response.dto';
@@ -32,6 +35,10 @@ export class CAuthService {
    * @returns
    */
   async joinEmail(createJoinDto: CreateCUserDto): Promise<CUserEntity> {
+    const user = await this.cUserService.findCompany(createJoinDto.company);
+    if (user !== null) {
+      throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_COMPANY);
+    }
     return await this.cUserService.create(createJoinDto);
   }
 
@@ -82,11 +89,24 @@ export class CAuthService {
    * @param roles
    * @returns
    */
-  async loginEmail(user: EmailLoginDto, roles: Role[]) {
-    const dbUser: CUserEntity = await this.validateUser(user, roles);
+  async loginEmail(user: EmailLoginDto) {
+    //const dbUser: CUserEntity = await this.validateUser(user, roles);
+    const dbUser = await this.cUserService.findOneByEmail(user.email);
+    if (dbUser.password !== user.password) {
+      throw new CustomException(ExceptionCodeList.AUTH.WRONG_PASSWORD);
+    }
+    if (dbUser.isActive === false) {
+      throw new CustomException(ExceptionCodeList.AUTH.IN_ACTIVITY);
+    }
+
     return await this.makeResponseAfterSession(dbUser);
   }
 
+  /**
+   * 로그아웃처리
+   * @param userId
+   * @returns
+   */
   async logout(userId: number): Promise<any> {
     return await this.sessionService.delSession(userId);
   }

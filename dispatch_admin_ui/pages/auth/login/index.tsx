@@ -35,7 +35,7 @@ const Login: NextPage = () => {
         setToken(data.data.sessionKey);
         router.push(PageURLs.MAIN);
       } else if (data?.ok === false) {
-        setErrorMessage("로그인 실패");
+        setErrorMessage(data?.data.description.codeMessage);
         setIsOpen(true);
       }
     }
@@ -101,7 +101,7 @@ const Login: NextPage = () => {
       <ModalMessage
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        title={"회원가입 오류"}
+        title={"로그인 오류"}
         message={errorMessage}
       />
     </div>

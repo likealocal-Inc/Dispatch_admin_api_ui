@@ -123,7 +123,20 @@ export default function Users() {
               </label>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              <Button02 label={"삭제"} onClick={() => {}} />
+              <Button02
+                label={"삭제"}
+                onClick={() => {
+                  callAPI({
+                    urlInfo: {
+                      url: `${APIURLs.USER_DELETE.url}/${d.id}`,
+                      method: APIURLs.USER_DELETE.method,
+                      desc: APIURLs.USER_DELETE.desc,
+                    },
+                  }).then((res) => {
+                    location.reload();
+                  });
+                }}
+              />
             </StyledTableCell>
           </StyledTableRow>
         );

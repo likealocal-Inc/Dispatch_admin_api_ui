@@ -36,10 +36,16 @@ export default function ManageUserModal({
     addUrlParams: isModify && open ? `/${user!.id}` : "",
   });
 
+  const [message, setMessage] = useState("");
+
   useEffect(() => {
     if (!loading && !isFirst) {
-      handleModalClose(true);
-      location.reload();
+      if (data?.ok === false) {
+        setMessage(data?.data.description.codeMessage);
+      } else if (data?.ok === true) {
+        handleModalClose(true);
+        location.reload();
+      }
     }
     if (isFirst) {
       setIsFirst(false);
@@ -93,12 +99,19 @@ export default function ManageUserModal({
                       }}
                     />
                     {true && (
-                      <TextField
-                        id='m-password'
-                        label='패스워드'
-                        type='password'
-                        className='py-3'
-                      />
+                      <div className=''>
+                        <TextField
+                          id='m-password'
+                          label='패스워드'
+                          type='password'
+                          className='py-1'
+                        />
+                        {isModify ?? (
+                          <div className='flex justify-center pb-6 text-sm text-red-500'>
+                            패스워드는 입력안하면 저장안됨
+                          </div>
+                        )}
+                      </div>
                     )}
                     <TextField
                       id='m-phone'
@@ -112,12 +125,22 @@ export default function ManageUserModal({
                       defaultValue={isModify ? user!.company : ""}
                       className='py-3'
                     />
+                    <div
+                      className={
+                        message === ""
+                          ? "hidden "
+                          : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 "
+                      }
+                    >
+                      {message}
+                    </div>
                   </Card>
                   <div className='flex justify-end px-4 mt-2'>
                     <Button
                       variant='contained'
                       className='w-full mr-2'
                       onClick={() => {
+                        setMessage("");
                         handleModalClose();
                       }}
                     >

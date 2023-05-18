@@ -12,7 +12,6 @@ import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
 import { EmailLoginDto } from './dto/email.login.dto';
 import { Role } from '@prisma/client';
 import { AUTH_MUST } from 'src/config/core/decorators/api/auth.must/auth.must.decorator';
-import { Request } from 'express';
 
 @ApiBearerAuth()
 @ApiTags('Auth Module')
@@ -40,7 +39,7 @@ export class CAuthController {
   ): Promise<APIResponseObj> {
     return await HttpUtils.makeAPIResponse(
       true,
-      await this.cAuthService.loginEmail(emailLoginDto, [Role.USER]),
+      await this.cAuthService.loginEmail(emailLoginDto),
     );
   }
 

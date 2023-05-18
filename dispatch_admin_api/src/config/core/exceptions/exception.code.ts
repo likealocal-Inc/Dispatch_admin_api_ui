@@ -24,6 +24,11 @@ export const ExceptionCodeList = {
       '패스워드 오류',
       HttpStatus.UNAUTHORIZED,
     ),
+    IN_ACTIVITY: new ExceptionCode(
+      'IN_ACTIVITY',
+      '비활성화 상태',
+      HttpStatus.UNAUTHORIZED,
+    ),
     NO_SESSION_KEY: new ExceptionCode(
       'NO_SESSION_KEY',
       '세션키가 없음',
@@ -54,6 +59,11 @@ export const ExceptionCodeList = {
     ALREADY_EXIST_USER: new ExceptionCode(
       'ALREADY_EXIST_USER',
       '이미 사용자 존재',
+      HttpStatus.BAD_REQUEST,
+    ),
+    ALREADY_EXIST_COMPANY: new ExceptionCode(
+      'ALREADY_EXIST_COMPANY',
+      '이미 회사명 존재',
       HttpStatus.BAD_REQUEST,
     ),
   },

@@ -51,7 +51,7 @@ export class CUserController {
   async findAll(@Query() findUserDto: FindUserDto): Promise<APIResponseObj> {
     return HttpUtils.makeAPIResponse(
       true,
-      await this.cUserService.findAll(findUserDto),
+      await this.cUserService.findAllPaging(findUserDto),
     );
   }
 
@@ -64,7 +64,7 @@ export class CUserController {
   @Get(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async findOne(@Param('id') id: string): Promise<APIResponseObj> {
-    return HttpUtils.makeAPIResponse(true, this.cUserService.findOne(+id));
+    return HttpUtils.makeAPIResponse(true, this.cUserService.findId(+id));
   }
 
   /**
