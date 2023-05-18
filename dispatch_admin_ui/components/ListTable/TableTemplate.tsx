@@ -1,0 +1,115 @@
+import { useEffect, useState } from "react";
+import ReactLoading from "react-loading";
+import { Paper, Table, TableBody, TableContainer } from "@mui/material";
+
+import AdminLayout from "@components/layouts/AdminLayout";
+import useCallAPI from "@libs/client/hooks/useCallAPI";
+import { UseAPICallResult } from "@libs/client/hooks/useCallAPI";
+import { APIURLType, APIURLs } from "@libs/client/constants";
+import PaginavigationWidget from "@components/ListTable/Paginavigation";
+import TableHeader from "@components/ListTable/TableHeader";
+import { MessageProps, MessageShow } from "@components/MessageShow/show";
+import Button01 from "../buttons/Button01";
+
+interface TableTemplatProps {
+  pageSize?: number;
+  title: string;
+  headers: string[];
+  headerWidths: number[];
+  body: Function;
+  listCallUrl: APIURLType;
+  pageQueryWhere?: any;
+  reload: number;
+  message: MessageProps;
+  setMessage: Function;
+  onCreate?: Function;
+}
+
+export default function TableTemplate({
+  pageSize = 10,
+  title,
+  headers,
+  headerWidths,
+  body,
+  listCallUrl,
+  pageQueryWhere,
+  reload,
+  message,
+  setMessage,
+  onCreate,
+}: TableTemplatProps) {
+  const [page, setPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const [res, setRes] = useState([]);
+  const [call, { loading, data, error }] = useCallAPI<UseAPICallResult>({
+    url: listCallUrl,
+  });
+
+  /**
+   * 데이터 변경이 있을경우 현재 페이지 재로딩
+   */
+  const pageReload = () => {
+    call({
+      size: pageSize,
+      page,
+    });
+  };
+
+  useEffect(() => {
+    pageReload();
+  }, []);
+
+  useEffect(() => {
+    if (!loading && data) {
+      if (data?.ok) {
+        setRes(data.data.data);
+        setTotalCount(data.data.count);
+      }
+    }
+  }, [data, loading]);
+
+  return (
+    <>
+      {loading && (
+        <div className='absolute flex flex-col items-center justify-center w-screen h-screen my-auto '>
+          <ReactLoading
+            type='spin'
+            color='red'
+            width={200}
+            height={200}
+          ></ReactLoading>
+        </div>
+      )}
+      <AdminLayout menuTitle={title}>
+        <div className=''>
+          {onCreate && (
+            <div className='flex justify-end pt-2 pb-1 pr-2'>
+              <Button01 label={"생성"} onClick={() => onCreate()} />
+            </div>
+          )}
+          <div className='flex flex-col'>
+            <TableContainer component={Paper}>
+              <Table aria-label='customized table'>
+                <TableHeader headers={headers} headerWidth={headerWidths} />
+                <TableBody>{body(res)}</TableBody>
+              </Table>
+            </TableContainer>
+
+            {/* 페이지처리 */}
+            <PaginavigationWidget
+              page={page}
+              setPage={setPage}
+              call={call}
+              size={pageSize}
+              totalCount={totalCount}
+            />
+          </div>
+        </div>
+      </AdminLayout>
+
+      {/* 메세지 */}
+      <MessageShow setMessage={setMessage} message={message} />
+    </>
+  );
+}
