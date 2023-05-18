@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Req,
 } from '@nestjs/common';
 import { CUserService } from './c.user.service';
 import { CreateCUserDto } from './dto/create-c.user.dto';
@@ -112,5 +113,15 @@ export class CUserController {
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async remove(@Param('id') id: string): Promise<APIResponseObj> {
     return HttpUtils.makeAPIResponse(true, await this.cUserService.remove(+id));
+  }
+
+  @AUTH_MUST()
+  @Post('/me')
+  @ApiCreatedResponse({ type: CUserEntity, isArray: false })
+  async me(@Req() req: any): Promise<APIResponseObj> {
+    return HttpUtils.makeAPIResponse(
+      true,
+      await this.cUserService.findId(req.user.id),
+    );
   }
 }

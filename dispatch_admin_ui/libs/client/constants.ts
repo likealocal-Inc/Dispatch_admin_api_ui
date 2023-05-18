@@ -73,6 +73,11 @@ export const APIURLs = {
     method: METHOD.DELTE,
     desc: "사용자삭제",
   },
+  ME: <APIURLType>{
+    url: makeAPIURL("c.user/me"),
+    method: METHOD.POST,
+    desc: "내프로필조회",
+  },
 };
 
 /**

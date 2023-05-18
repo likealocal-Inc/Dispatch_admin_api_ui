@@ -61,11 +61,11 @@ export default function Sidebar() {
                 </Link>
               </li>
               <li className='items-center'>
-                <Link href='/admin/settings'>
+                <Link href='/admin/profile'>
                   <div
                     className={
                       "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/settings") !== -1
+                      (router.pathname.indexOf("/admin/profile") !== -1
                         ? "text-lightBlue-500 hover:text-lightBlue-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
