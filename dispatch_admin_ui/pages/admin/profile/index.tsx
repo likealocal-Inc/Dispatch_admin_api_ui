@@ -28,11 +28,11 @@ const ProfileEdit = () => {
     }
   }, [loading]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = event.target;
 
-    setProfile({ ...profile, [name]: value });
-  };
+  //   setProfile({ ...profile, [name]: value });
+  // };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -79,7 +79,6 @@ const ProfileEdit = () => {
                     type='email'
                     disabled
                     value={profile ? profile.email : ""}
-                    onChange={handleInputChange}
                   />
                 </div>
                 <div className='mb-4'>
@@ -95,7 +94,9 @@ const ProfileEdit = () => {
                     name='password'
                     type='password'
                     value={profile.password}
-                    onChange={handleInputChange}
+                    onChange={(v) => {
+                      setProfile({ ...profile, password: v.target.value });
+                    }}
                   />
                 </div>
                 <label
@@ -110,7 +111,9 @@ const ProfileEdit = () => {
                   name='phone'
                   type='text'
                   value={profile ? profile.phone : ""}
-                  onChange={handleInputChange}
+                  onChange={(v) => {
+                    setProfile({ ...profile, phone: v.target.value });
+                  }}
                 />
               </div>
               <div className='mb-4'>
@@ -126,7 +129,9 @@ const ProfileEdit = () => {
                   name='company'
                   type='text'
                   value={profile ? profile.company : ""}
-                  onChange={handleInputChange}
+                  onChange={(v) => {
+                    setProfile({ ...profile, company: v.target.value });
+                  }}
                 />
               </div>
 
