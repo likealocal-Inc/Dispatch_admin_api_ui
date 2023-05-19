@@ -1,141 +1,167 @@
+import ModalMessage from "@components/Modals/ModalMessage";
 import AdminLayout from "@components/layouts/AdminLayout";
 import { callAPI } from "@libs/client/call/call";
 import { APIURLs } from "@libs/client/constants";
 import useCallAPI, { UseAPICallResult } from "@libs/client/hooks/useCallAPI";
 import { UserModel } from "@libs/client/models/user_model";
-import {
-  Backdrop,
-  Box,
-  Button,
-  Card,
-  Fade,
-  Modal,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function Profile() {
+const ProfileEdit = () => {
+  const [profile, setProfile] = useState<UserModel>();
+  const [message, setMessage] = useState("");
+
+  // 모달 설정
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState("");
+
   const [update, { loading, data, error }] = useCallAPI<UseAPICallResult>({
     url: APIURLs.USER_UPDATE,
+    addUrlParams: profile ? `/${profile!.id}` : "",
   });
 
-  const [message, setMessage] = useState("");
-  const [user, setUser] = useState<UserModel>();
-
-  useEffect(() => {
-    callAPI({ urlInfo: APIURLs.ME }).then((d) => {
-      const user = d.json().then((d) => {
-        console.log(d.data);
-        setUser(d.data);
-      });
-    });
-  }, []);
-
-  console.log(">>", user);
   useEffect(() => {
     if (!loading) {
       if (data?.ok === false) {
         setMessage(data?.data.description.codeMessage);
       } else if (data?.ok === true) {
-        location.reload();
+        setMessage("업데이트 완료");
       }
     }
   }, [loading]);
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setProfile({ ...profile, [name]: value });
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setMessage("진행중.....");
+    setTimeout(() => {
+      update(profile);
+    }, 500);
+  };
+
+  useEffect(() => {
+    callAPI({ urlInfo: APIURLs.ME }).then((d) => {
+      const user = d.json().then((d) => {
+        setProfile(d.data);
+      });
+    });
+  }, []);
+
   return (
     <>
-      <AdminLayout menuTitle='goodman'>
-        <div className='flex flex-wrap'>
-          <Box sx={style}>
-            <Typography id='transition-modal-title' variant='h6' component='h2'>
-              <div className='text-center'>사용자 정보 수정</div>
-            </Typography>
-            {loading && <div>Loading...</div>}
-            <div>
-              <Stack>
-                <Card className='p-5'>
-                  <TextField
-                    id='m-email'
-                    label='이메일'
-                    value={user ? user!.email : ""}
-                    className='py-3'
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                  {true && (
-                    <div className=''>
-                      <TextField
-                        id='m-password'
-                        label='패스워드'
-                        type='password'
-                        className='py-1'
-                      />
-
-                      <div className='flex justify-center pb-6 text-sm text-red-500'>
-                        패스워드는 입력안하면 저장안됨
-                      </div>
-                    </div>
-                  )}
-                  <TextField
-                    id='m-phone'
-                    label='전화번호'
-                    value={user ? user!.phone : ""}
-                    className='py-3'
-                  />
-                  <TextField
-                    id='m-company'
-                    label='회사'
-                    value={user ? user!.company : ""}
-                    className='py-3'
-                  />
-                  <div
-                    className={
-                      message === ""
-                        ? "hidden "
-                        : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 "
-                    }
-                  >
-                    {message}
-                  </div>
-                </Card>
-                <div className='flex justify-end px-4 mt-2'>
-                  <Button
-                    variant='contained'
-                    className='w-full mr-2'
-                    onClick={() => {
-                      setMessage("");
-                    }}
-                  >
-                    취소
-                  </Button>
-                  <Button
-                    variant='contained'
-                    className='w-full'
-                    onClick={() => {}}
-                  >
-                    저장
-                  </Button>
-                </div>
-              </Stack>
+      <AdminLayout menuTitle='프로필 수정'>
+        {profile === undefined ? (
+          "Loading..."
+        ) : (
+          <div className='flex flex-col items-center h-screen pt-10 bg-gray-200'>
+            <div className='p-4 text-2xl font-bold text-center '>
+              사용자 정보 수정
             </div>
-          </Box>
-        </div>
+            <form
+              onSubmit={handleSubmit}
+              className='px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md'
+            >
+              <div className='mb-4'>
+                <div className='mb-4'>
+                  <label
+                    className='block mb-2 text-sm font-bold text-gray-700'
+                    htmlFor='email'
+                  >
+                    Email
+                  </label>
+                  <input
+                    className='w-full px-3 py-2 font-bold leading-tight text-white border rounded shadow appearance-none bg-gray-70 focus:outline-none focus:shadow-outline'
+                    id='email'
+                    name='email'
+                    type='email'
+                    disabled
+                    value={profile ? profile.email : ""}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className='mb-4'>
+                  <label
+                    className='block mb-2 text-sm font-bold text-gray-700'
+                    htmlFor='password'
+                  >
+                    Password
+                  </label>
+                  <input
+                    className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+                    id='password'
+                    name='password'
+                    type='password'
+                    value={profile.password}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <label
+                  className='block mb-2 text-sm font-bold text-gray-700'
+                  htmlFor='phone'
+                >
+                  Phone
+                </label>
+                <input
+                  className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+                  id='phone'
+                  name='phone'
+                  type='text'
+                  value={profile ? profile.phone : ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className='mb-4'>
+                <label
+                  className='block mb-2 text-sm font-bold text-gray-700'
+                  htmlFor='company'
+                >
+                  Company
+                </label>
+                <input
+                  className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+                  id='company'
+                  name='company'
+                  type='text'
+                  value={profile ? profile.company : ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className='w-full pt-2 pb-3 border-t border-red-500'></div>
+
+              <div className='flex items-center justify-between'>
+                <button
+                  className='w-full px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline'
+                  type='submit'
+                >
+                  프로필 수정
+                </button>
+              </div>
+              <div
+                className={
+                  message === ""
+                    ? "hidden "
+                    : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 rounded-md bg-slate-200"
+                }
+              >
+                {message}
+              </div>
+            </form>
+          </div>
+        )}
+        <ModalMessage
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          title={"알림"}
+          message={modalMsg}
+        />
       </AdminLayout>
     </>
   );
-}
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "20%",
-  transform: "translate(10%, 10%)",
-  width: 300,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
 };
+
+export default ProfileEdit;

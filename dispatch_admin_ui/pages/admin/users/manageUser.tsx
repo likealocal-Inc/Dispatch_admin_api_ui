@@ -10,7 +10,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Image from "next/image";
 import useCallAPI from "../../../libs/client/hooks/useCallAPI";
 import { UseAPICallResult } from "../../../libs/client/hooks/useCallAPI";
 import { APIURLs } from "@libs/client/constants";

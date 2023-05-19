@@ -65,7 +65,9 @@ export class CUserService {
 
   // 아이디로 조회
   async findId(id: number): Promise<CUserEntity> {
-    return await this.prisma.user.findUnique({ where: { id } });
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    user.password = '';
+    return user;
   }
 
   // 화사이름으로 조회
