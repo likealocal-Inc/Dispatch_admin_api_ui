@@ -145,24 +145,26 @@ export default function Users() {
 
   return (
     <>
-      <TableTemplate
-        title='사용자 관리'
-        headers={headers}
-        headerWidths={headerWidths}
-        body={body}
-        listCallUrl={APIURLs.USER_LIST}
-        reload={reload}
-        message={message!}
-        setMessage={setMessage}
-        onCreate={handleCreateModalOpen}
-      />
+      <div className='h-screen p-5 bg-gray-500'>
+        <TableTemplate
+          title='사용자 관리'
+          headers={headers}
+          headerWidths={headerWidths}
+          body={body}
+          listCallUrl={APIURLs.USER_LIST}
+          reload={reload}
+          message={message!}
+          setMessage={setMessage}
+          onCreate={handleCreateModalOpen}
+        />
 
-      <ManageUserModal
-        isModify={isModify}
-        open={openModal}
-        user={selectUser}
-        handleModalClose={handleModalClose}
-      />
+        <ManageUserModal
+          isModify={isModify}
+          open={openModal}
+          user={selectUser}
+          handleModalClose={handleModalClose}
+        />
+      </div>
     </>
   );
 }

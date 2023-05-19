@@ -32,10 +32,10 @@ export default function Sidebar() {
         <Link href={url}>
           <div
             className={
-              "text-sm uppercase py-3 block" +
+              "text-sm py-3 block " +
               (router.pathname.indexOf(url) !== -1
-                ? "text-yellow-400 hover:text-red-600 font-bold"
-                : "text-blue-700 hover:text-blue-500")
+                ? "text-yellow-500 hover:text-red-300 font-bold"
+                : "text-white hover:text-blue-200")
             }
           >
             {label}
@@ -47,14 +47,13 @@ export default function Sidebar() {
 
   return (
     <>
-      <nav className='fixed top-0 bottom-0 left-0 z-10 flex-row items-center justify-between block px-6 py-4 overflow-hidden overflow-y-auto bg-white shadow-xl w-44 flex-nowrap'>
+      <nav className='fixed top-0 bottom-0 left-0 z-10 flex-row items-center justify-between block px-6 py-4 overflow-hidden overflow-y-auto shadow-xl bg-blueGray-800 w-44 flex-nowrap'>
         <div className='flex flex-col justify-between w-full min-h-full px-0 mx-auto flex-nowrap'>
-          <div className='p-4 px-0 pb-2 mr-0 text-2xl font-bold text-center uppercase text-blueGray-600 whitespace-nowrap'>
+          <div className='p-4 px-0 pb-2 mr-0 text-2xl font-bold text-center text-gray-400 uppercase whitespace-nowrap'>
             메뉴
           </div>
-
-          <div className='relative top-0 left-0 right-0 z-40 flex flex-col flex-1 h-auto mt-4 overflow-x-hidden overflow-y-auto rounded shadow shadow-none opacity-100 '>
-            <hr className='min-w-full my-4' />
+          <div className='relative top-0 left-0 right-0 flex flex-col flex-1 h-auto mt-4 overflow-x-hidden overflow-y-auto rounded shadow shadow-none opacity-100 '>
+            <hr className='min-w-full my-2' />
             <ul className='flex flex-col min-w-full list-none'>
               {menuLi({ label: "주문리스트", url: "/admin/orders" })}
               {menuLi({ label: "사용자리스트", url: "/admin/users" })}

@@ -64,6 +64,7 @@ export default function ManageUserModal({
     <>
       {open && (
         <Modal
+          className='bg-gray-700 bg-opacity-80'
           aria-labelledby='transition-modal-title'
           aria-describedby='transition-modal-description'
           open={open}
@@ -74,90 +75,92 @@ export default function ManageUserModal({
           }}
         >
           <Fade in={open}>
-            <Box sx={style}>
-              <Typography
-                id='transition-modal-title'
-                variant='h6'
-                component='h2'
-              >
-                <div className='text-center'>
-                  사용자 정보 {isModify ? "수정" : "생성"}
-                </div>
-              </Typography>
-              {loading && <div>Loading...</div>}
-              <div>
-                <Stack>
-                  <Card className='p-5'>
-                    <TextField
-                      id='m-email'
-                      label='이메일'
-                      defaultValue={isModify ? user!.email : ""}
-                      className='py-3'
-                      InputProps={{
-                        readOnly: isModify ? true : false,
-                      }}
-                    />
-                    {true && (
-                      <div className=''>
-                        <TextField
-                          id='m-password'
-                          label='패스워드'
-                          type='password'
-                          className='py-1'
-                        />
-                        {isModify ?? (
-                          <div className='flex justify-center pb-6 text-sm text-red-500'>
-                            패스워드는 입력안하면 저장안됨
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    <TextField
-                      id='m-phone'
-                      label='전화번호'
-                      defaultValue={isModify ? user!.phone : ""}
-                      className='py-3'
-                    />
-                    <TextField
-                      id='m-company'
-                      label='회사'
-                      defaultValue={isModify ? user!.company : ""}
-                      className='py-3'
-                    />
-                    <div
-                      className={
-                        message === ""
-                          ? "hidden "
-                          : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 "
-                      }
-                    >
-                      {message}
-                    </div>
-                  </Card>
-                  <div className='flex justify-end px-4 mt-2'>
-                    <Button
-                      variant='contained'
-                      className='w-full mr-2'
-                      onClick={() => {
-                        setMessage("");
-                        handleModalClose();
-                      }}
-                    >
-                      취소
-                    </Button>
-                    <Button
-                      variant='contained'
-                      className='w-full'
-                      onClick={() => {
-                        onSubmit();
-                      }}
-                    >
-                      저장
-                    </Button>
+            <div className=''>
+              <Box sx={style} className='bg-slate-300'>
+                <Typography
+                  id='transition-modal-title'
+                  variant='h6'
+                  component='h2'
+                >
+                  <div className='p-2 text-center'>
+                    사용자 정보 {isModify ? "수정" : "생성"}
                   </div>
-                </Stack>
-              </div>
-            </Box>
+                </Typography>
+                {loading && <div>Loading...</div>}
+                <div className=''>
+                  <Stack>
+                    <Card className='p-6'>
+                      <TextField
+                        id='m-email'
+                        label='이메일'
+                        defaultValue={isModify ? user!.email : ""}
+                        className='py-5'
+                        InputProps={{
+                          readOnly: isModify ? true : false,
+                        }}
+                      />
+                      {true && (
+                        <div className=''>
+                          <TextField
+                            id='m-password'
+                            label='패스워드'
+                            type='password'
+                            className='py-5'
+                          />
+                          {isModify ?? (
+                            <div className='flex justify-center pb-6 text-sm text-red-500'>
+                              패스워드는 입력안하면 저장안됨
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      <TextField
+                        id='m-phone'
+                        label='전화번호'
+                        defaultValue={isModify ? user!.phone : ""}
+                        className='w-full py-5'
+                      />
+                      <TextField
+                        id='m-company'
+                        label='회사'
+                        defaultValue={isModify ? user!.company : ""}
+                        className='py-5'
+                      />
+                      <div
+                        className={
+                          message === ""
+                            ? "hidden "
+                            : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 "
+                        }
+                      >
+                        {message}
+                      </div>
+                    </Card>
+                    <div className='flex justify-end px-4 mt-2'>
+                      <Button
+                        variant='contained'
+                        className='w-full mr-2'
+                        onClick={() => {
+                          setMessage("");
+                          handleModalClose();
+                        }}
+                      >
+                        취소
+                      </Button>
+                      <Button
+                        variant='contained'
+                        className='w-full'
+                        onClick={() => {
+                          onSubmit();
+                        }}
+                      >
+                        저장
+                      </Button>
+                    </div>
+                  </Stack>
+                </div>
+              </Box>
+            </div>
           </Fade>
         </Modal>
       )}

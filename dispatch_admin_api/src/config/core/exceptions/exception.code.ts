@@ -49,6 +49,11 @@ export const ExceptionCodeList = {
       '토큰 오류',
       HttpStatus.UNAUTHORIZED,
     ),
+    WRONG_REQUEST_AUTH: new ExceptionCode(
+      'WRONG_REQUEST_AUTH',
+      '비정상적인 호출',
+      HttpStatus.UNAUTHORIZED,
+    ),
   },
   USER: {
     NOT_EXIST_EMAIL: new ExceptionCode(

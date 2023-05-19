@@ -17,6 +17,8 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { CUserEntity } from './entities/c.user.entity';
 import { AUTH_MUST } from 'src/config/core/decorators/api/auth.must/auth.must.decorator';
 import { FindUserDto as FindUserDto } from './dto/find.user.dto';
+import { CustomException } from 'src/config/core/exceptions/custom.exception';
+import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
 
 /**
  * 사용자
@@ -32,7 +34,7 @@ export class CUserController {
    * @param createCUserDto
    * @returns
    */
-  @AUTH_MUST()
+  @AUTH_MUST('ADMIN')
   @Post()
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async create(
@@ -46,7 +48,7 @@ export class CUserController {
    * 사용자 전체 조회
    * @returns
    */
-  @AUTH_MUST()
+  @AUTH_MUST('ADMIN')
   @Get()
   @ApiCreatedResponse({ type: CUserEntity, isArray: true })
   async findAll(@Query() findUserDto: FindUserDto): Promise<APIResponseObj> {
@@ -74,7 +76,7 @@ export class CUserController {
    * @param updateCUserDto
    * @returns
    */
-  @AUTH_MUST()
+  @AUTH_MUST('ADMIN')
   @Patch(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async update(
@@ -88,6 +90,23 @@ export class CUserController {
   }
 
   @AUTH_MUST()
+  @Patch()
+  @ApiCreatedResponse({ type: CUserEntity, isArray: false })
+  async updateUser(
+    @Body() updateCUserDto: UpdateCUserDto,
+    @Req() req: any,
+  ): Promise<APIResponseObj> {
+    if (req.user.email !== updateCUserDto.email) {
+      throw new CustomException(ExceptionCodeList.AUTH.WRONG_REQUEST_AUTH);
+    }
+
+    return HttpUtils.makeAPIResponse(
+      true,
+      await this.cUserService.update(req.user.id, updateCUserDto),
+    );
+  }
+
+  @AUTH_MUST('ADMIN')
   @Patch(':id/:active')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async updateActive(
@@ -108,7 +127,7 @@ export class CUserController {
    * @param id
    * @returns
    */
-  @AUTH_MUST()
+  @AUTH_MUST('ADMIN')
   @Delete(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async remove(@Param('id') id: string): Promise<APIResponseObj> {

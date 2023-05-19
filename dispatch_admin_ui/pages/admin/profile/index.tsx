@@ -16,7 +16,6 @@ const ProfileEdit = () => {
 
   const [update, { loading, data, error }] = useCallAPI<UseAPICallResult>({
     url: APIURLs.USER_UPDATE,
-    addUrlParams: profile ? `/${profile!.id}` : "",
   });
 
   useEffect(() => {
@@ -57,8 +56,8 @@ const ProfileEdit = () => {
         {profile === undefined ? (
           "Loading..."
         ) : (
-          <div className='flex flex-col items-center h-screen pt-10 bg-gray-200'>
-            <div className='p-4 text-2xl font-bold text-center '>
+          <div className='flex flex-col items-center h-screen pt-10 bg-gray-500'>
+            <div className='p-4 text-2xl font-bold text-center text-white '>
               사용자 정보 수정
             </div>
             <form

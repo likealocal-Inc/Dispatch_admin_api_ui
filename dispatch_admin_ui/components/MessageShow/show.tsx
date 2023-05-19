@@ -32,7 +32,7 @@ export const MessageShow = ({ setMessage, message }: MessageShowProps) => {
   }
 
   return (
-    <div className='fixed right-0 bottom-10 w-96'>
+    <div className='fixed right-0 bottom-10 w-96 '>
       {MessageBoard(messageList, (key: number) => {
         setMessageList(messageList.filter((d) => d.key != key));
       })}

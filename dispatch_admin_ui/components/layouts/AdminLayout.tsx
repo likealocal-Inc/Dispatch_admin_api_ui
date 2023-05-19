@@ -25,8 +25,10 @@ const AdminLayout = ({ menuTitle, children }: AdminProps) => {
         <title>{menuTitle}</title>
       </Head>
       <>
-        <Sidebar />
-        <div className='ml-44 bg-blueGray-100'>{children}</div>
+        <div className=''>
+          <Sidebar />
+          <div className='h-full ml-44'>{children}</div>
+        </div>
       </>
     </>
   );

@@ -82,7 +82,7 @@ export default function TableTemplate({
         </div>
       )}
       <AdminLayout menuTitle={title}>
-        <div className=''>
+        <div className='bg-gray-500'>
           {onCreate && (
             <div className='flex justify-end pt-2 pb-1 pr-2'>
               <Button01 label={"생성"} onClick={() => onCreate()} />
