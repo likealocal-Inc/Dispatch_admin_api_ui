@@ -1,5 +1,7 @@
 import { NextPage } from "next";
-import useCallAPI from "../../../libs/client/hooks/useCallAPI";
+import useCallAPI, {
+  UseAPICallResult,
+} from "../../../libs/client/hooks/useCallAPI";
 import { APIURLs } from "@libs/client/constants";
 import { useForm } from "react-hook-form";
 
@@ -13,16 +15,15 @@ interface MutationResult {
   res: Object;
 }
 const Login: NextPage = () => {
-  const [send, { loading, data, error }] = useCallAPI<MutationResult>(
-    APIURLs.LOGIN
-  );
+  const [send, { loading, data, error }] = useCallAPI<UseAPICallResult>({
+    url: APIURLs.LOGIN,
+  });
 
   const { register, handleSubmit, reset } = useForm<LoginForm>();
   const onLoginValid = (validForm: LoginForm) => {
     if (loading) return;
     send(validForm);
   };
-  console.log(data && data!.res);
   return (
     <>
       <div className=''>{}</div>

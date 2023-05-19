@@ -1,6 +1,5 @@
 import { PageURLs } from "@libs/client/constants";
 import { checkToken } from "@libs/client/utils/auth.utils";
-import { init } from "next/dist/compiled/@vercel/og/satori";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 export default function Home() {
