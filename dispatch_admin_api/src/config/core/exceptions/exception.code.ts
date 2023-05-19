@@ -58,7 +58,7 @@ export const ExceptionCodeList = {
     ),
     ALREADY_EXIST_USER: new ExceptionCode(
       'ALREADY_EXIST_USER',
-      '이미 사용자 존재',
+      '이메일 사용자 이미 존재',
       HttpStatus.BAD_REQUEST,
     ),
     ALREADY_EXIST_COMPANY: new ExceptionCode(

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { APIURLs } from "@libs/client/constants";
 import { UserModel } from "@libs/client/models/user_model";
@@ -8,9 +8,8 @@ import { callAPI } from "@libs/client/call/call";
 import { MessageProps } from "@components/MessageShow/show";
 import ManageUserModal from "./manageUser";
 import TableTemplate from "@components/ListTable/TableTemplate";
-import Button01 from "@components/buttons/Button01";
-import ButtonNoBorder from "@components/buttons/ButtonNoBorder";
 import Button02 from "@components/buttons/Button02";
+import useCallAPI, { UseAPICallResult } from "@libs/client/hooks/useCallAPI";
 
 export default function Users() {
   // 메세지 출력관련
