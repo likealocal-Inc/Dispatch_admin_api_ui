@@ -86,34 +86,32 @@ export default function PaginavigationWidget({
             </li>
           )}
           {/* 숫자리스트 */}
-          {Array(pageLimit)
-            .fill()
-            .map((_, i) => {
-              const _temp = i + pageNavigationLocation * pageLimit;
+          {Array(pageLimit).map((_, i) => {
+            const _temp = i + pageNavigationLocation * pageLimit;
 
-              if (Math.ceil(totalCount / size) < _temp + 1) return;
+            if (Math.ceil(totalCount / size) < _temp + 1) return;
 
-              return page !== _temp ? (
-                <li key={i}>
-                  <a
-                    href=''
-                    onClick={() => movePage(_temp)}
-                    className='px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                  >
-                    {_temp + 1}
-                  </a>
-                </li>
-              ) : (
-                <li key={i}>
-                  <a
-                    aria-current='page'
-                    className='z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
-                  >
-                    {_temp + 1}
-                  </a>
-                </li>
-              );
-            })}
+            return page !== _temp ? (
+              <li key={i}>
+                <a
+                  href=''
+                  onClick={() => movePage(_temp)}
+                  className='px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                >
+                  {_temp + 1}
+                </a>
+              </li>
+            ) : (
+              <li key={i}>
+                <a
+                  aria-current='page'
+                  className='z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
+                >
+                  {_temp + 1}
+                </a>
+              </li>
+            );
+          })}
           {/* 이후페이지 */}
           {(page + 1) * size + pageLimit < totalCount &&
           pageLimit * (pageNavigationLocation + 1) * size < totalCount ? (
