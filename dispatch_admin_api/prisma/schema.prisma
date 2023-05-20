@@ -33,14 +33,27 @@ model User{
   company String @unique
 }
 
-model Company{
-  id Int @default(autoincrement()) @id
+model OrdersIamweb{
+  id    Int  @id @default(autoincrement())
   created DateTime @default(now())
   updated DateTime @updatedAt
 
-  name String
+  order_no String @unique
+  order_time String
+  order_title String
+  order_info String @default("")
+  orderer_member_code String @default("")
+  orderer_name String 
+  orderer_email String @default("")
+  orderer_phone String @default("")
+  delivery_country String @default("") 
+  delivery_country_text String @default("")
+  payment_pay_type String @default("")
+  payment_price_currency String @default("")
+  payment_total_price Int @default(0)
+  pay_time String @default("")
+  options String @default("")
 }
-
 
 model Token{
   id    Int  @id @default(autoincrement())

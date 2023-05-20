@@ -1,4 +1,3 @@
-export class FindUserDto {
-  page: string;
-  size: string;
-}
+import { PagingDto } from 'src/libs/core/dtos/paging';
+
+export class FindUserDto extends PagingDto {}

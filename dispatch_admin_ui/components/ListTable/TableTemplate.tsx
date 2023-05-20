@@ -32,8 +32,6 @@ export default function TableTemplate({
   headerWidths,
   body,
   listCallUrl,
-  pageQueryWhere,
-  reload,
   message,
   setMessage,
   onCreate,
@@ -62,6 +60,7 @@ export default function TableTemplate({
 
   useEffect(() => {
     if (!loading && data) {
+      console.log(data);
       if (data?.ok) {
         setRes(data.data.data);
         setTotalCount(data.data.count);

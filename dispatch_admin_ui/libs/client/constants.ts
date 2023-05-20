@@ -78,6 +78,11 @@ export const APIURLs = {
     method: METHOD.POST,
     desc: "내프로필조회",
   },
+  ORDER_LIST: <APIURLType>{
+    url: makeAPIURL("iamweb/get.orders"),
+    method: METHOD.GET,
+    desc: "주문리스트 조회",
+  },
 };
 
 /**

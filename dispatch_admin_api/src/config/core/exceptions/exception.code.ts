@@ -91,4 +91,12 @@ export const ExceptionCodeList = {
       HttpStatus.BAD_REQUEST,
     ),
   },
+
+  IAMWEB: {
+    TOKEN_CANOT_GET: new ExceptionCode(
+      'TOKEN_CANOT_GET',
+      '토큰을 가져오는데 문제발생',
+      HttpStatus.BAD_REQUEST,
+    ),
+  },
 };

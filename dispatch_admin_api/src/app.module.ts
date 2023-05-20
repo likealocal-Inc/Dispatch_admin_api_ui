@@ -27,6 +27,8 @@ import { CEmailModule } from './core/c.email/c.email.module';
 import { DevModule } from './sample/dev/dev.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CScheduleModule } from './core/c.schedule/c.schedule.module';
+import { IamwebModule } from './modules/iamweb/iamweb.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -42,6 +44,7 @@ import { CScheduleModule } from './core/c.schedule/c.schedule.module';
     JwtModule,
     // CacheModule.register({ isGlobal: true }),
     CacheModule,
+    HttpModule,
 
     /////////////////// CORE ///////////////////
     CFilesModule,
@@ -53,6 +56,8 @@ import { CScheduleModule } from './core/c.schedule/c.schedule.module';
 
     /////////////////// Service ///////////////////
     DevModule,
+
+    IamwebModule,
   ],
   controllers: [],
   providers: [
