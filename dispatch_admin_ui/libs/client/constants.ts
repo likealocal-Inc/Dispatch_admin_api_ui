@@ -83,6 +83,11 @@ export const APIURLs = {
     method: METHOD.GET,
     desc: "주문리스트 조회",
   },
+  ORDER_MODIFY: <APIURLType>{
+    url: makeAPIURL("iamweb"),
+    method: METHOD.PATCH,
+    desc: "주문 데이터 수정",
+  },
 };
 
 /**

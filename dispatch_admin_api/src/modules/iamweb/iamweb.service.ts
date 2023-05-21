@@ -1,10 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/core/prisma/prisma.service';
 import { PagingDto } from 'src/libs/core/dtos/paging';
+import { OrdersIamwebEntity } from './entities/iamweb.entity';
 
 @Injectable()
 export class IamwebService {
   constructor(private readonly prisma: PrismaService) {}
+
+  // 수정
+  async modify(
+    ordersIamwebEntity: OrdersIamwebEntity,
+  ): Promise<OrdersIamwebEntity> {
+    return this.prisma.ordersIamweb.update({
+      where: { id: ordersIamwebEntity.id },
+      data: ordersIamwebEntity,
+    });
+  }
+
   async getOrders(pagingDto: PagingDto) {
     let count;
     let orders;

@@ -53,6 +53,8 @@ model OrdersIamweb{
   payment_total_price Int @default(0)
   pay_time String @default("")
   options String @default("")
+
+  status OrderStatus @default(ORDER_PAYMENT_OK)
 }
 
 model Token{
@@ -80,6 +82,14 @@ model Files{
   created DateTime @default(now())
   updated DateTime @updatedAt
   user User?
+}
+
+enum OrderStatus{
+  ORDER_PAYMENT_OK
+  DISPATCH_REQUEST
+  DISPATCH_COMPLETE
+  CANCEL
+  DONE
 }
 
 enum Gender{

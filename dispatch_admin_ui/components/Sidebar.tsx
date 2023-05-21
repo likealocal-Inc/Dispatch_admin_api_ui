@@ -55,7 +55,7 @@ export default function Sidebar() {
           <div className='relative top-0 left-0 right-0 flex flex-col flex-1 h-auto mt-4 overflow-x-hidden overflow-y-auto rounded shadow shadow-none opacity-100 '>
             <hr className='min-w-full my-2' />
             <ul className='flex flex-col min-w-full list-none'>
-              {menuLi({ label: "주문리스트", url: "/admin/orders" })}
+              {menuLi({ label: "아임웹주문", url: "/admin/orders" })}
               {menuLi({ label: "사용자리스트", url: "/admin/users" })}
               {menuLi({ label: "프로필수정", url: "/admin/profile" })}
               <li>
