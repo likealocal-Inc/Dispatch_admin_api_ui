@@ -101,10 +101,38 @@ export default function Orders() {
               </div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.orderer_email}
+              <div
+                className=''
+                onDoubleClick={() => {
+                  setData(d.orderer_email);
+                  setOpenModal(true);
+                  const fn = (orderData: string) => {
+                    d.orderer_email = orderData;
+                    callAPI({ urlInfo: APIURLs.ORDER_MODIFY, params: d });
+                    location.reload();
+                  };
+                  setModifyCallback(() => fn);
+                }}
+              >
+                {d.orderer_email}
+              </div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.orderer_phone}
+              <div
+                className=''
+                onDoubleClick={() => {
+                  setData(d.orderer_phone);
+                  setOpenModal(true);
+                  const fn = (orderData: string) => {
+                    d.orderer_phone = orderData;
+                    callAPI({ urlInfo: APIURLs.ORDER_MODIFY, params: d });
+                    location.reload();
+                  };
+                  setModifyCallback(() => fn);
+                }}
+              >
+                {d.orderer_phone}
+              </div>
             </StyledTableCell>
 
             <StyledTableCell component='th' scope='row'>

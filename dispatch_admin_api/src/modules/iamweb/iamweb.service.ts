@@ -13,7 +13,13 @@ export class IamwebService {
   ): Promise<OrdersIamwebEntity> {
     return this.prisma.ordersIamweb.update({
       where: { id: ordersIamwebEntity.id },
-      data: ordersIamwebEntity,
+      data: {
+        orderer_email: ordersIamwebEntity.orderer_email,
+        orderer_name: ordersIamwebEntity.orderer_name,
+        orderer_phone: ordersIamwebEntity.orderer_phone,
+        options: ordersIamwebEntity.options,
+        order_info: ordersIamwebEntity.order_info,
+      },
     });
   }
 
