@@ -16,6 +16,7 @@ export default function Orders() {
   // 메세지 출력관련
   const [message, setMessage] = useState<MessageProps>();
   const [data, setData] = useState("");
+  const [isJson, setIsJson] = useState(false);
 
   const [modifyCallback, setModifyCallback] = useState<Function>(
     () => () => {}
@@ -46,7 +47,7 @@ export default function Orders() {
 
     "배차상태",
   ];
-  const headerWidths = [1, 2, 1, 10, 10, 30, 10, 5, 5, 1, 1, 1, 30, 2];
+  const headerWidths = [0.5, 10, 0.4, 10, 20, 30, 20, 1, 1, 1, 1, 1, 30, 2];
   const body = (res: IamwebOrderModel[]) => {
     return (
       res &&
@@ -60,10 +61,12 @@ export default function Orders() {
               {d.id}
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {IamwebUtils.getStatusString(d.status)}
+              <div className='text-xs'>
+                {IamwebUtils.getStatusString(d.status)}
+              </div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.order_no}
+              <div className='text-xs'>{d.order_no}</div>
             </StyledTableCell>
             <StyledTableCell
               component='th'
@@ -73,11 +76,22 @@ export default function Orders() {
               }}
             ></StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.order_title}
+              <div className='text-xs'>{d.order_title}</div>
             </StyledTableCell>
             <StyledTableCell
               component='th'
               scope='row'
+              onDoubleClick={() => {
+                setIsJson(true);
+                setData(d.order_info);
+                setOpenModal(true);
+                const fn = (orderData: string) => {
+                  d.order_info = orderData;
+                  callAPI({ urlInfo: APIURLs.ORDER_MODIFY, params: d });
+                  location.reload();
+                };
+                setModifyCallback(() => fn);
+              }}
               dangerouslySetInnerHTML={{
                 __html: jsonToString(JSON.parse(d.order_info)),
               }}
@@ -97,7 +111,7 @@ export default function Orders() {
                   setModifyCallback(() => fn);
                 }}
               >
-                {d.orderer_name}
+                <div className='text-xs'>{d.orderer_name}</div>
               </div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
@@ -114,7 +128,7 @@ export default function Orders() {
                   setModifyCallback(() => fn);
                 }}
               >
-                {d.orderer_email}
+                <div className='text-xs'>{d.orderer_email}</div>
               </div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
@@ -131,23 +145,38 @@ export default function Orders() {
                   setModifyCallback(() => fn);
                 }}
               >
-                {d.orderer_phone}
+                <div className='text-xs'>{d.orderer_phone}</div>
               </div>
             </StyledTableCell>
 
             <StyledTableCell component='th' scope='row'>
-              {d.payment_pay_type}
+              <div className='text-xs'>{d.payment_pay_type}</div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.payment_total_price}/{d.payment_price_currency}
+              <div className='text-xs'>
+                {d.payment_total_price}/{d.payment_price_currency}
+              </div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              /{DateUtils.stringToDate(d.pay_time)}
+              <div className='text-xs'>
+                {DateUtils.stringToDate(d.pay_time)}
+              </div>
             </StyledTableCell>
 
             <StyledTableCell
               component='th'
               scope='row'
+              onDoubleClick={() => {
+                setIsJson(true);
+                setData(d.options);
+                setOpenModal(true);
+                const fn = (orderData: string) => {
+                  d.options = orderData;
+                  callAPI({ urlInfo: APIURLs.ORDER_MODIFY, params: d });
+                  location.reload();
+                };
+                setModifyCallback(() => fn);
+              }}
               dangerouslySetInnerHTML={{
                 __html: jsonToString(JSON.parse(d.options)),
               }}
@@ -155,20 +184,7 @@ export default function Orders() {
               {/* {jsonToString(JSON.parse(d.options))} */}
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              <Button02
-                label={"배차요청"}
-                onClick={() => {
-                  // callAPI({
-                  //   urlInfo: {
-                  //     url: `${APIURLs.USER_DELETE.url}/${d.id}`,
-                  //     method: APIURLs.USER_DELETE.method,
-                  //     desc: APIURLs.USER_DELETE.desc,
-                  //   },
-                  // }).then((res) => {
-                  //   location.reload();
-                  // });
-                }}
-              />
+              <Button02 label={"배차요청"} onClick={() => {}} />
             </StyledTableCell>
           </StyledTableRow>
         );
@@ -191,6 +207,7 @@ export default function Orders() {
         />
 
         <ModalOrderIamwebModify
+          isJson={isJson}
           modifyCallback={modifyCallback}
           isOpen={openModal}
           setIsOpen={setOpenModal}

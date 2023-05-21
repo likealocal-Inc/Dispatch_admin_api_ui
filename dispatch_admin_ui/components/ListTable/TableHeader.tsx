@@ -16,7 +16,7 @@ export default function TableHeader({
         {headers.map((d, k) => (
           // <StyledTableCell key={k} className={`w-[${headerWidth[k]}rem]`}>
           <StyledTableCell key={k} width={`${headerWidth[k]}%`}>
-            {d}
+            <div className='text-xs text-center'>{d}</div>
           </StyledTableCell>
         ))}
       </TableRow>

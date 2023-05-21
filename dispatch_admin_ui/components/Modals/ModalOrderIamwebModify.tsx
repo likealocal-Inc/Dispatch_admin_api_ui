@@ -4,6 +4,7 @@ import { IamwebOrderModel } from "@libs/client/models/iamweb.order.model";
 import React, { useEffect, useState } from "react";
 
 interface ModalModifyProps {
+  isJson?: boolean;
   isOpen: boolean;
   setIsOpen: Function;
   data: string;
@@ -11,6 +12,7 @@ interface ModalModifyProps {
   modifyCallback: Function;
 }
 function ModalOrderIamwebModify({
+  isJson = false,
   isOpen,
   setIsOpen,
   data,
@@ -18,17 +20,28 @@ function ModalOrderIamwebModify({
 }: ModalModifyProps) {
   const [origin, setOrigin] = useState(data);
 
+  const [originJson, setOriginJson] = useState<any>();
+
   const closeModal = () => {
     // 그냥 닫으면 변경된 값을 취소 해야 함
     setIsOpen(false);
   };
   const runModify = () => {
     setIsOpen(false);
-    modifyCallback(origin);
+    if (isJson) {
+      modifyCallback(JSON.stringify(originJson));
+    } else {
+      modifyCallback(origin);
+    }
   };
 
   useEffect(() => {
-    setOrigin(data);
+    if (isJson) {
+      const tempJsonData = JSON.parse(data);
+      setOriginJson(tempJsonData);
+    } else {
+      setOrigin(data);
+    }
   }, [data]);
 
   useEffect(() => {}, [modifyCallback]);
@@ -57,14 +70,42 @@ function ModalOrderIamwebModify({
 
             <div className='inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-middle transition-all transform rounded-lg shadow-xl bg-slate-300'>
               <div>
-                <div className='flex justify-center'>
-                  <input
-                    className='p-3 rounded-lg'
-                    value={origin}
-                    onChange={(v) => {
-                      setOrigin(v.target.value);
-                    }}
-                  />
+                <div className='flex flex-col justify-center'>
+                  {isJson ? (
+                    <>
+                      {originJson !== undefined
+                        ? Object.keys(originJson).map((d) => {
+                            return (
+                              <div
+                                key={d}
+                                className='flex flex-row justify-between p-3'
+                              >
+                                <div className='p-2'>{d}</div>
+                                <input
+                                  className='p-3'
+                                  id={d}
+                                  defaultValue={originJson[d]}
+                                  onChange={(e) => {
+                                    const div = document.getElementById(d);
+                                    div!.innerHTML = e.target.value;
+                                    originJson[d] = e.target.value;
+                                    setOriginJson(originJson);
+                                  }}
+                                />
+                              </div>
+                            );
+                          })
+                        : "NO"}
+                    </>
+                  ) : (
+                    <input
+                      className='p-3 rounded-lg'
+                      value={origin}
+                      onChange={(v) => {
+                        setOrigin(v.target.value);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
               <div className='mt-5 sm:mt-6'>
