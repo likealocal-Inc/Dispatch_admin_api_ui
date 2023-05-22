@@ -101,6 +101,7 @@ export default function Orders() {
               <div
                 className=''
                 onDoubleClick={() => {
+                  setIsJson(false);
                   setData(d.orderer_name);
                   setOpenModal(true);
                   const fn = (orderData: string) => {
@@ -118,6 +119,7 @@ export default function Orders() {
               <div
                 className=''
                 onDoubleClick={() => {
+                  setIsJson(false);
                   setData(d.orderer_email);
                   setOpenModal(true);
                   const fn = (orderData: string) => {
@@ -135,6 +137,7 @@ export default function Orders() {
               <div
                 className=''
                 onDoubleClick={() => {
+                  setIsJson(false);
                   setData(d.orderer_phone);
                   setOpenModal(true);
                   const fn = (orderData: string) => {
@@ -194,7 +197,7 @@ export default function Orders() {
 
   return (
     <>
-      <div className='h-screen p-5 bg-gray-500'>
+      <div className='p-5 bg-gray-500'>
         <TableTemplate
           title='아임웹 주문 관리'
           headers={headers}

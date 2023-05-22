@@ -56,7 +56,7 @@ export default function Sidebar() {
             <hr className='min-w-full my-2' />
             <ul className='flex flex-col min-w-full list-none'>
               {menuLi({ label: "대쉬보드", url: "/admin/dashboard" })}
-              {menuLi({ label: "아임웹주문", url: "/admin/orders" })}
+              {menuLi({ label: "아임웹주문", url: "/admin/iamweb.orders" })}
               {menuLi({ label: "사용자리스트", url: "/admin/users" })}
               {menuLi({ label: "프로필수정", url: "/admin/profile" })}
               <li>

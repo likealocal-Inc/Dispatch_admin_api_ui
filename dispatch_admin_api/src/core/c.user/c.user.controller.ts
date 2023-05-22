@@ -34,7 +34,7 @@ export class CUserController {
    * @param createCUserDto
    * @returns
    */
-  @AUTH_MUST('ADMIN')
+  @AUTH_MUST()
   @Post()
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async create(
@@ -48,7 +48,7 @@ export class CUserController {
    * 사용자 전체 조회
    * @returns
    */
-  @AUTH_MUST('ADMIN')
+  @AUTH_MUST()
   @Get()
   @ApiCreatedResponse({ type: CUserEntity, isArray: true })
   async findAll(@Query() findUserDto: FindUserDto): Promise<APIResponseObj> {
@@ -76,7 +76,7 @@ export class CUserController {
    * @param updateCUserDto
    * @returns
    */
-  @AUTH_MUST('ADMIN')
+  @AUTH_MUST()
   @Patch(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async update(
@@ -106,7 +106,7 @@ export class CUserController {
     );
   }
 
-  @AUTH_MUST('ADMIN')
+  @AUTH_MUST()
   @Patch(':id/:active')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async updateActive(
@@ -127,7 +127,7 @@ export class CUserController {
    * @param id
    * @returns
    */
-  @AUTH_MUST('ADMIN')
+  @AUTH_MUST()
   @Delete(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async remove(@Param('id') id: string): Promise<APIResponseObj> {
