@@ -85,14 +85,16 @@ const Join: NextPage = () => {
     <div className='h-screen py-40 bg-blueGray-800'>
       <div className='container h-full px-4 mx-auto'>
         <div className='flex items-center content-center justify-center h-full'>
-          <div className='w-full px-4 lg:w-4/12'>
+          <div className='w-2/5'>
             <div className='relative flex flex-col w-full min-w-0 py-5 break-words border-0 rounded-lg rounded-t shadow-lg bg-blueGray-200'>
-              <div className='flex-auto px-4 py-3 pt-0 lg:px-10'>
-                <div className='mb-3 font-bold text-center text-blueGray-400'></div>
-                <form onSubmit={handleSubmit(onValid)}>
-                  <div className='relative w-full mb-3'>
+              <div className='flex-auto px-4 py-3 pt-0 mr-6'>
+                <div className='mb-5 text-lg font-bold text-center text-blueGray-800'>
+                  사용자 생성
+                </div>
+                <form onSubmit={handleSubmit(onValid)} className='ml-6'>
+                  <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Email
@@ -107,9 +109,9 @@ const Join: NextPage = () => {
                     />
                   </div>
 
-                  <div className='relative w-full mb-3'>
+                  <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Password
@@ -123,9 +125,9 @@ const Join: NextPage = () => {
                       {...register("password", { required: true })}
                     />
                   </div>
-                  <div className='relative w-full mb-3'>
+                  <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Password 확인
@@ -138,9 +140,9 @@ const Join: NextPage = () => {
                       required={true}
                     />
                   </div>
-                  <div className='relative flex flex-col w-full mb-3'>
+                  <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='flex items-center m-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Company
@@ -161,9 +163,9 @@ const Join: NextPage = () => {
                         })}
                     </select>
                   </div>
-                  <div className='relative w-full mb-3'>
+                  <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Name
@@ -177,9 +179,9 @@ const Join: NextPage = () => {
                       {...register("name", { required: true })}
                     />
                   </div>
-                  <div className='relative w-full mb-3'>
+                  <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       직책
@@ -193,9 +195,9 @@ const Join: NextPage = () => {
                       {...register("position", { required: true })}
                     />
                   </div>
-                  <div className='relative w-full mb-3'>
+                  <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Phone

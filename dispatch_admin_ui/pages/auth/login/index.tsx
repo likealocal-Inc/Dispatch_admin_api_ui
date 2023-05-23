@@ -45,10 +45,12 @@ const Login: NextPage = () => {
     <div className='h-screen py-40 bg-blueGray-800'>
       <div className='container h-full px-4 mx-auto'>
         <div className='flex items-center content-center justify-center h-full'>
-          <div className='w-full px-4 lg:w-4/12'>
+          <div className='w-2/5'>
             <div className='relative flex flex-col w-full min-w-0 py-5 break-words border-0 rounded-lg rounded-t shadow-lg bg-blueGray-200'>
-              <div className='flex-auto px-4 py-3 pt-0 lg:px-10'>
-                <div className='mb-3 font-bold text-center text-blueGray-400'></div>
+              <div className='flex-auto px-4 py-3 pt-0 mr-6'>
+                <div className='mb-5 text-lg font-bold text-center text-blueGray-800'>
+                  로그인
+                </div>
                 <form onSubmit={handleSubmit(onValid)}>
                   <div className='relative w-full mb-3'>
                     <label
