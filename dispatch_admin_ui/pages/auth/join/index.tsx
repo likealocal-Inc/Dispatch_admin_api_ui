@@ -87,11 +87,11 @@ const Join: NextPage = () => {
         <div className='flex items-center content-center justify-center h-full'>
           <div className='w-2/5'>
             <div className='relative flex flex-col w-full min-w-0 py-5 break-words border-0 rounded-lg rounded-t shadow-lg bg-blueGray-200'>
-              <div className='flex-auto px-4 py-3 pt-0 mr-6'>
+              <div className='flex-auto px-4 py-3 pt-0 ml-6 mr-6'>
                 <div className='mb-5 text-lg font-bold text-center text-blueGray-800'>
                   사용자 생성
                 </div>
-                <form onSubmit={handleSubmit(onValid)} className='ml-6'>
+                <form onSubmit={handleSubmit(onValid)}>
                   <div className='flex flex-row items-center w-full mb-3'>
                     <label
                       className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'

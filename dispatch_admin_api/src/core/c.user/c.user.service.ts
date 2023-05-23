@@ -79,14 +79,14 @@ export class CUserService {
     id: number,
     updateCUserDto: UpdateCUserDto,
   ): Promise<CUserEntity> {
-    const user = await this.findCompany(updateCUserDto.company);
+    // const user = await this.findCompany(updateCUserDto.company);
 
     // 회사이름으로 조회한 사용자 아이디가 현재 아이디와 다르다면 이미 존재하는 회사명
-    if (user !== null) {
-      if (user.id !== id) {
-        throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_COMPANY);
-      }
-    }
+    // if (user !== null) {
+    //   if (user.id !== id) {
+    //     throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_COMPANY);
+    //   }
+    // }
 
     // 패스워드값이 안넘어 왔으면 업데이트 안함
     if (

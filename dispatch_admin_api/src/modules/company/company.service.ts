@@ -34,7 +34,7 @@ export class CompanyService {
         where: { isActive: true },
         skip: page,
         take: size,
-        orderBy: { id: 'desc' },
+        orderBy: { name: 'asc' },
       });
     });
     return {

@@ -15,6 +15,8 @@ import { UseAPICallResult } from "../../../libs/client/hooks/useCallAPI";
 import { APIURLs } from "@libs/client/constants";
 import { getElementById } from "../../../libs/client/utils/html";
 import { useEffect, useState } from "react";
+import { callAPI } from "@libs/client/call/call";
+import { CompanyModel } from "@libs/client/models/company.model";
 
 interface ModalProps {
   isModify: boolean;
@@ -37,6 +39,8 @@ export default function ManageUserModal({
 
   const [message, setMessage] = useState("");
 
+  const [companyList, setCompanyList] = useState<CompanyModel[]>([]);
+
   useEffect(() => {
     if (!loading && !isFirst) {
       if (data?.ok === false) {
@@ -51,9 +55,21 @@ export default function ManageUserModal({
     }
   }, [loading]);
 
+  useEffect(() => {
+    callAPI({
+      urlInfo: APIURLs.COMPANY_LIST,
+      params: { size: 99999, page: 0 },
+    }).then(async (d) => {
+      const data = await d.json();
+      setCompanyList(data.data.data);
+    });
+  }, []);
+
   const onSubmit = () => {
     const phone = getElementById<HTMLInputElement>("m-phone").value;
-    const company = getElementById<HTMLInputElement>("m-company").value;
+    const companyObj = getElementById<HTMLSelectElement>("m-company");
+    const company = companyObj.options[companyObj.selectedIndex].value;
+
     const password = getElementById<HTMLInputElement>("m-password").value;
     const email = getElementById<HTMLInputElement>("m-email").value;
 
@@ -76,13 +92,13 @@ export default function ManageUserModal({
         >
           <Fade in={open}>
             <div className=''>
-              <Box sx={style} className='bg-slate-300'>
+              <Box sx={style} className='w-1/5 bg-slate-100'>
                 <Typography
                   id='transition-modal-title'
                   variant='h6'
                   component='h2'
                 >
-                  <div className='p-2 text-center'>
+                  <div className='p-2 text-center text-gray-800'>
                     사용자 정보 {isModify ? "수정" : "생성"}
                   </div>
                 </Typography>
@@ -90,22 +106,24 @@ export default function ManageUserModal({
                 <div className=''>
                   <Stack>
                     <Card className='p-6'>
-                      <TextField
-                        id='m-email'
-                        label='이메일'
-                        defaultValue={isModify ? user!.email : ""}
-                        className='py-5'
-                        InputProps={{
-                          readOnly: isModify ? true : false,
-                        }}
-                      />
+                      <div className=''>
+                        <TextField
+                          id='m-email'
+                          label='이메일'
+                          defaultValue={isModify ? user!.email : ""}
+                          className='w-full py-3'
+                          InputProps={{
+                            readOnly: isModify ? true : false,
+                          }}
+                        />
+                      </div>
                       {true && (
                         <div className=''>
                           <TextField
                             id='m-password'
                             label='패스워드'
                             type='password'
-                            className='py-5'
+                            className='w-full py-3'
                           />
                           {isModify ?? (
                             <div className='flex justify-center pb-6 text-sm text-red-500'>
@@ -118,14 +136,28 @@ export default function ManageUserModal({
                         id='m-phone'
                         label='전화번호'
                         defaultValue={isModify ? user!.phone : ""}
-                        className='w-full py-5'
+                        className='w-full py-3'
                       />
-                      <TextField
+                      <select
+                        className='w-full px-3 py-3 text-sm duration-150 bg-white rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
                         id='m-company'
-                        label='회사'
-                        defaultValue={isModify ? user!.company : ""}
-                        className='py-5'
-                      />
+                        required={true}
+                      >
+                        {companyList.length > 0 &&
+                          companyList.map((d, key) => {
+                            return (
+                              <option
+                                key={d.id}
+                                defaultValue={d.name}
+                                selected={
+                                  d.name === user!.company ? true : false
+                                }
+                              >
+                                {d.name}
+                              </option>
+                            );
+                          })}
+                      </select>
                       <div
                         className={
                           message === ""
@@ -139,7 +171,7 @@ export default function ManageUserModal({
                     <div className='flex justify-end px-4 mt-2'>
                       <Button
                         variant='contained'
-                        className='w-full mr-2'
+                        className='w-full mr-2 bg-gray-700'
                         onClick={() => {
                           setMessage("");
                           handleModalClose();
@@ -149,7 +181,7 @@ export default function ManageUserModal({
                       </Button>
                       <Button
                         variant='contained'
-                        className='w-full'
+                        className='w-full bg-gray-700'
                         onClick={() => {
                           onSubmit();
                         }}
