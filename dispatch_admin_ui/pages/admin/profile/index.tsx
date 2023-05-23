@@ -3,7 +3,7 @@ import AdminLayout from "@components/layouts/AdminLayout";
 import { callAPI } from "@libs/client/call/call";
 import { APIURLs } from "@libs/client/constants";
 import useCallAPI, { UseAPICallResult } from "@libs/client/hooks/useCallAPI";
-import { UserModel } from "@libs/client/models/user_model";
+import { UserModel } from "@libs/client/models/user.model";
 import React, { useEffect, useState } from "react";
 
 const ProfileEdit = () => {

@@ -15,24 +15,25 @@ import { UseAPICallResult } from "../../../libs/client/hooks/useCallAPI";
 import { APIURLs } from "@libs/client/constants";
 import { getElementById } from "../../../libs/client/utils/html";
 import { useEffect, useState } from "react";
+import { CompanyModel } from "@libs/client/models/company.model";
 
 interface ModalProps {
   isModify: boolean;
-  user?: UserModel;
+  company?: CompanyModel;
   open: boolean;
   handleModalClose: Function;
 }
 
-export default function ManageUserModal({
+export default function ManageCompanyModal({
   open,
-  user,
+  company,
   handleModalClose,
   isModify,
 }: ModalProps) {
   const [isFirst, setIsFirst] = useState(true);
   const [call, { loading, data, error }] = useCallAPI<UseAPICallResult>({
-    url: isModify && open ? APIURLs.USER_UPDATE : APIURLs.JOIN,
-    addUrlParams: isModify && open ? `/${user!.id}` : "",
+    url: isModify && open ? APIURLs.COMPANY_UPDATE : APIURLs.COMPANY_CREATE,
+    addUrlParams: isModify && open ? `/${company!.id}` : "",
   });
 
   const [message, setMessage] = useState("");
@@ -52,12 +53,12 @@ export default function ManageUserModal({
   }, [loading]);
 
   const onSubmit = () => {
-    const phone = getElementById<HTMLInputElement>("m-phone").value;
-    const company = getElementById<HTMLInputElement>("m-company").value;
-    const password = getElementById<HTMLInputElement>("m-password").value;
-    const email = getElementById<HTMLInputElement>("m-email").value;
-
-    call({ phone, company, password, email });
+    const name = getElementById<HTMLInputElement>("m-name").value;
+    if (name.trim() === "") {
+      setMessage("업체명을 넣어 주세요");
+    } else {
+      call({ name });
+    }
   };
 
   return (
@@ -91,51 +92,21 @@ export default function ManageUserModal({
                   <Stack>
                     <Card className='p-6'>
                       <TextField
-                        id='m-email'
-                        label='이메일'
-                        defaultValue={isModify ? user!.email : ""}
-                        className='py-5'
-                        InputProps={{
-                          readOnly: isModify ? true : false,
-                        }}
-                      />
-                      {true && (
-                        <div className=''>
-                          <TextField
-                            id='m-password'
-                            label='패스워드'
-                            type='password'
-                            className='py-5'
-                          />
-                          {isModify ?? (
-                            <div className='flex justify-center pb-6 text-sm text-red-500'>
-                              패스워드는 입력안하면 저장안됨
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      <TextField
-                        id='m-phone'
-                        label='전화번호'
-                        defaultValue={isModify ? user!.phone : ""}
-                        className='w-full py-5'
-                      />
-                      <TextField
-                        id='m-company'
-                        label='회사'
-                        defaultValue={isModify ? user!.company : ""}
+                        id='m-name'
+                        label='업체명'
+                        defaultValue={isModify ? company!.name : ""}
                         className='py-5'
                       />
-                      <div
-                        className={
-                          message === ""
-                            ? "hidden "
-                            : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 "
-                        }
-                      >
-                        {message}
-                      </div>
                     </Card>
+                    <div
+                      className={
+                        message === ""
+                          ? "hidden "
+                          : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 "
+                      }
+                    >
+                      {message}
+                    </div>
                     <div className='flex justify-end px-4 mt-2'>
                       <Button
                         variant='contained'

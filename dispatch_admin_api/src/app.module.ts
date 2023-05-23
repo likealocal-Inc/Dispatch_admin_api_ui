@@ -29,6 +29,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { CScheduleModule } from './core/c.schedule/c.schedule.module';
 import { IamwebModule } from './modules/iamweb/iamweb.module';
 import { HttpModule } from '@nestjs/axios';
+import { CTelegramModule } from './core/c.telegram/c.telegram.module';
+import { CompanyModule } from './modules/company/company.module';
 
 @Module({
   imports: [
@@ -53,11 +55,13 @@ import { HttpModule } from '@nestjs/axios';
     CUserModule,
     CEmailModule,
     CScheduleModule,
-
+    CTelegramModule,
     /////////////////// Service ///////////////////
     DevModule,
 
     IamwebModule,
+
+    CompanyModule,
   ],
   controllers: [],
   providers: [

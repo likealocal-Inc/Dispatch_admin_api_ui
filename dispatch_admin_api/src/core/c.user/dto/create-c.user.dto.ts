@@ -25,6 +25,16 @@ export class CreateCUserDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
+  position: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
   company: string;
 
   @ApiProperty({ required: false })

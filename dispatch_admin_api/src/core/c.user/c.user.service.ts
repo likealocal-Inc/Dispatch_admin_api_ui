@@ -72,7 +72,7 @@ export class CUserService {
 
   // 화사이름으로 조회
   async findCompany(company: string): Promise<CUserEntity> {
-    return await this.prisma.user.findUnique({ where: { company } });
+    return await this.prisma.user.findFirst({ where: { company } });
   }
 
   async update(
@@ -155,7 +155,7 @@ export class CUserService {
    * @param emailLoginDto
    * @returns
    */
-  async findOneByEmail(email: string): Promise<CUserEntity | undefined> {
+  async findOneByEmail(email: string): Promise<CUserEntity> {
     const dbUser: CUserEntity = await this.prisma.user.findUnique({
       where: { email },
     });

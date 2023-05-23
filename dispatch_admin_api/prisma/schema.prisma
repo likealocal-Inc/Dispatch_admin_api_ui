@@ -16,10 +16,13 @@ model User{
   created DateTime @default(now())
   updated DateTime @updatedAt
 
-  name String?
+  company String
+  name String
+  position String
+  phone String
   email String @unique
   password String
-  phone String
+
   gender Gender?
 
   isActive Boolean @default(true)
@@ -28,9 +31,16 @@ model User{
   profileImgId Int? @unique
 
   role Role @default(USER) 
-  token Token?
+  token Token?  
+}
 
-  company String @unique
+model Company{
+  id    Int  @id @default(autoincrement())
+  created DateTime @default(now())
+  updated DateTime @updatedAt
+
+  name String @unique 
+  isActive Boolean @default(true)
 }
 
 model OrdersIamweb{

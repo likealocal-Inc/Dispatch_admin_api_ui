@@ -57,7 +57,6 @@ export const DefaultConfig = {
     // 레디스 접속 주소
     getURL: () => `redis://${process.env.REDIS_URL}:${process.env.REDIS_PORT}`,
   },
-
   email: {
     getInfo: () => {
       return {
@@ -69,7 +68,6 @@ export const DefaultConfig = {
   schedule: {
     jobName: { job1: 'sampleJob1', job2: 'sampleJob2' },
   },
-
   iamwebApi: {
     iamwebProductID: {
       privateTaxi: 133,
@@ -125,5 +123,9 @@ export const DefaultConfig = {
         }
       }
     },
+  },
+  telegram: {
+    botKey: '6018333651:AAHcYRghyBYDo9BpY9Wd5xvrHXguwHxcbI4',
+    chatRoomId: 847828318,
   },
 };

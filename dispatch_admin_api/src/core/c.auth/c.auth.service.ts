@@ -35,9 +35,9 @@ export class CAuthService {
    * @returns
    */
   async joinEmail(createJoinDto: CreateCUserDto): Promise<CUserEntity> {
-    const user = await this.cUserService.findCompany(createJoinDto.company);
-    if (user !== null) {
-      throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_COMPANY);
+    const user = await this.cUserService.findOneByEmail(createJoinDto.email);
+    if (user !== undefined && user !== null) {
+      throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_USER);
     }
     return await this.cUserService.create(createJoinDto);
   }

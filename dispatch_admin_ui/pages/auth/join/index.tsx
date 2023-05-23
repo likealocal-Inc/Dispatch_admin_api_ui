@@ -7,12 +7,16 @@ import { useEffect, useState } from "react";
 import useCallAPI, { UseAPICallResult } from "@libs/client/hooks/useCallAPI";
 import ButtonLinkForPage from "@components/buttons/ButtonLink";
 import ModalMessage from "@components/Modals/ModalMessage";
+import { callAPI } from "@libs/client/call/call";
+import { CompanyModel } from "@libs/client/models/company.model";
 
 interface JoinForm {
   email: string;
   password: string;
   company: string;
   phone: string;
+  name: string;
+  position: string;
 }
 
 const Join: NextPage = () => {
@@ -20,6 +24,7 @@ const Join: NextPage = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [companyList, setCompanyList] = useState<CompanyModel[]>([]);
   const { register, handleSubmit } = useForm<JoinForm>();
   const [join, { loading, data, error }] = useCallAPI<UseAPICallResult>({
     url: APIURLs.JOIN,
@@ -29,6 +34,17 @@ const Join: NextPage = () => {
   const onValid = (validForm: JoinForm) => {
     if (loading) return;
 
+    console.log(validForm);
+    if (
+      validForm.email.trim() === "" ||
+      validForm.company.trim() === "" ||
+      validForm.name.trim() === "" ||
+      validForm.phone.trim() === "" ||
+      validForm.password.trim() === ""
+    ) {
+      setErrorMessage("모든 값을 입력해주세요");
+      setIsOpen(true);
+    }
     // 패스워드 일치 여부 확인
     const pass2: HTMLInputElement = document.getElementById(
       "password2"
@@ -54,6 +70,16 @@ const Join: NextPage = () => {
       }
     }
   }, [loading, data, router]);
+
+  useEffect(() => {
+    callAPI({
+      urlInfo: APIURLs.COMPANY_LIST,
+      params: { size: 99999, page: 0 },
+    }).then(async (d) => {
+      const data = await d.json();
+      setCompanyList(data.data.data);
+    });
+  }, []);
 
   return (
     <div className='h-screen py-40 bg-blueGray-800'>
@@ -93,6 +119,7 @@ const Join: NextPage = () => {
                       className='w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
                       placeholder='Password'
                       id='password'
+                      required={true}
                       {...register("password", { required: true })}
                     />
                   </div>
@@ -108,6 +135,46 @@ const Join: NextPage = () => {
                       className='w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
                       placeholder='Password 확인'
                       id='password2'
+                      required={true}
+                    />
+                  </div>
+                  <div className='relative flex flex-col w-full mb-3'>
+                    <label
+                      className='flex items-center m-2 text-xs font-bold uppercase text-blueGray-600'
+                      htmlFor='grid-password'
+                    >
+                      Company
+                    </label>
+                    <select
+                      className='w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
+                      id='company'
+                      required={true}
+                      {...register("company", { required: true })}
+                    >
+                      {companyList.length > 0 &&
+                        companyList.map((d, key) => {
+                          return (
+                            <option key={d.id} value={d.name}>
+                              {d.name}
+                            </option>
+                          );
+                        })}
+                    </select>
+                  </div>
+                  <div className='relative w-full mb-3'>
+                    <label
+                      className='block mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      htmlFor='grid-password'
+                    >
+                      Name
+                    </label>
+                    <input
+                      type='text'
+                      className='w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
+                      placeholder='이름'
+                      id='name'
+                      required={true}
+                      {...register("name", { required: true })}
                     />
                   </div>
                   <div className='relative w-full mb-3'>
@@ -115,14 +182,15 @@ const Join: NextPage = () => {
                       className='block mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
-                      Company
+                      직책
                     </label>
                     <input
                       type='text'
                       className='w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
-                      placeholder='회사명'
-                      id='company'
-                      {...register("company", { required: true })}
+                      placeholder='직책'
+                      id='position'
+                      required={true}
+                      {...register("position", { required: true })}
                     />
                   </div>
                   <div className='relative w-full mb-3'>
@@ -137,6 +205,7 @@ const Join: NextPage = () => {
                       className='w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
                       placeholder='연락처'
                       id='phone'
+                      required={true}
                       {...register("phone", { required: true })}
                     />
                   </div>

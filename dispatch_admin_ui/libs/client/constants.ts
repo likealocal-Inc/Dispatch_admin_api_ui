@@ -88,6 +88,26 @@ export const APIURLs = {
     method: METHOD.PATCH,
     desc: "주문 데이터 수정",
   },
+  COMPANY_UPDATE: <APIURLType>{
+    url: makeAPIURL("company"),
+    method: METHOD.PATCH,
+    desc: "업체 수정",
+  },
+  COMPANY_LIST: <APIURLType>{
+    url: makeAPIURL("company"),
+    method: METHOD.GET,
+    desc: "업체 조회",
+  },
+  COMPANY_CREATE: <APIURLType>{
+    url: makeAPIURL("company"),
+    method: METHOD.POST,
+    desc: "업체 생성",
+  },
+  COMPANY_DELETE: <APIURLType>{
+    url: makeAPIURL("company"),
+    method: METHOD.DELTE,
+    desc: "업체 제거",
+  },
 };
 
 /**

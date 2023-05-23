@@ -91,11 +91,17 @@ export const ExceptionCodeList = {
       HttpStatus.BAD_REQUEST,
     ),
   },
-
   IAMWEB: {
     TOKEN_CANOT_GET: new ExceptionCode(
       'TOKEN_CANOT_GET',
       '토큰을 가져오는데 문제발생',
+      HttpStatus.BAD_REQUEST,
+    ),
+  },
+  COMPANY: {
+    ALREADY_EXIST_COMPANY: new ExceptionCode(
+      'ALREADY_EXIST_COMPANY',
+      '이미 회사명 존재',
       HttpStatus.BAD_REQUEST,
     ),
   },

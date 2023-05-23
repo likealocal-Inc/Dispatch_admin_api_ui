@@ -29,8 +29,8 @@ export class IamwebService {
     const size = +pagingDto.size;
     const page = +pagingDto.page;
     await this.prisma.$transaction(async (tx) => {
-      count = await tx.user.count();
-      orders = await this.prisma.ordersIamweb.findMany({
+      count = await tx.ordersIamweb.count();
+      orders = await tx.ordersIamweb.findMany({
         skip: page,
         take: size,
         orderBy: { id: 'desc' },

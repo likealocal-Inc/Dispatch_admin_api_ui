@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CEmailService as CEmailService } from './c.email.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation } from '@nestjs/swagger';
 import { EmailSendDto } from './dto/email.send.dto';
 import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
 
-@ApiTags('Auth Module')
+// @ApiTags('Auth Module')
 @Controller('c.email')
 export class CEmailController {
   constructor(private readonly cEamilService: CEmailService) {}
