@@ -60,7 +60,6 @@ export default function TableTemplate({
 
   useEffect(() => {
     if (!loading && data) {
-      console.log(data);
       if (data?.ok) {
         setRes(data.data.data);
         setTotalCount(data.data.count);

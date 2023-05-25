@@ -16,20 +16,20 @@ export class NewIamwebOrderModel {
   payment_total_price: number;
   pay_time: string;
 
-  info: any;
+  info = '';
 
   order_title: string;
-  order_infomation: any;
+  order_infomation = '';
 
-  boarding_date: string;
-  boarding_time: string;
-  start_name: string;
-  start_address: string;
-  goal_name: string;
-  goal_address: string;
-  start_airport: string;
-  goal_airport: string;
-  waypoint: string;
+  boarding_date = '';
+  boarding_time = '';
+  start_name = '';
+  start_address = '';
+  goal_name = '';
+  goal_address = '';
+  start_airport = '';
+  goal_airport = '';
+  waypoint = '';
 
   constructor(data: any) {
     this.order_no = data.order_no;

@@ -30,17 +30,29 @@ export class OrderController {
   }
 
   @Get()
-  findAll(@Query() pagingDto: PagingDto) {
-    return this.orderService.findAll(pagingDto);
+  async findAll(@Query() pagingDto: PagingDto) {
+    return HttpUtils.makeAPIResponse(
+      true,
+      await this.orderService.listOrderWithUser(pagingDto),
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return HttpUtils.makeAPIResponse(
+      true,
+      await this.orderService.findOne(+id),
+    );
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    return HttpUtils.makeAPIResponse(
+      true,
+      await this.orderService.update(+id, updateOrderDto),
+    );
   }
 }

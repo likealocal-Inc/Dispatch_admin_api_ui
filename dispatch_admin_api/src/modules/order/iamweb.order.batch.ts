@@ -17,7 +17,7 @@ export class IamwebOrderBatch {
     this.iamwebUtils = new IamwebUtils(this.httpService);
   }
 
-  // @Cron('1 * * * * *')
+  @Cron('1 * * * * *')
   async orderBatch() {
     const info = '아임웹 주문데이터 조회';
     console.log(`----------- ${info} -------------`);
@@ -46,7 +46,7 @@ export class IamwebOrderBatch {
           goalAddress: d.goal_address,
           goalAirport: d.goal_airport,
 
-          information: JSON.stringify(d.order_infomation),
+          information: JSON.stringify(d.info),
 
           else01: '',
           else02: '',
