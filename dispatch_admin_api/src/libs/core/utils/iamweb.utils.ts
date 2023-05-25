@@ -76,9 +76,64 @@ export class IamwebUtils {
     iamwebOrderModel.status = item.status;
     iamwebOrderModel.pay_time = item.pay_time;
     iamwebOrderModel.order_title = item.items[0].prod_name;
+
     const options = item.items[0].options[0][0];
-    const optionsString = `{"${options.option_name_list[0]}" : "${options.value_name_list[0]}","${options.option_name_list[1]}" : "${options.value_name_list[1]}","${options.option_name_list[2]}" : "${options.value_name_list[2]}"}`;
-    iamwebOrderModel.order_infomation = JSON.parse(optionsString);
+
+    for (let index = 0; index < options.option_name_list.length; index++) {
+      const iamData = options.option_name_list[index];
+
+      const startName = DefaultConfig.iamwebApi.lang.start_name.filter(
+        (d, k) => {
+          return iamData.includes(d);
+        },
+      );
+      if (startName.length > 0) {
+        iamwebOrderModel.start_name = options.value_name_list[index];
+      }
+
+      const startAddress = DefaultConfig.iamwebApi.lang.start_address.filter(
+        (d, k) => {
+          return iamData.includes(d);
+        },
+      );
+      if (startAddress.length > 0) {
+        iamwebOrderModel.start_address = options.value_name_list[index];
+      }
+
+      const goalName = DefaultConfig.iamwebApi.lang.goal_name.filter((d, k) => {
+        return iamData.includes(d);
+      });
+      if (goalName.length > 0) {
+        iamwebOrderModel.goal_name = options.value_name_list[index];
+      }
+
+      const goalAddress = DefaultConfig.iamwebApi.lang.goal_address.filter(
+        (d, k) => {
+          return iamData.includes(d);
+        },
+      );
+      if (goalAddress.length > 0) {
+        iamwebOrderModel.goal_address = options.value_name_list[index];
+      }
+
+      const startAirport = DefaultConfig.iamwebApi.lang.start_airport.filter(
+        (d, k) => {
+          return iamData.includes(d);
+        },
+      );
+      if (startAirport.length > 0) {
+        iamwebOrderModel.start_airport = options.value_name_list[index];
+      }
+
+      const goalAirport = DefaultConfig.iamwebApi.lang.goal_airport.filter(
+        (d, k) => {
+          return iamData.includes(d);
+        },
+      );
+      if (goalAirport.length > 0) {
+        iamwebOrderModel.goal_airport = options.value_name_list[index];
+      }
+    }
 
     return iamwebOrderModel;
   }
@@ -213,8 +268,9 @@ export class IamwebUtils {
         orderData,
       );
 
-      const count: number = await prisma.ordersIamweb.count({
-        where: { order_no: iamwebOrderModel.order_no },
+      // 동일한 아이디로 주문번호가 있는지 조회(아임웹)
+      const count: number = await prisma.orders.count({
+        where: { iamweb_order_no: iamwebOrderModel.order_no, is_iamweb: true },
       });
 
       /// order no가 없는것만 가져온다.

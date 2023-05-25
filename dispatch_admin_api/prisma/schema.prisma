@@ -16,7 +16,6 @@ model User{
   created DateTime @default(now())
   updated DateTime @updatedAt
 
-  company String
   name String
   position String
   phone String
@@ -32,6 +31,8 @@ model User{
 
   role Role @default(USER) 
   token Token?  
+  
+  company String
 }
 
 model Company{
@@ -43,28 +44,35 @@ model Company{
   isActive Boolean @default(true)
 }
 
-model OrdersIamweb{
+model Orders{
   id    Int  @id @default(autoincrement())
   created DateTime @default(now())
   updated DateTime @updatedAt
 
-  order_no String @unique
-  order_time String
-  order_title String
-  order_info String @default("")
-  orderer_member_code String @default("")
-  orderer_name String 
-  orderer_email String @default("")
-  orderer_phone String @default("")
-  delivery_country String @default("") 
-  delivery_country_text String @default("")
-  payment_pay_type String @default("")
-  payment_price_currency String @default("")
-  payment_total_price Int @default(0)
-  pay_time String @default("")
-  options String @default("")
+  is_iamweb Boolean @default(false)
+  iamweb_order_no String? @unique
+  
+  order_time String     // 주문일시
+  order_title String    // 상품구분(아임웹에서는 상품명)
 
-  status OrderStatus @default(ORDER_PAYMENT_OK)
+  boarding_date String  // 탑승일자
+  boarding_time String  // 탑승시간
+
+  startLocation String  // 출발지명
+  startAddress String   // 출발주소
+  goalLocation String  // 도착지명
+  goalAddress String    // 도착지주소
+  startAirport String   // 출발공항
+  goalAirport String    // 도착공항
+
+  information String  // 전달사항
+
+  else01 String
+  else02 String
+
+  status OrderStatus @default(DISPATCH_ING)
+
+  userId Int
 }
 
 model Token{
@@ -95,10 +103,10 @@ model Files{
 }
 
 enum OrderStatus{
-  ORDER_PAYMENT_OK
-  DISPATCH_REQUEST
-  DISPATCH_COMPLETE
-  CANCEL
+  DISPATCH_ING  // 확인중
+  DISPATCH_COMPLETE // 배차완료
+  DISPATCH_NO       // 미배차
+  DISPATCH_CANCEL   // 배차취소
   DONE
 }
 

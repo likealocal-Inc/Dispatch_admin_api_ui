@@ -77,14 +77,14 @@ export default function ManageCompanyModal({
         >
           <Fade in={open}>
             <div className=''>
-              <Box sx={style} className='bg-slate-300'>
+              <Box sx={style} className='bg-slate-100'>
                 <Typography
                   id='transition-modal-title'
                   variant='h6'
                   component='h2'
                 >
-                  <div className='p-2 text-center'>
-                    사용자 정보 {isModify ? "수정" : "생성"}
+                  <div className='p-2 text-center text-gray-800'>
+                    업체이름 {isModify ? "수정" : "생성"}
                   </div>
                 </Typography>
                 {loading && <div>Loading...</div>}
@@ -95,7 +95,7 @@ export default function ManageCompanyModal({
                         id='m-name'
                         label='업체명'
                         defaultValue={isModify ? company!.name : ""}
-                        className='py-5'
+                        className='w-full py-5'
                       />
                     </Card>
                     <div
@@ -110,7 +110,7 @@ export default function ManageCompanyModal({
                     <div className='flex justify-end px-4 mt-2'>
                       <Button
                         variant='contained'
-                        className='w-full mr-2'
+                        className='w-full mr-2 bg-gray-700'
                         onClick={() => {
                           setMessage("");
                           handleModalClose();
@@ -120,7 +120,7 @@ export default function ManageCompanyModal({
                       </Button>
                       <Button
                         variant='contained'
-                        className='w-full'
+                        className='w-full bg-gray-700'
                         onClick={() => {
                           onSubmit();
                         }}

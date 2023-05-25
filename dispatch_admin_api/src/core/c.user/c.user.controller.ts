@@ -10,8 +10,8 @@ import {
   Req,
 } from '@nestjs/common';
 import { CUserService } from './c.user.service';
-import { CreateCUserDto } from './dto/create-c.user.dto';
-import { UpdateCUserDto } from './dto/update-c.user.dto';
+import { CreateCUserDto } from './dto/create.c.user.dto';
+import { UpdateCUserDto } from './dto/update.c.user.dto';
 import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { CUserEntity } from './entities/c.user.entity';

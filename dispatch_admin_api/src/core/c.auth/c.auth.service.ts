@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CUserService } from '../c.user/c.user.service';
 import { PrismaService } from 'src/config/core/prisma/prisma.service';
-import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
+import { CreateCUserDto } from '../c.user/dto/create.c.user.dto';
 import { JwtService } from '@nestjs/jwt';
 // import { JwtConfig } from 'src/config/core/authentication/jwt.config';
 import { CSessionService } from '../c.session/c.session.service';
@@ -35,10 +35,6 @@ export class CAuthService {
    * @returns
    */
   async joinEmail(createJoinDto: CreateCUserDto): Promise<CUserEntity> {
-    const user = await this.cUserService.findOneByEmail(createJoinDto.email);
-    if (user !== undefined && user !== null) {
-      throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_USER);
-    }
     return await this.cUserService.create(createJoinDto);
   }
 
@@ -92,6 +88,10 @@ export class CAuthService {
   async loginEmail(user: EmailLoginDto) {
     //const dbUser: CUserEntity = await this.validateUser(user, roles);
     const dbUser = await this.cUserService.findOneByEmail(user.email);
+
+    if (dbUser === null || dbUser === undefined) {
+      throw new CustomException(ExceptionCodeList.AUTH.UNAUTHORIZED);
+    }
     if (dbUser.password !== user.password) {
       throw new CustomException(ExceptionCodeList.AUTH.WRONG_PASSWORD);
     }

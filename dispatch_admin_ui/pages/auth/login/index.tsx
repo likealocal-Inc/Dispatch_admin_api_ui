@@ -35,6 +35,7 @@ const Login: NextPage = () => {
         setToken(data.data.sessionKey);
         router.push(PageURLs.MAIN);
       } else if (data?.ok === false) {
+        console.log(data.data);
         setErrorMessage(data?.data.description.codeMessage);
         setIsOpen(true);
       }

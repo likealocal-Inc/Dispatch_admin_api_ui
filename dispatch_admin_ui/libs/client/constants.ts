@@ -79,7 +79,7 @@ export const APIURLs = {
     desc: "내프로필조회",
   },
   ORDER_LIST: <APIURLType>{
-    url: makeAPIURL("iamweb/get.orders"),
+    url: makeAPIURL("order"),
     method: METHOD.GET,
     desc: "주문리스트 조회",
   },

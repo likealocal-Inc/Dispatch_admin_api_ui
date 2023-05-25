@@ -72,8 +72,10 @@ export default function ManageUserModal({
 
     const password = getElementById<HTMLInputElement>("m-password").value;
     const email = getElementById<HTMLInputElement>("m-email").value;
+    const position = getElementById<HTMLInputElement>("m-position").value;
+    const name = getElementById<HTMLInputElement>("m-name").value;
 
-    call({ phone, company, password, email });
+    call({ phone, company, password, email, position, name });
   };
 
   return (
@@ -145,12 +147,17 @@ export default function ManageUserModal({
                       >
                         {companyList.length > 0 &&
                           companyList.map((d, key) => {
+                            console.log(user);
                             return (
                               <option
                                 key={d.id}
                                 defaultValue={d.name}
                                 selected={
-                                  d.name === user!.company ? true : false
+                                  isModify
+                                    ? d.name === user!.company
+                                      ? true
+                                      : false
+                                    : false
                                 }
                               >
                                 {d.name}
@@ -167,6 +174,18 @@ export default function ManageUserModal({
                       >
                         {message}
                       </div>
+                      <TextField
+                        id='m-position'
+                        label='직급'
+                        defaultValue={isModify ? user!.position : ""}
+                        className='w-full py-3'
+                      />
+                      <TextField
+                        id='m-name'
+                        label='이름'
+                        defaultValue={isModify ? user!.name : ""}
+                        className='w-full py-3'
+                      />
                     </Card>
                     <div className='flex justify-end px-4 mt-2'>
                       <Button

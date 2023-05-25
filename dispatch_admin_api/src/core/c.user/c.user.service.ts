@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCUserDto } from './dto/create-c.user.dto';
-import { UpdateCUserDto } from './dto/update-c.user.dto';
+import { CreateCUserDto } from './dto/create.c.user.dto';
+import { UpdateCUserDto } from './dto/update.c.user.dto';
 import { CUserEntity } from './entities/c.user.entity';
 import { PrismaService } from 'src/config/core/prisma/prisma.service';
 import { CustomException } from 'src/config/core/exceptions/custom.exception';
@@ -27,14 +27,15 @@ export class CUserService {
    */
   async create(createCUserDto: CreateCUserDto): Promise<CUserEntity> {
     // 사용자 존재 하는지 이메일로 확인
-    const users: CUserEntity[] = await this.prisma.user.findMany({
-      where: { email: createCUserDto.email },
-    });
+    const count: number = await this.countUserByEmail(createCUserDto.email);
 
-    if (users.length > 0) {
+    if (count > 0) {
       throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_USER);
     } else {
-      return await this.prisma.user.create({ data: createCUserDto });
+      console.log(createCUserDto);
+      return await this.prisma.user.create({
+        data: createCUserDto,
+      });
     }
   }
 
@@ -161,5 +162,17 @@ export class CUserService {
     });
 
     return dbUser;
+  }
+
+  /**
+   * 이메일로 사용자 갯수 조회
+   * @param email
+   * @returns
+   */
+  async countUserByEmail(email: string): Promise<number> {
+    const count: number = await this.prisma.user.count({
+      where: { email },
+    });
+    return count;
   }
 }

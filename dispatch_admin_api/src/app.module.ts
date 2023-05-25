@@ -27,10 +27,10 @@ import { CEmailModule } from './core/c.email/c.email.module';
 import { DevModule } from './sample/dev/dev.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CScheduleModule } from './core/c.schedule/c.schedule.module';
-import { IamwebModule } from './modules/iamweb/iamweb.module';
 import { HttpModule } from '@nestjs/axios';
 import { CTelegramModule } from './core/c.telegram/c.telegram.module';
 import { CompanyModule } from './modules/company/company.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -59,9 +59,9 @@ import { CompanyModule } from './modules/company/company.module';
     /////////////////// Service ///////////////////
     DevModule,
 
-    IamwebModule,
-
     CompanyModule,
+
+    OrderModule,
   ],
   controllers: [],
   providers: [

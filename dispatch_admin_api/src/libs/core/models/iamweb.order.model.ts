@@ -1,3 +1,5 @@
+import { DefaultConfig } from 'src/config/default.config';
+
 export class NewIamwebOrderModel {
   order_no: string;
   order_time: string;
@@ -13,9 +15,21 @@ export class NewIamwebOrderModel {
   payment_price_currency: string;
   payment_total_price: number;
   pay_time: string;
+
   info: any;
+
   order_title: string;
   order_infomation: any;
+
+  boarding_date: string;
+  boarding_time: string;
+  start_name: string;
+  start_address: string;
+  goal_name: string;
+  goal_address: string;
+  start_airport: string;
+  goal_airport: string;
+  waypoint: string;
 
   constructor(data: any) {
     this.order_no = data.order_no;
@@ -30,14 +44,27 @@ export class NewIamwebOrderModel {
     this.payment_pg_type = data.payment.pg_type;
     this.payment_price_currency = data.payment.price_currency;
     this.payment_total_price = data.payment.total_price;
+
     const forms = data.form;
 
     let info = '{';
     for (let index = 0; index < forms.length; index++) {
       const element = forms[index];
-      info += `"${element.title}":"${element.value}"`;
-      if (forms.length - 1 > index) {
-        info += ',';
+
+      // 탑승일
+      if (DefaultConfig.iamwebApi.lang.boardingDate.includes(element.title)) {
+        this.boarding_date = element.value;
+      }
+      // 탑승일시간
+      else if (
+        DefaultConfig.iamwebApi.lang.boardingTime.includes(element.title)
+      ) {
+        this.boarding_time = element.value;
+      } else {
+        info += `"${element.title}":"${element.value}"`;
+        if (forms.length - 1 > index) {
+          info += ',';
+        }
       }
     }
     info += '}';

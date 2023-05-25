@@ -62,10 +62,7 @@ const Join: NextPage = () => {
       if (data?.ok) {
         router.replace(PageURLs.LOGIN);
       } else if (data?.ok === false) {
-        setErrorMessage(
-          data?.data.code +
-            " 동일한 회사명은 넣을 수 없음, 동일한 이메일은 등록할 수 없음"
-        );
+        setErrorMessage(data?.data.code + ": 동일한 이메일은 등록할 수 없음");
         setIsOpen(true);
       }
     }
@@ -153,6 +150,9 @@ const Join: NextPage = () => {
                       required={true}
                       {...register("company", { required: true })}
                     >
+                      <option key='0' value='0'>
+                        회사를 선택하세요
+                      </option>
                       {companyList.length > 0 &&
                         companyList.map((d, key) => {
                           return (

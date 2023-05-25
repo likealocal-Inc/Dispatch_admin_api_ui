@@ -74,7 +74,7 @@ export const DefaultConfig = {
       pickup: 83,
       sanding: 122,
     },
-    orderSearchDays: 10, // 주문 데이터 조회 날 기준 0:당일
+    orderSearchDays: 30, // 주문 데이터 조회 날 기준 0:당일
     responseCodeList: [
       { CODE: -1, DESC: '잘못된 API 키 또는 시크릿' },
       { CODE: -2, DESC: '잘못된 액세스 토큰으로 접근' },
@@ -123,6 +123,20 @@ export const DefaultConfig = {
         }
       }
     },
+    //언어별 단어
+    lang: {
+      boardingDate: ['乗車日', '탑승 일자', '乘车日期', '乘車日期'],
+      boardingTime: ['乗車時間', '탑승 시간', '乘车时间', '乘車時間'],
+      goal_name: ['도착지 위치명', '目的地の場所名'],
+      goal_address: ['도착지 위치명', '目的地の住所'],
+      start_name: ['출발지 위치명', '出発地の場所名'],
+      start_address: ['출발지 주소', '出発地の住所'],
+      start_airport: ['출발공항', '出発空港'],
+      goal_airport: ['도착공항', '到着空港'],
+      waypoint: ['경유지'],
+    },
+
+    iamwebOrderUserId: 1,
   },
   telegram: {
     botKey: '6018333651:AAHcYRghyBYDo9BpY9Wd5xvrHXguwHxcbI4',

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger';
 import { CUserEntity } from '../c.user/entities/c.user.entity';
 import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
-import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
+import { CreateCUserDto } from '../c.user/dto/create.c.user.dto';
 import { EmailLoginDto } from './dto/email.login.dto';
 import { AUTH_MUST } from 'src/config/core/decorators/api/auth.must/auth.must.decorator';
 
