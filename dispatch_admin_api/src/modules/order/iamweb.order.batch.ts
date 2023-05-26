@@ -29,14 +29,13 @@ export class IamwebOrderBatch {
       const d = res[index];
       await this.prisma.orders.create({
         data: {
-          is_iamweb: true,
-          iamweb_order_no: d.order_no,
+          isIamweb: true,
+          iamwebOrderNo: d.order_no,
 
-          order_time: '' + d.order_time,
-          order_title: d.order_title,
+          orderTime: '' + d.order_time,
+          orderTitle: d.order_title,
 
-          boarding_date: d.boarding_date,
-          boarding_time: d.boarding_time,
+          boardingDate: d.boarding_date + ' ' + d.boarding_time,
 
           startLocation: d.start_name,
           startAddress: d.start_address,

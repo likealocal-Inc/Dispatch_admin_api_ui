@@ -32,7 +32,6 @@ export class CUserService {
     if (count > 0) {
       throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_USER);
     } else {
-      console.log(createCUserDto);
       return await this.prisma.user.create({
         data: createCUserDto,
       });

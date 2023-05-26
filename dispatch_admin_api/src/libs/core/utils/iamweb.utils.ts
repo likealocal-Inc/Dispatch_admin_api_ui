@@ -28,12 +28,12 @@ export class IamwebUtils {
       tokenString === undefined ||
       tokenString === ''
     ) {
-      console.log('######### 아임웨 토큰 호출 #########');
+      console.log('++++++++++++++++ 아임웨 토큰 호출 ++++++++++++++++');
 
       const res = await this.apiUtils.call(process.env.IAMWEB_API_GETTOKEN_URL);
-
-      if (res === undefined)
+      if (res === undefined) {
         throw new CustomException(ExceptionCodeList.IAMWEB.TOKEN_CANOT_GET);
+      }
 
       const newToken = res['access_token'];
       tokenString = newToken;
@@ -226,7 +226,10 @@ export class IamwebUtils {
 
   //   return res;
   // }
-
+  async sleep(ms) {
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {}
+  }
   /**
    * Iamweb 주문 데이터 조회
    * @param accessToken
@@ -240,6 +243,8 @@ export class IamwebUtils {
     // 토큰가져오기
     let accessToken = await this.__getAcessToken();
 
+    await this.sleep(1000);
+
     // 해단 조건의 아엠웹 주문 리스트 조회
     let res: any = await this.__getIamwebOrderList(
       startTimeStatmp,
@@ -248,6 +253,8 @@ export class IamwebUtils {
     );
 
     if (res === undefined) return;
+
+    await this.sleep(1000);
 
     const check = await DefaultConfig.iamwebApi.checkNeedNewToken(res['CODE']);
     if (check) {
@@ -270,11 +277,12 @@ export class IamwebUtils {
 
       // 동일한 아이디로 주문번호가 있는지 조회(아임웹)
       const count: number = await prisma.orders.count({
-        where: { iamweb_order_no: iamwebOrderModel.order_no, is_iamweb: true },
+        where: { iamwebOrderNo: iamwebOrderModel.order_no, isIamweb: true },
       });
 
       /// order no가 없는것만 가져온다.
       if (count === 0) {
+        await this.sleep(1000);
         iamwebOrderModel = await this.__getIamwebOrderItemList(
           orderData.order_no,
           accessToken,

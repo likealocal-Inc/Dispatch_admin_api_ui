@@ -49,14 +49,13 @@ model Orders{
   created DateTime @default(now())
   updated DateTime @updatedAt
 
-  is_iamweb Boolean @default(false)
-  iamweb_order_no String? @unique
+  isIamweb Boolean @default(false)
+  iamwebOrderNo String @default("")
   
-  order_time String     // 주문일시
-  order_title String    // 상품구분(아임웹에서는 상품명)
+  orderTime String     // 주문일시
+  orderTitle String    // 상품구분(아임웹에서는 상품명)
 
-  boarding_date String  // 탑승일자
-  boarding_time String  // 탑승시간
+  boardingDate String  // 탑승일자
 
   startLocation String  // 출발지명
   startAddress String   // 출발주소

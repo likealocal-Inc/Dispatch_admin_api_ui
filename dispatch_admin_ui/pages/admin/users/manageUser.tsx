@@ -100,30 +100,30 @@ export default function ManageUserModal({
                   variant='h6'
                   component='h2'
                 >
-                  <div className='p-2 text-center text-gray-800'>
-                    사용자 정보 {isModify ? "수정" : "생성"}
+                  <div className='p-2 font-bold text-center text-gray-800'>
+                    사용자 {isModify ? "수정" : "생성"}
                   </div>
                 </Typography>
                 {loading && <div>Loading...</div>}
                 <div className=''>
                   <Stack>
                     <Card className='p-6'>
-                      <div className=''>
+                      <div className='flex flex-row items-center w-72'>
+                        <div className='w-24'>이메일</div>
                         <TextField
                           id='m-email'
-                          label='이메일'
                           defaultValue={isModify ? user!.email : ""}
-                          className='w-full py-3'
+                          className='w-full'
                           InputProps={{
                             readOnly: isModify ? true : false,
                           }}
                         />
                       </div>
                       {true && (
-                        <div className=''>
+                        <div className='flex flex-row items-center w-72'>
+                          <div className='w-24'>패스워드</div>
                           <TextField
                             id='m-password'
-                            label='패스워드'
                             type='password'
                             className='w-full py-3'
                           />
@@ -134,59 +134,69 @@ export default function ManageUserModal({
                           )}
                         </div>
                       )}
-                      <TextField
-                        id='m-phone'
-                        label='전화번호'
-                        defaultValue={isModify ? user!.phone : ""}
-                        className='w-full py-3'
-                      />
-                      <select
-                        className='w-full px-3 py-3 text-sm duration-150 bg-white rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
-                        id='m-company'
-                        required={true}
-                      >
-                        {companyList.length > 0 &&
-                          companyList.map((d, key) => {
-                            console.log(user);
-                            return (
-                              <option
-                                key={d.id}
-                                defaultValue={d.name}
-                                selected={
-                                  isModify
-                                    ? d.name === user!.company
-                                      ? true
-                                      : false
-                                    : false
-                                }
-                              >
-                                {d.name}
-                              </option>
-                            );
-                          })}
-                      </select>
-                      <div
-                        className={
-                          message === ""
-                            ? "hidden "
-                            : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 "
-                        }
-                      >
-                        {message}
+                      <div className='flex flex-row items-center w-72'>
+                        <div className='w-24'>전화번호</div>
+                        <TextField
+                          id='m-phone'
+                          defaultValue={isModify ? user!.phone : ""}
+                          className='w-full py-3'
+                        />
                       </div>
-                      <TextField
-                        id='m-position'
-                        label='직급'
-                        defaultValue={isModify ? user!.position : ""}
-                        className='w-full py-3'
-                      />
-                      <TextField
-                        id='m-name'
-                        label='이름'
-                        defaultValue={isModify ? user!.name : ""}
-                        className='w-full py-3'
-                      />
+                      <div className='flex flex-row items-center w-72'>
+                        <div className='w-24'>회사명</div>
+                        <select
+                          className='text-sm duration-150 bg-white rounded shadow w-72 placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring'
+                          id='m-company'
+                          required={true}
+                        >
+                          {companyList.length > 0 &&
+                            companyList.map((d, key) => {
+                              console.log(user);
+                              return (
+                                <option
+                                  key={d.id}
+                                  defaultValue={d.name}
+                                  selected={
+                                    isModify
+                                      ? d.name === user!.company
+                                        ? true
+                                        : false
+                                      : false
+                                  }
+                                >
+                                  {d.name}
+                                </option>
+                              );
+                            })}
+                        </select>
+                      </div>
+
+                      <div className='flex flex-row items-center w-72'>
+                        <div className='w-24'>직급</div>
+                        <TextField
+                          id='m-position'
+                          defaultValue={isModify ? user!.position : ""}
+                          className='w-full py-3'
+                        />
+                      </div>
+                      <div className='flex flex-row items-center w-72'>
+                        <div className='w-24'>이름</div>
+                        <TextField
+                          id='m-name'
+                          defaultValue={isModify ? user!.name : ""}
+                          className='w-full'
+                        />
+                      </div>
                     </Card>
+                    <div
+                      className={
+                        message === ""
+                          ? "hidden "
+                          : "flex justify-center p-2 m-2 font-bold text-red-500 border-2 "
+                      }
+                    >
+                      {message}
+                    </div>
                     <div className='flex justify-end px-4 mt-2'>
                       <Button
                         variant='contained'
@@ -224,7 +234,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 300,
+  width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,

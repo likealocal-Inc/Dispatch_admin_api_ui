@@ -78,16 +78,7 @@ export const APIURLs = {
     method: METHOD.POST,
     desc: "내프로필조회",
   },
-  ORDER_LIST: <APIURLType>{
-    url: makeAPIURL("order"),
-    method: METHOD.GET,
-    desc: "주문리스트 조회",
-  },
-  ORDER_MODIFY: <APIURLType>{
-    url: makeAPIURL("iamweb"),
-    method: METHOD.PATCH,
-    desc: "주문 데이터 수정",
-  },
+
   COMPANY_UPDATE: <APIURLType>{
     url: makeAPIURL("company"),
     method: METHOD.PATCH,
@@ -107,6 +98,26 @@ export const APIURLs = {
     url: makeAPIURL("company"),
     method: METHOD.DELTE,
     desc: "업체 제거",
+  },
+  DISPATCH_CREATE: <APIURLType>{
+    url: makeAPIURL("dispath"),
+    method: METHOD.POST,
+    desc: "배치생성",
+  },
+  DISPATCH_UPDATE: <APIURLType>{
+    url: makeAPIURL("dispath"),
+    method: METHOD.PATCH,
+    desc: "배치수정",
+  },
+  DISPATCH_LIST: <APIURLType>{
+    url: makeAPIURL("dispath"),
+    method: METHOD.GET,
+    desc: "주문리스트 조회",
+  },
+  DISPATCH_MODIFY: <APIURLType>{
+    url: makeAPIURL("dispath"),
+    method: METHOD.PATCH,
+    desc: "주문 데이터 수정",
   },
 };
 

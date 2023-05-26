@@ -91,7 +91,7 @@ const Join: NextPage = () => {
                 <form onSubmit={handleSubmit(onValid)}>
                   <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-40 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Email
@@ -108,7 +108,7 @@ const Join: NextPage = () => {
 
                   <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-40 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Password
@@ -124,7 +124,7 @@ const Join: NextPage = () => {
                   </div>
                   <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-40 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Password 확인
@@ -139,7 +139,7 @@ const Join: NextPage = () => {
                   </div>
                   <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-40 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Company
@@ -165,7 +165,7 @@ const Join: NextPage = () => {
                   </div>
                   <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-40 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Name
@@ -181,7 +181,7 @@ const Join: NextPage = () => {
                   </div>
                   <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-40 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       직책
@@ -197,7 +197,7 @@ const Join: NextPage = () => {
                   </div>
                   <div className='flex flex-row items-center w-full mb-3'>
                     <label
-                      className='block w-32 mb-2 text-xs font-bold uppercase text-blueGray-600'
+                      className='block w-40 mb-2 text-xs font-bold uppercase text-blueGray-600'
                       htmlFor='grid-password'
                     >
                       Phone

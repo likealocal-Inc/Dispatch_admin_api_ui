@@ -16,7 +16,7 @@ import { AUTH_MUST } from 'src/config/core/decorators/api/auth.must/auth.must.de
 import { PagingDto } from 'src/libs/core/dtos/paging';
 
 @AUTH_MUST()
-@Controller('order')
+@Controller('dispath')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 

@@ -1,6 +1,6 @@
 import { callAPI } from "@libs/client/call/call";
 import { APIURLs } from "@libs/client/constants";
-import { IamwebOrderModel } from "@libs/client/models/iamweb.order.model";
+import { DispatchModel } from "@libs/client/models/dispatch.model";
 import React, { useEffect, useState } from "react";
 
 interface ModalModifyProps {

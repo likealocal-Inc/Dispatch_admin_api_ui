@@ -17,7 +17,17 @@ export class OrderService {
 
   async create(createOrderDto: CreateOrderDto, userId: number) {
     return this.prisma.orders.create({
-      data: { ...createOrderDto, userId },
+      data: {
+        ...createOrderDto,
+        userId,
+        goalAirport: '',
+        startAirport: '',
+        isIamweb: false,
+        iamwebOrderNo: '',
+        else01: '',
+        else02: '',
+        orderTime: '' + Date.now().toString().substring(0, 10),
+      },
     });
   }
 

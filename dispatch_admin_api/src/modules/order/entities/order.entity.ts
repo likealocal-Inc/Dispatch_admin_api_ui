@@ -4,12 +4,11 @@ export class OrderEntity implements Orders {
   id: number;
   created: Date;
   updated: Date;
-  is_iamweb: boolean;
-  iamweb_order_no: string;
-  order_time: string;
-  order_title: string;
-  boarding_date: string;
-  boarding_time: string;
+  isIamweb: boolean;
+  iamwebOrderNo: string;
+  orderTime: string;
+  orderTitle: string;
+  boardingDate: string;
   startLocation: string;
   startAddress: string;
   goalLocation: string;
