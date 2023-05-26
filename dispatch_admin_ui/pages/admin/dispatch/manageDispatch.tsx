@@ -113,13 +113,18 @@ export default function ManageDispatchModal({
     }
   };
 
-  const onStartAddress = (data: any) => {
+  const closeAddressModal = () => {
     setIsStartAddressSearchShow(false);
+    setIsGoalAddressSearchShow(false);
+  };
+
+  const onStartAddress = (data: any) => {
+    closeAddressModal();
     setStartAddress(data.address);
   }; // onCompletePost 함수
 
   const onGoalAddress = (data: any) => {
-    setIsGoalAddressSearchShow(false);
+    closeAddressModal();
     setGoalAddress(data.address);
   }; // onCompletePost 함수
 
@@ -147,7 +152,10 @@ export default function ManageDispatchModal({
                   variant='h6'
                   component='h2'
                 >
-                  <div className='p-2 font-bold text-center text-gray-800'>
+                  <div
+                    className='p-2 font-bold text-center text-gray-800'
+                    onClick={closeAddressModal}
+                  >
                     배차요청 {isModify ? "수정" : "생성"}
                   </div>
                 </Typography>
