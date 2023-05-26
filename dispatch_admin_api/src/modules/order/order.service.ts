@@ -38,14 +38,13 @@ export class OrderService {
    */
   async listOrderWithUser(pagingDto: PagingDto) {
     const orders = await this.findAll(pagingDto);
-
+    console.log(orders);
     const res = { count: orders.count, data: [] };
     const data = [];
     const userMap = new Map<number, CUserEntity>();
 
     for (let index = 0; index < orders.data.length; index++) {
       const order: OrderEntity = orders.data[index];
-      console.log(order);
       let mapUser: CUserEntity = userMap.get(order.userId);
       if (mapUser === null || mapUser == undefined) {
         mapUser = await this.userService.findId(order.userId);
@@ -64,7 +63,7 @@ export class OrderService {
   async findAll(pagingDto: PagingDto) {
     let count;
     let orders;
-    const skip = +pagingDto.page;
+    const skip = +pagingDto.page * +pagingDto.size;
     const take = +pagingDto.size;
 
     await this.prisma.$transaction(async (tx) => {

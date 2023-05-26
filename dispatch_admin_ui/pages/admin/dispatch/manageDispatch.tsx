@@ -23,6 +23,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import DaumPostcode from "react-daum-postcode";
+import { start } from "repl";
 
 interface ModalProps {
   isModify: boolean;
@@ -45,6 +46,9 @@ export default function ManageDispatchModal({
 
   const [message, setMessage] = useState("");
   const [startDate, setStartDate] = useState<Date | null>(new Date());
+
+  const typeList = ["공항픽업", "공항샌딩", "시간대절"];
+  const [selectType, setSelectType] = useState(typeList[0]);
 
   const [me, setMe] = useState<UserModel>();
 
@@ -69,32 +73,76 @@ export default function ManageDispatchModal({
     }
   }, [loading]);
 
+  const getAddress = (
+    nowType: string,
+    compareType: string,
+    idValue: string,
+    addressDAta: string
+  ) => {
+    let location;
+    let address;
+    if (nowType === compareType) {
+      const locationObj = getElementById<HTMLSelectElement>(idValue);
+      location = locationObj.options[locationObj.selectedIndex].value;
+      address = nowType;
+    } else {
+      location = getElementById<HTMLInputElement>(idValue).value;
+      address = addressDAta;
+    }
+
+    return { location, address };
+  };
   useEffect(() => {
     const me = callAPI({ urlInfo: APIURLs.ME }).then((d) => d.json());
     me.then((d) => setMe(d.data));
   }, []);
 
   const onSubmit = () => {
+    // if (selectType === typeList[0]) {
+    //   const startLocationObj =
+    //     getElementById<HTMLSelectElement>("startLocation");
+    //   startLocation =
+    //     startLocationObj.options[startLocationObj.selectedIndex].value;
+    // } else {
+    //   startLocation = getElementById<HTMLInputElement>("startLocation").value;
+    // }
+
+    // let goalLocation;
+    // if (selectType === typeList[1]) {
+    //   const goalLocationObj = getElementById<HTMLSelectElement>("goalLocation");
+    //   goalLocation =
+    //     goalLocationObj.options[goalLocationObj.selectedIndex].value;
+    // } else {
+    //   goalLocation = getElementById<HTMLInputElement>("goalLocation").value;
+    // }
+
     const titleObj = getElementById<HTMLSelectElement>("orderTitle");
     const orderTitle = titleObj.options[titleObj.selectedIndex].value;
 
     const boardingDate = startDate;
 
-    const startLocation =
-      getElementById<HTMLInputElement>("startLocation").value;
-    const goalLocation = getElementById<HTMLInputElement>("goalLocation").value;
-
-    const myStartAddress = startAddress;
-    const myGoalAddress = goalAddress;
+    const startInfo = getAddress(
+      selectType,
+      typeList[0],
+      "startLocation",
+      startAddress
+    );
+    const goalInfo = getAddress(
+      selectType,
+      typeList[1],
+      "goalLocation",
+      goalAddress
+    );
 
     const information = getElementById<HTMLInputElement>("infomation").value;
 
     if (
       orderTitle === "" ||
       boardingDate === null ||
-      startLocation === "" ||
-      goalLocation === "" ||
-      goalAddress === "" ||
+      startInfo.location === "" ||
+      goalInfo.location === "" ||
+      startInfo.address === "" ||
+      goalInfo.address === "" ||
       information === ""
     ) {
       setMessage("모든 데이터를 입력해주세요");
@@ -102,10 +150,10 @@ export default function ManageDispatchModal({
       call({
         orderTitle,
         boardingDate,
-        startLocation,
-        startAddress,
-        goalLocation,
-        goalAddress,
+        startLocation: startInfo.location,
+        startAddress: startInfo.address,
+        goalLocation: goalInfo.location,
+        goalAddress: goalInfo.address,
         information,
         else01: "",
         else02: "",
@@ -170,10 +218,15 @@ export default function ManageDispatchModal({
                             <select
                               className='w-full m-3 rounded-lg'
                               id='orderTitle'
+                              onChange={(v) => {
+                                setSelectType(v.target.value);
+                              }}
                             >
-                              <option value='공항픽업'>공항픽업</option>
-                              <option value='공항샌딩'>공항샌딩</option>
-                              <option value='시간대절'>시간대절</option>
+                              {typeList.map((d, k) => (
+                                <option key={k} value={d}>
+                                  {d}
+                                </option>
+                              ))}
                             </select>
                           </div>
                           <div className='flex flex-row items-center my-1 w-72'>
@@ -221,71 +274,105 @@ export default function ManageDispatchModal({
                                 onChange={(date) => setStartDate(date)}
                                 showTimeSelect
                                 timeFormat='HH:mm'
-                                timeIntervals={15}
+                                timeIntervals={5}
                                 timeCaption='time'
                                 dateFormat='yyyy/MM/dd h:mm aa'
                               />
                             </div>
                           </div>
-                          {/* <div className='flex flex-row items-center w-72'>
-                            <div className='w-28'>탑승시간</div>
-                            <div className='w-full m-3'>
-                              <DatePicker
-                                className='rounded-lg'
-                                selected={startDate}
-                                onChange={(date: any) => setStartTime(date)}
-                                showTimeSelect
-                                showTimeSelectOnly
-                                timeIntervals={15}
-                                timeCaption='Time'
-                                dateFormat='h:mm aa'
-                              />
-                            </div>
-                          </div> */}
+
                           <div className='flex flex-row items-center w-72'>
                             <div className='w-28'>출발지명</div>
-                            <div className='w-full m-3'>
-                              <TextField
-                                id='startLocation'
-                                defaultValue={""}
-                                className='w-full'
-                              />
-                            </div>
+                            {selectType === typeList[0] ? (
+                              <>
+                                <select
+                                  className='w-full m-3 rounded-lg'
+                                  id='startLocation'
+                                >
+                                  <option value='인천1공항'>인천1공항</option>
+                                  <option value='인천2공항'>인천2공항</option>
+                                  <option value='김포공항'>김포공항</option>
+                                </select>
+                              </>
+                            ) : (
+                              <div className='w-full m-3'>
+                                <TextField
+                                  id='startLocation'
+                                  defaultValue={""}
+                                  className='w-full'
+                                />
+                              </div>
+                            )}
                           </div>
                           <div className='flex flex-row items-center w-72'>
                             <div className='w-28'>출발지주소</div>
                             <div className='w-full m-3'>
-                              <TextField
-                                id='startAddress'
-                                value={startAddress}
-                                className='w-full'
-                                onClick={() => {
-                                  setIsStartAddressSearchShow(true);
-                                }}
-                              />
+                              {selectType === typeList[0] ? (
+                                <>
+                                  <TextField
+                                    id='myStartAddress'
+                                    value={selectType}
+                                    className='w-full bg-slate-300'
+                                    disabled
+                                  />
+                                </>
+                              ) : (
+                                <TextField
+                                  id='myStartAddress'
+                                  value={startAddress}
+                                  className='w-full'
+                                  onClick={() => {
+                                    setIsStartAddressSearchShow(true);
+                                  }}
+                                />
+                              )}
                             </div>
                           </div>
                           <div className='flex flex-row items-center w-72'>
                             <div className='w-28'>도착지명</div>
-                            <div className='w-full m-3'>
-                              <TextField
-                                id='goalLocation'
-                                defaultValue={""}
-                                className='w-full'
-                              />
-                            </div>
+                            {selectType === typeList[1] ? (
+                              <>
+                                <select
+                                  className='w-full m-3 rounded-lg'
+                                  id='goalLocation'
+                                >
+                                  <option value='인천1공항'>인천1공항</option>
+                                  <option value='인천2공항'>인천2공항</option>
+                                  <option value='김포공항'>김포공항</option>
+                                </select>
+                              </>
+                            ) : (
+                              <div className='w-full m-3'>
+                                <TextField
+                                  id='goalLocation'
+                                  defaultValue={""}
+                                  className='w-full'
+                                />
+                              </div>
+                            )}
                           </div>
                           <div className='flex flex-row items-center w-72'>
                             <div className='w-28'>도착지주소</div>
                             <div className='w-full m-3'>
-                              <TextField
-                                id='goalAddress'
-                                value={goalAddress}
-                                className='w-full'
-                                onClick={() => {
-                                  setIsGoalAddressSearchShow(true);
-                                }}
-                              />
+                              {selectType === typeList[1] ? (
+                                <>
+                                  <TextField
+                                    id='myGoalAddress'
+                                    value={selectType}
+                                    className='w-full bg-slate-300'
+                                    disabled
+                                  />
+                                </>
+                              ) : (
+                                <TextField
+                                  id='myGoalAddress'
+                                  value={goalAddress}
+                                  className='w-full'
+                                  onClick={() => {
+                                    setIsGoalAddressSearchShow(true);
+                                  }}
+                                />
+                              )}
                             </div>
                           </div>
                         </div>
