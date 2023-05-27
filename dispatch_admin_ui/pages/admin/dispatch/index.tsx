@@ -27,16 +27,24 @@ export default function Orders() {
 
   const [isModify, setIsModify] = useState(true);
 
+  const [selectDispatch, setSelectDispatch] = useState<DispatchModel>();
+
   // 모달 관련 설정
   const [openModal, setOpenModal] = useState<boolean>(false);
 
-  const handleCreateModalOpen = () => {
-    setIsModify(false);
-    setOpenModal(true);
-  };
   const handleModalClose = (isChange: boolean = false) => {
     setOpenModal(false);
     if (isChange) setReload(reload + 1);
+  };
+
+  const onCreateOpen = () => {
+    setIsModify(false);
+    setOpenModal(true);
+  };
+  const onModifyOpen = (dispatch: DispatchModel) => {
+    setIsModify(true);
+    setOpenModal(true);
+    setSelectDispatch(dispatch);
   };
 
   const headers = [
@@ -63,6 +71,7 @@ export default function Orders() {
           <StyledTableRow
             key={key}
             className='transition duration-300 ease-in-out border-b hover:bg-gray-300'
+            onDoubleClick={() => onModifyOpen(d)}
           >
             <StyledTableCell component='th' scope='row'>
               {IamwebUtils.getStatusString(d.status)}
@@ -111,11 +120,6 @@ export default function Orders() {
     );
   };
 
-  const onCreate = () => {
-    setIsModify(false);
-    setOpenModal(true);
-  };
-
   return (
     <>
       <div className='p-5 bg-gray-500'>
@@ -128,14 +132,19 @@ export default function Orders() {
           reload={reload}
           message={message!}
           setMessage={setMessage}
-          onCreate={onCreate}
+          onCreate={onCreateOpen}
         />
 
-        <ManageDispatchModal
-          isModify={isModify}
-          open={openModal}
-          handleModalClose={handleModalClose}
-        />
+        {openModal ? (
+          <ManageDispatchModal
+            isModify={isModify}
+            open={openModal}
+            handleModalClose={handleModalClose}
+            dispatch={selectDispatch}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

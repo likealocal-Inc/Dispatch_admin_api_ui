@@ -22,7 +22,7 @@ export default function Users() {
   const [openModal, setOpenModal] = useState(false);
   const [selectUser, setSelectUser] = useState<UserModel>();
 
-  const handleModalOpen = (user: UserModel) => {
+  const onOpenModify = (user: UserModel) => {
     setSelectUser(user);
     setOpenModal(true);
   };
@@ -59,7 +59,7 @@ export default function Users() {
             className='transition duration-300 ease-in-out border-b hover:bg-gray-300'
           >
             <StyledTableCell component='th' scope='row'>
-              <Button02 onClick={() => handleModalOpen(d)} label={d.id} />
+              <Button02 onClick={() => onOpenModify(d)} label={d.id} />
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
               {d.email}

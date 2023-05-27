@@ -138,9 +138,16 @@ export class CUserController {
   @Post('/me')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async me(@Req() req: any): Promise<APIResponseObj> {
+    console.log(req.user);
     return HttpUtils.makeAPIResponse(
       true,
       await this.cUserService.findId(req.user.id),
     );
+  }
+  @AUTH_MUST()
+  @Get('/user/:id')
+  @ApiCreatedResponse({ type: CUserEntity, isArray: false })
+  async findUser(@Param('id') id: string): Promise<APIResponseObj> {
+    return HttpUtils.makeAPIResponse(true, await this.cUserService.findId(+id));
   }
 }

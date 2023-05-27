@@ -94,7 +94,7 @@ export default function ManageUserModal({
         >
           <Fade in={open}>
             <div className=''>
-              <Box sx={style} className='w-1/5 bg-slate-100'>
+              <Box sx={style} className='bg-slate-100'>
                 <Typography
                   id='transition-modal-title'
                   variant='h6'
@@ -151,7 +151,6 @@ export default function ManageUserModal({
                         >
                           {companyList.length > 0 &&
                             companyList.map((d, key) => {
-                              console.log(user);
                               return (
                                 <option
                                   key={d.id}

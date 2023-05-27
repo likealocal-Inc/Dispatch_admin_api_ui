@@ -78,7 +78,11 @@ export const APIURLs = {
     method: METHOD.POST,
     desc: "내프로필조회",
   },
-
+  USER_BY_ID: <APIURLType>{
+    url: makeAPIURL("c.user/user"),
+    method: METHOD.GET,
+    desc: "아이디로 사용자 조회",
+  },
   COMPANY_UPDATE: <APIURLType>{
     url: makeAPIURL("company"),
     method: METHOD.PATCH,

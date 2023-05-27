@@ -14,7 +14,7 @@ import useCallAPI from "../../../libs/client/hooks/useCallAPI";
 import { UseAPICallResult } from "../../../libs/client/hooks/useCallAPI";
 import { APIURLs } from "@libs/client/constants";
 import { getElementById } from "../../../libs/client/utils/html";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { callAPI } from "@libs/client/call/call";
 import { DispatchModel } from "@libs/client/models/dispatch.model";
 
@@ -23,7 +23,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import DaumPostcode from "react-daum-postcode";
-import { start } from "repl";
 
 interface ModalProps {
   isModify: boolean;
@@ -38,6 +37,21 @@ export default function ManageDispatchModal({
   handleModalClose,
   isModify,
 }: ModalProps) {
+  const airportList = ["인천1공항", "인천2공항", "김포공항"];
+  const airportSelect = (id: string, isSelect?: string) => (
+    <>
+      <select className='w-full m-3 rounded-lg' id={id}>
+        {airportList.map((d, k) => (
+          <option key={k} value={d} selected={isSelect === d ? true : false}>
+            {d}
+          </option>
+        ))}
+        {/* <option value='인천1공항'>인천1공항</option>
+        <option value='인천2공항'>인천2공항</option>
+        <option value='김포공항'>김포공항</option> */}
+      </select>
+    </>
+  );
   const [isFirst, setIsFirst] = useState(true);
   const [call, { loading, data, error }] = useCallAPI<UseAPICallResult>({
     url: isModify && open ? APIURLs.DISPATCH_UPDATE : APIURLs.DISPATCH_CREATE,
@@ -89,33 +103,29 @@ export default function ManageDispatchModal({
       location = getElementById<HTMLInputElement>(idValue).value;
       address = addressDAta;
     }
-
     return { location, address };
   };
+
   useEffect(() => {
-    const me = callAPI({ urlInfo: APIURLs.ME }).then((d) => d.json());
-    me.then((d) => setMe(d.data));
-  }, []);
+    if (isModify === false) {
+      const me = callAPI({ urlInfo: APIURLs.ME }).then((d) => d.json());
+      me.then((d) => setMe(d.data));
+    } else {
+      const user = callAPI({
+        urlInfo: APIURLs.USER_BY_ID,
+        addUrlParams: `/${dispatch?.userId}`,
+      }).then((d) => d.json());
+      user.then((d) => {
+        setMe(d.data);
+        setStartDate(new Date(dispatch!.boardingDate));
+        setSelectType(dispatch!.orderTitle);
+        setStartAddress(dispatch!.startAddress);
+        setGoalAddress(dispatch!.goalAddress);
+      });
+    }
+  }, [open]);
 
   const onSubmit = () => {
-    // if (selectType === typeList[0]) {
-    //   const startLocationObj =
-    //     getElementById<HTMLSelectElement>("startLocation");
-    //   startLocation =
-    //     startLocationObj.options[startLocationObj.selectedIndex].value;
-    // } else {
-    //   startLocation = getElementById<HTMLInputElement>("startLocation").value;
-    // }
-
-    // let goalLocation;
-    // if (selectType === typeList[1]) {
-    //   const goalLocationObj = getElementById<HTMLSelectElement>("goalLocation");
-    //   goalLocation =
-    //     goalLocationObj.options[goalLocationObj.selectedIndex].value;
-    // } else {
-    //   goalLocation = getElementById<HTMLInputElement>("goalLocation").value;
-    // }
-
     const titleObj = getElementById<HTMLSelectElement>("orderTitle");
     const orderTitle = titleObj.options[titleObj.selectedIndex].value;
 
@@ -194,7 +204,7 @@ export default function ManageDispatchModal({
         >
           <Fade in={open}>
             <div className=''>
-              <Box sx={style} className='w- bg-slate-100'>
+              <Box sx={style} className='bg-slate-100'>
                 <Typography
                   id='transition-modal-title'
                   variant='h6'
@@ -223,7 +233,17 @@ export default function ManageDispatchModal({
                               }}
                             >
                               {typeList.map((d, k) => (
-                                <option key={k} value={d}>
+                                <option
+                                  key={k}
+                                  value={d}
+                                  selected={
+                                    isModify
+                                      ? d === dispatch!.orderTitle
+                                        ? true
+                                        : false
+                                      : false
+                                  }
+                                >
                                   {d}
                                 </option>
                               ))}
@@ -285,20 +305,28 @@ export default function ManageDispatchModal({
                             <div className='w-28'>출발지명</div>
                             {selectType === typeList[0] ? (
                               <>
-                                <select
+                                {isModify
+                                  ? airportSelect(
+                                      "startLocation",
+                                      dispatch?.startLocation
+                                    )
+                                  : airportSelect("startLocation")}
+                                {/* <select
                                   className='w-full m-3 rounded-lg'
                                   id='startLocation'
                                 >
                                   <option value='인천1공항'>인천1공항</option>
                                   <option value='인천2공항'>인천2공항</option>
                                   <option value='김포공항'>김포공항</option>
-                                </select>
+                                </select> */}
                               </>
                             ) : (
                               <div className='w-full m-3'>
                                 <TextField
                                   id='startLocation'
-                                  defaultValue={""}
+                                  defaultValue={
+                                    isModify ? dispatch?.startLocation : ""
+                                  }
                                   className='w-full'
                                 />
                               </div>
@@ -332,20 +360,28 @@ export default function ManageDispatchModal({
                             <div className='w-28'>도착지명</div>
                             {selectType === typeList[1] ? (
                               <>
-                                <select
+                                {isModify
+                                  ? airportSelect(
+                                      "goalLocation",
+                                      dispatch?.goalLocation
+                                    )
+                                  : airportSelect("goalLocation")}
+                                {/* <select
                                   className='w-full m-3 rounded-lg'
                                   id='goalLocation'
                                 >
                                   <option value='인천1공항'>인천1공항</option>
                                   <option value='인천2공항'>인천2공항</option>
                                   <option value='김포공항'>김포공항</option>
-                                </select>
+                                </select> */}
                               </>
                             ) : (
                               <div className='w-full m-3'>
                                 <TextField
                                   id='goalLocation'
-                                  defaultValue={""}
+                                  defaultValue={
+                                    isModify ? dispatch?.goalLocation : ""
+                                  }
                                   className='w-full'
                                 />
                               </div>
@@ -382,7 +418,7 @@ export default function ManageDispatchModal({
                         <div className='w-full m-3'>
                           <TextField
                             id='infomation'
-                            defaultValue={""}
+                            defaultValue={isModify ? dispatch?.information : ""}
                             className='w-full'
                             multiline
                             rows={5}

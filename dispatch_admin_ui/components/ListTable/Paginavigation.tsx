@@ -93,10 +93,7 @@ export default function PaginavigationWidget({
           }
           {/* 숫자리스트 */}
           {Array.from(Array(pageLimit), (_, i) => {
-            console.log("SDFSDFDS");
-            console.log(i);
             const _temp = i + pageNavigationLocation * pageLimit;
-            console.log(_temp);
             if (Math.ceil(totalCount / size) < _temp + 1) return;
             return page !== _temp ? (
               <li key={i}>
