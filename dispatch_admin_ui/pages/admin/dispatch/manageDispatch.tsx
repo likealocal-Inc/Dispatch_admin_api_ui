@@ -23,6 +23,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import DaumPostcode from "react-daum-postcode";
+import {
+  LocationAndAddress,
+  MyDaumPostcode,
+  UserInfomation,
+  airportSelectTag,
+  orderTypeList,
+} from "./utils";
 
 interface ModalProps {
   isModify: boolean;
@@ -37,21 +44,6 @@ export default function ManageDispatchModal({
   handleModalClose,
   isModify,
 }: ModalProps) {
-  const airportList = ["인천1공항", "인천2공항", "김포공항"];
-  const airportSelect = (id: string, isSelect?: string) => (
-    <>
-      <select className='w-full m-3 rounded-lg' id={id}>
-        {airportList.map((d, k) => (
-          <option key={k} value={d} selected={isSelect === d ? true : false}>
-            {d}
-          </option>
-        ))}
-        {/* <option value='인천1공항'>인천1공항</option>
-        <option value='인천2공항'>인천2공항</option>
-        <option value='김포공항'>김포공항</option> */}
-      </select>
-    </>
-  );
   const [isFirst, setIsFirst] = useState(true);
   const [call, { loading, data, error }] = useCallAPI<UseAPICallResult>({
     url: isModify && open ? APIURLs.DISPATCH_UPDATE : APIURLs.DISPATCH_CREATE,
@@ -61,8 +53,7 @@ export default function ManageDispatchModal({
   const [message, setMessage] = useState("");
   const [startDate, setStartDate] = useState<Date | null>(new Date());
 
-  const typeList = ["공항픽업", "공항샌딩", "시간대절"];
-  const [selectType, setSelectType] = useState(typeList[0]);
+  const [selectType, setSelectType] = useState(orderTypeList[0]);
 
   const [me, setMe] = useState<UserModel>();
 
@@ -133,13 +124,13 @@ export default function ManageDispatchModal({
 
     const startInfo = getAddress(
       selectType,
-      typeList[0],
+      orderTypeList[0],
       "startLocation",
       startAddress
     );
     const goalInfo = getAddress(
       selectType,
-      typeList[1],
+      orderTypeList[1],
       "goalLocation",
       goalAddress
     );
@@ -232,7 +223,7 @@ export default function ManageDispatchModal({
                                 setSelectType(v.target.value);
                               }}
                             >
-                              {typeList.map((d, k) => (
+                              {orderTypeList.map((d, k) => (
                                 <option
                                   key={k}
                                   value={d}
@@ -249,40 +240,7 @@ export default function ManageDispatchModal({
                               ))}
                             </select>
                           </div>
-                          <div className='flex flex-row items-center my-1 w-72'>
-                            <div className='w-28'>소속</div>
-                            <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
-                              <div className=''>{me?.company}</div>
-                            </div>
-                          </div>
-
-                          <div className='flex flex-row items-center my-1 w-72'>
-                            <div className='w-28'>직급</div>
-                            <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
-                              <div className=''>{me?.position}</div>
-                            </div>
-                          </div>
-
-                          <div className='flex flex-row items-center my-1 w-72'>
-                            <div className='w-28'>이름</div>
-                            <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
-                              <div className=''>{me?.name}</div>
-                            </div>
-                          </div>
-
-                          <div className='flex flex-row items-center my-1 w-72'>
-                            <div className='w-28'>번호</div>
-                            <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
-                              <div className=''>{me?.phone}</div>
-                            </div>
-                          </div>
-
-                          <div className='flex flex-row items-center my-1 w-72'>
-                            <div className='w-28'>이메일</div>
-                            <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
-                              <div className=''>{me?.email}</div>
-                            </div>
-                          </div>
+                          <UserInfomation me={me} />
                         </div>
                         <div className='flex flex-col pl-5'>
                           <div className='flex flex-row items-center w-72'>
@@ -300,25 +258,39 @@ export default function ManageDispatchModal({
                               />
                             </div>
                           </div>
+                          <LocationAndAddress
+                            title={"출발지"}
+                            selectType={selectType}
+                            orderType={orderTypeList[0]}
+                            isModify={isModify}
+                            dispatch={dispatch}
+                            address={startAddress}
+                            setIsAddressSearchShow={setIsStartAddressSearchShow}
+                            locationStr={"startLocation"}
+                            locationObj={dispatch?.startLocation}
+                          />
 
-                          <div className='flex flex-row items-center w-72'>
+                          <LocationAndAddress
+                            title={"도착지"}
+                            selectType={selectType}
+                            orderType={orderTypeList[1]}
+                            isModify={isModify}
+                            dispatch={dispatch}
+                            address={goalAddress}
+                            setIsAddressSearchShow={setIsGoalAddressSearchShow}
+                            locationStr={"goalLocation"}
+                            locationObj={dispatch?.goalLocation}
+                          />
+                          {/* <div className='flex flex-row items-center w-72'>
                             <div className='w-28'>출발지명</div>
-                            {selectType === typeList[0] ? (
+                            {selectType === orderTypeList[0] ? (
                               <>
                                 {isModify
-                                  ? airportSelect(
+                                  ? airportSelectTag(
                                       "startLocation",
                                       dispatch?.startLocation
                                     )
-                                  : airportSelect("startLocation")}
-                                {/* <select
-                                  className='w-full m-3 rounded-lg'
-                                  id='startLocation'
-                                >
-                                  <option value='인천1공항'>인천1공항</option>
-                                  <option value='인천2공항'>인천2공항</option>
-                                  <option value='김포공항'>김포공항</option>
-                                </select> */}
+                                  : airportSelectTag("startLocation")}
                               </>
                             ) : (
                               <div className='w-full m-3'>
@@ -335,7 +307,7 @@ export default function ManageDispatchModal({
                           <div className='flex flex-row items-center w-72'>
                             <div className='w-28'>출발지주소</div>
                             <div className='w-full m-3'>
-                              {selectType === typeList[0] ? (
+                              {selectType === orderTypeList[0] ? (
                                 <>
                                   <TextField
                                     id='myStartAddress'
@@ -358,22 +330,14 @@ export default function ManageDispatchModal({
                           </div>
                           <div className='flex flex-row items-center w-72'>
                             <div className='w-28'>도착지명</div>
-                            {selectType === typeList[1] ? (
+                            {selectType === orderTypeList[1] ? (
                               <>
                                 {isModify
-                                  ? airportSelect(
+                                  ? airportSelectTag(
                                       "goalLocation",
                                       dispatch?.goalLocation
                                     )
-                                  : airportSelect("goalLocation")}
-                                {/* <select
-                                  className='w-full m-3 rounded-lg'
-                                  id='goalLocation'
-                                >
-                                  <option value='인천1공항'>인천1공항</option>
-                                  <option value='인천2공항'>인천2공항</option>
-                                  <option value='김포공항'>김포공항</option>
-                                </select> */}
+                                  : airportSelectTag("goalLocation")}
                               </>
                             ) : (
                               <div className='w-full m-3'>
@@ -390,7 +354,7 @@ export default function ManageDispatchModal({
                           <div className='flex flex-row items-center w-72'>
                             <div className='w-28'>도착지주소</div>
                             <div className='w-full m-3'>
-                              {selectType === typeList[1] ? (
+                              {selectType === orderTypeList[1] ? (
                                 <>
                                   <TextField
                                     id='myGoalAddress'
@@ -410,7 +374,7 @@ export default function ManageDispatchModal({
                                 />
                               )}
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                       <div className='flex flex-row items-center w-full'>
@@ -457,7 +421,15 @@ export default function ManageDispatchModal({
                       </Button>
                     </div>
                   </Stack>
-                  <DaumPostcode
+                  <MyDaumPostcode
+                    isDisplay={isStartAddressSearchShow}
+                    onComplete={onStartAddress}
+                  />
+                  <MyDaumPostcode
+                    isDisplay={isGoalAddressSearchShow}
+                    onComplete={onGoalAddress}
+                  />
+                  {/* <DaumPostcode
                     style={{
                       position: "absolute",
                       top: "48%",
@@ -470,8 +442,8 @@ export default function ManageDispatchModal({
                       display: isStartAddressSearchShow ? "block" : "none",
                     }}
                     onComplete={onStartAddress}
-                  />
-                  <DaumPostcode
+                  /> */}
+                  {/* <DaumPostcode
                     style={{
                       position: "absolute",
                       top: "50%",
@@ -484,7 +456,7 @@ export default function ManageDispatchModal({
                       display: isGoalAddressSearchShow ? "block" : "none",
                     }}
                     onComplete={onGoalAddress}
-                  />
+                  /> */}
                 </div>
               </Box>
             </div>
