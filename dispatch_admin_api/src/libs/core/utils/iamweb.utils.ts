@@ -123,6 +123,8 @@ export class IamwebUtils {
       );
       if (startAirport.length > 0) {
         iamwebOrderModel.start_airport = options.value_name_list[index];
+        iamwebOrderModel.start_name = options.value_name_list[index];
+        iamwebOrderModel.start_address = options.value_name_list[index];
       }
 
       const goalAirport = DefaultConfig.iamwebApi.lang.goal_airport.filter(
@@ -132,6 +134,8 @@ export class IamwebUtils {
       );
       if (goalAirport.length > 0) {
         iamwebOrderModel.goal_airport = options.value_name_list[index];
+        iamwebOrderModel.goal_name = options.value_name_list[index];
+        iamwebOrderModel.goal_address = options.value_name_list[index];
       }
     }
 

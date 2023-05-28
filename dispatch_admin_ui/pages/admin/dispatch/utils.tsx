@@ -1,6 +1,8 @@
-import { UserModel } from "@libs/client/models/user.model";
 import { TextField } from "@mui/material";
 import DaumPostcode from "react-daum-postcode";
+import DatePicker from "react-datepicker";
+import { useEffect, useMemo, useState } from "react";
+import { AnyMxRecord } from "dns";
 
 const airportList = ["인천1공항", "인천2공항", "김포공항"];
 export const airportSelectTag = (id: string, isSelect?: string) => {
@@ -86,7 +88,6 @@ export function LocationAndAddress({
   selectType,
   orderType,
   isModify,
-  dispatch,
   address,
   setIsAddressSearchShow,
   locationStr,
@@ -132,6 +133,90 @@ export function LocationAndAddress({
               }}
             />
           )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function InfomationComponent({ isModify, information, isIamweb }: any) {
+  const [infoData, setInfoData] = useState<any>();
+
+  let infos: any;
+
+  if (isModify) {
+    if (isIamweb) {
+      infos = JSON.parse(information);
+    } else {
+      infos = information;
+    }
+  }
+
+  useEffect(() => {
+    setInfoData(information);
+  }, []);
+  useEffect(() => {}, [infoData, setInfoData]);
+  return (
+    <>
+      <div className='flex flex-row items-center w-full'>
+        <div className='w-28'>전달사항</div>
+        <div className='w-full p-2 border-2'>
+          {isIamweb === true && infos !== undefined ? (
+            <>
+              {Object.keys(infos).map((d) => {
+                return (
+                  <div key={d} className='flex flex-row justify-between'>
+                    <div className='w-full p-2 m-1 rounded-lg bg-slate-200'>
+                      {d}
+                    </div>
+                    <input
+                      id={d}
+                      defaultValue={infos[d]}
+                      className='p-2 m-1 bg-white border-2 rounded-lg'
+                      onChange={(e) => {
+                        const div = document.getElementById(d);
+                        div!.innerHTML = e.target.value;
+                        infos[d] = e.target.value;
+                        setInfoData(JSON.stringify(infos));
+                      }}
+                    />
+                  </div>
+                );
+              })}
+              <TextField id='infomation' value={infoData} hidden />
+            </>
+          ) : (
+            <TextField
+              id='infomation'
+              defaultValue={isModify ? infos : ""}
+              className='w-full'
+              multiline
+              rows={5}
+            />
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// https://reactdatepicker.com/#example-custom-time-input
+export function BoardingDateComponent({ startDate, setStartDate }: any) {
+  return (
+    <>
+      <div className='flex flex-row items-center w-72'>
+        <div className='w-28'>탑승일시</div>
+        <div className='w-full m-3'>
+          <DatePicker
+            className='rounded-lg'
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            showTimeSelect
+            timeFormat='HH:mm'
+            timeIntervals={5}
+            timeCaption='time'
+            dateFormat='yyyy/MM/dd h:mm aa'
+          />
         </div>
       </div>
     </>

@@ -1,9 +1,10 @@
 import Sidebar from "@components/Sidebar";
+import { Loading } from "@components/loading/Loading";
 import { PageURLs } from "@libs/client/constants";
 import { checkToken } from "@libs/client/utils/auth.utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface AdminProps {
   children?: any;
@@ -11,13 +12,14 @@ interface AdminProps {
 }
 const AdminLayout = ({ menuTitle, children }: AdminProps) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     checkToken().then((d) => {
       if (d.ok === false) {
         router.push(PageURLs.LOGIN);
       }
     });
-  });
+  }, []);
 
   return (
     <>
@@ -27,7 +29,7 @@ const AdminLayout = ({ menuTitle, children }: AdminProps) => {
       <>
         <div className=''>
           <Sidebar />
-          <div className='ml-44'>{children}</div>
+          {<div className='ml-44'>{children}</div>}
         </div>
       </>
     </>

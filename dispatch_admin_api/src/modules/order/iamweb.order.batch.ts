@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
+import { OrderStatus } from '@prisma/client';
 import { PrismaService } from 'src/config/core/prisma/prisma.service';
 import { DefaultConfig } from 'src/config/default.config';
 import { NewIamwebOrderModel } from 'src/libs/core/models/iamweb.order.model';
@@ -29,6 +30,7 @@ export class IamwebOrderBatch {
       const d = res[index];
       await this.prisma.orders.create({
         data: {
+          status: OrderStatus.IAMWEB_ORDER,
           isIamweb: true,
           iamwebOrderNo: d.order_no,
 

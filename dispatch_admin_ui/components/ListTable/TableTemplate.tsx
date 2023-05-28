@@ -10,6 +10,7 @@ import PaginavigationWidget from "@components/ListTable/Paginavigation";
 import TableHeader from "@components/ListTable/TableHeader";
 import { MessageProps, MessageShow } from "@components/MessageShow/show";
 import Button01 from "../buttons/Button01";
+import { Loading } from "@components/loading/Loading";
 
 interface TableTemplatProps {
   pageSize?: number;
@@ -69,16 +70,7 @@ export default function TableTemplate({
 
   return (
     <>
-      {loading && (
-        <div className='absolute flex flex-col items-center justify-center w-screen h-screen my-auto '>
-          <ReactLoading
-            type='spin'
-            color='red'
-            width={200}
-            height={200}
-          ></ReactLoading>
-        </div>
-      )}
+      {loading && <Loading />}
       <AdminLayout menuTitle={title}>
         <div className='bg-gray-500'>
           {onCreate && (

@@ -1,5 +1,6 @@
 export const IamwebUtils = {
   statusMap: new Map<string, string>([
+    ["IAMWEB_ORDER", "아임웹주문"],
     ["DISPATCH_ING", "확인중"],
     ["DISPATCH_COMPLETE", "배차완료"],
     ["DISPATCH_NO", "미배차"],

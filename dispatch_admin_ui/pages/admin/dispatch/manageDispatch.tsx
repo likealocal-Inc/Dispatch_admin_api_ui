@@ -1,4 +1,3 @@
-import { UserModel } from "@libs/client/models/user.model";
 import {
   Backdrop,
   Box,
@@ -7,7 +6,6 @@ import {
   Fade,
   Modal,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import useCallAPI from "../../../libs/client/hooks/useCallAPI";
@@ -17,17 +15,15 @@ import { getElementById } from "../../../libs/client/utils/html";
 import { useEffect, useState } from "react";
 import { callAPI } from "@libs/client/call/call";
 import { DispatchModel } from "@libs/client/models/dispatch.model";
-
-// https://reactdatepicker.com/#example-custom-time-input
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { UserModel } from "@libs/client/models/user.model";
 
 import DaumPostcode from "react-daum-postcode";
 import {
+  BoardingDateComponent,
+  InfomationComponent,
   LocationAndAddress,
   MyDaumPostcode,
   UserInfomation,
-  airportSelectTag,
   orderTypeList,
 } from "./utils";
 
@@ -135,7 +131,7 @@ export default function ManageDispatchModal({
       goalAddress
     );
 
-    const information = getElementById<HTMLInputElement>("infomation").value;
+    let information = getElementById<HTMLInputElement>("infomation").value;
 
     if (
       orderTitle === "" ||
@@ -170,12 +166,12 @@ export default function ManageDispatchModal({
   const onStartAddress = (data: any) => {
     closeAddressModal();
     setStartAddress(data.address);
-  }; // onCompletePost 함수
+  };
 
   const onGoalAddress = (data: any) => {
     closeAddressModal();
     setGoalAddress(data.address);
-  }; // onCompletePost 함수
+  };
 
   // 스타일 정의 code
 
@@ -228,10 +224,8 @@ export default function ManageDispatchModal({
                                   key={k}
                                   value={d}
                                   selected={
-                                    isModify
-                                      ? d === dispatch!.orderTitle
-                                        ? true
-                                        : false
+                                    isModify && d === dispatch!.orderTitle
+                                      ? true
                                       : false
                                   }
                                 >
@@ -243,27 +237,15 @@ export default function ManageDispatchModal({
                           <UserInfomation me={me} />
                         </div>
                         <div className='flex flex-col pl-5'>
-                          <div className='flex flex-row items-center w-72'>
-                            <div className='w-28'>탑승일시</div>
-                            <div className='w-full m-3'>
-                              <DatePicker
-                                className='rounded-lg'
-                                selected={startDate}
-                                onChange={(date) => setStartDate(date)}
-                                showTimeSelect
-                                timeFormat='HH:mm'
-                                timeIntervals={5}
-                                timeCaption='time'
-                                dateFormat='yyyy/MM/dd h:mm aa'
-                              />
-                            </div>
-                          </div>
+                          <BoardingDateComponent
+                            startDate={startDate}
+                            setStartDate={setStartDate}
+                          />
                           <LocationAndAddress
                             title={"출발지"}
                             selectType={selectType}
                             orderType={orderTypeList[0]}
                             isModify={isModify}
-                            dispatch={dispatch}
                             address={startAddress}
                             setIsAddressSearchShow={setIsStartAddressSearchShow}
                             locationStr={"startLocation"}
@@ -275,120 +257,18 @@ export default function ManageDispatchModal({
                             selectType={selectType}
                             orderType={orderTypeList[1]}
                             isModify={isModify}
-                            dispatch={dispatch}
                             address={goalAddress}
                             setIsAddressSearchShow={setIsGoalAddressSearchShow}
                             locationStr={"goalLocation"}
                             locationObj={dispatch?.goalLocation}
                           />
-                          {/* <div className='flex flex-row items-center w-72'>
-                            <div className='w-28'>출발지명</div>
-                            {selectType === orderTypeList[0] ? (
-                              <>
-                                {isModify
-                                  ? airportSelectTag(
-                                      "startLocation",
-                                      dispatch?.startLocation
-                                    )
-                                  : airportSelectTag("startLocation")}
-                              </>
-                            ) : (
-                              <div className='w-full m-3'>
-                                <TextField
-                                  id='startLocation'
-                                  defaultValue={
-                                    isModify ? dispatch?.startLocation : ""
-                                  }
-                                  className='w-full'
-                                />
-                              </div>
-                            )}
-                          </div>
-                          <div className='flex flex-row items-center w-72'>
-                            <div className='w-28'>출발지주소</div>
-                            <div className='w-full m-3'>
-                              {selectType === orderTypeList[0] ? (
-                                <>
-                                  <TextField
-                                    id='myStartAddress'
-                                    value={selectType}
-                                    className='w-full bg-slate-300'
-                                    disabled
-                                  />
-                                </>
-                              ) : (
-                                <TextField
-                                  id='myStartAddress'
-                                  value={startAddress}
-                                  className='w-full'
-                                  onClick={() => {
-                                    setIsStartAddressSearchShow(true);
-                                  }}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className='flex flex-row items-center w-72'>
-                            <div className='w-28'>도착지명</div>
-                            {selectType === orderTypeList[1] ? (
-                              <>
-                                {isModify
-                                  ? airportSelectTag(
-                                      "goalLocation",
-                                      dispatch?.goalLocation
-                                    )
-                                  : airportSelectTag("goalLocation")}
-                              </>
-                            ) : (
-                              <div className='w-full m-3'>
-                                <TextField
-                                  id='goalLocation'
-                                  defaultValue={
-                                    isModify ? dispatch?.goalLocation : ""
-                                  }
-                                  className='w-full'
-                                />
-                              </div>
-                            )}
-                          </div>
-                          <div className='flex flex-row items-center w-72'>
-                            <div className='w-28'>도착지주소</div>
-                            <div className='w-full m-3'>
-                              {selectType === orderTypeList[1] ? (
-                                <>
-                                  <TextField
-                                    id='myGoalAddress'
-                                    value={selectType}
-                                    className='w-full bg-slate-300'
-                                    disabled
-                                  />
-                                </>
-                              ) : (
-                                <TextField
-                                  id='myGoalAddress'
-                                  value={goalAddress}
-                                  className='w-full'
-                                  onClick={() => {
-                                    setIsGoalAddressSearchShow(true);
-                                  }}
-                                />
-                              )}
-                            </div>
-                          </div> */}
                         </div>
                       </div>
-                      <div className='flex flex-row items-center w-full'>
-                        <div className='w-28'>전달사항</div>
-                        <div className='w-full m-3'>
-                          <TextField
-                            id='infomation'
-                            defaultValue={isModify ? dispatch?.information : ""}
-                            className='w-full'
-                            multiline
-                            rows={5}
-                          />
-                        </div>
-                      </div>
+                      <InfomationComponent
+                        isModify={isModify}
+                        information={dispatch?.information}
+                        isIamweb={dispatch?.isIamweb}
+                      />
                     </Card>
                     <div
                       className={
@@ -429,34 +309,6 @@ export default function ManageDispatchModal({
                     isDisplay={isGoalAddressSearchShow}
                     onComplete={onGoalAddress}
                   />
-                  {/* <DaumPostcode
-                    style={{
-                      position: "absolute",
-                      top: "48%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      width: "650px",
-                      height: "500px",
-                      border: "2px solid #000",
-                      boxShadow: "24",
-                      display: isStartAddressSearchShow ? "block" : "none",
-                    }}
-                    onComplete={onStartAddress}
-                  /> */}
-                  {/* <DaumPostcode
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      width: "600px",
-                      height: "500px",
-                      border: "2px solid #000",
-                      boxShadow: "24",
-                      display: isGoalAddressSearchShow ? "block" : "none",
-                    }}
-                    onComplete={onGoalAddress}
-                  /> */}
                 </div>
               </Box>
             </div>
