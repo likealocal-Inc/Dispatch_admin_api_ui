@@ -123,6 +123,11 @@ export const APIURLs = {
     method: METHOD.PATCH,
     desc: "주문 데이터 수정",
   },
+  DISPATCH_STATUS_UPDATE: <APIURLType>{
+    url: makeAPIURL("dispath/status"),
+    method: METHOD.PATCH,
+    desc: "배차 상태값 변경",
+  },
 };
 
 /**

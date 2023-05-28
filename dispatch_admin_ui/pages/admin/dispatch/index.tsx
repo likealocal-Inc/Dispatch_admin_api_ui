@@ -7,7 +7,7 @@ import Button02 from "@components/buttons/Button02";
 import TableTemplate from "@components/ListTable/TableTemplate";
 import { jsonToString } from "@libs/utils";
 import { DateUtils } from "@libs/date.utils";
-import { IamwebUtils } from "@libs/client/utils/iamweb.utils";
+import { DispatchUtils } from "@libs/client/utils/dispatch.utils";
 import ModalOrderIamwebModify from "@components/Modals/ModalOrderIamwebModify";
 import { DispatchModel } from "@libs/client/models/dispatch.model";
 import { callAPI } from "@libs/client/call/call";
@@ -74,7 +74,7 @@ export default function Orders() {
             onDoubleClick={() => onModifyOpen(d)}
           >
             <StyledTableCell component='th' scope='row'>
-              {IamwebUtils.getStatusString(d.status)}
+              {DispatchUtils.getStatusString(d.status)}
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
               {d.id}

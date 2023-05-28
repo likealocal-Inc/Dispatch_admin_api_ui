@@ -1,8 +1,7 @@
 import { TextField } from "@mui/material";
 import DaumPostcode from "react-daum-postcode";
 import DatePicker from "react-datepicker";
-import { useEffect, useMemo, useState } from "react";
-import { AnyMxRecord } from "dns";
+import { useEffect, useState } from "react";
 
 const airportList = ["인천1공항", "인천2공항", "김포공항"];
 export const airportSelectTag = (id: string, isSelect?: string) => {

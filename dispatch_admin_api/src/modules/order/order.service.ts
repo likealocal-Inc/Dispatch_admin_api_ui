@@ -90,4 +90,16 @@ export class OrderService {
       data: updateOrderDto,
     });
   }
+
+  /**
+   * 아임웹주문에서 배차요청하기
+   * @param id
+   * @returns
+   */
+  async updateStatus(id: number, status: any) {
+    return await this.prisma.orders.update({
+      where: { id },
+      data: { status: status },
+    });
+  }
 }

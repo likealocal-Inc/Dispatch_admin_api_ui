@@ -14,6 +14,8 @@ import { UpdateOrderDto } from './dto/update.order.dto';
 import { HttpUtils } from 'src/libs/core/utils/http.utils';
 import { AUTH_MUST } from 'src/config/core/decorators/api/auth.must/auth.must.decorator';
 import { PagingDto } from 'src/libs/core/dtos/paging';
+import { CustomException } from 'src/config/core/exceptions/custom.exception';
+import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
 
 @AUTH_MUST()
 @Controller('dispath')
@@ -54,5 +56,20 @@ export class OrderController {
       true,
       await this.orderService.update(+id, updateOrderDto),
     );
+  }
+
+  @Patch('status/:id/:status')
+  async updateDispatchRequestForIamweb(
+    @Param('id') id: string,
+    @Param('status') status: string,
+  ) {
+    try {
+      return HttpUtils.makeAPIResponse(
+        true,
+        await this.orderService.updateStatus(+id, status),
+      );
+    } catch {
+      throw new CustomException(ExceptionCodeList.ERROR);
+    }
   }
 }

@@ -17,7 +17,6 @@ import { callAPI } from "@libs/client/call/call";
 import { DispatchModel } from "@libs/client/models/dispatch.model";
 import { UserModel } from "@libs/client/models/user.model";
 
-import DaumPostcode from "react-daum-postcode";
 import {
   BoardingDateComponent,
   InfomationComponent,
@@ -26,6 +25,10 @@ import {
   UserInfomation,
   orderTypeList,
 } from "./utils";
+import {
+  EnumDispatchStatus,
+  DispatchUtils,
+} from "@libs/client/utils/dispatch.utils";
 
 interface ModalProps {
   isModify: boolean;
@@ -158,6 +161,19 @@ export default function ManageDispatchModal({
     }
   };
 
+  const onStatusUpdate = () => {
+    callAPI({
+      urlInfo: APIURLs.DISPATCH_STATUS_UPDATE,
+      addUrlParams: `/${dispatch!.id}/${EnumDispatchStatus.DISPATCH_ING}`,
+    })
+      .then((d) => d.json())
+      .then((d) => {
+        if (d.ok === true) {
+          location.reload();
+        }
+      });
+  };
+
   const closeAddressModal = () => {
     setIsStartAddressSearchShow(false);
     setIsGoalAddressSearchShow(false);
@@ -198,10 +214,26 @@ export default function ManageDispatchModal({
                   component='h2'
                 >
                   <div
-                    className='p-2 font-bold text-center text-gray-800'
+                    className='flex flex-row items-center justify-center p-2 font-bold text-center text-gray-800'
                     onClick={closeAddressModal}
                   >
-                    배차요청 {isModify ? "수정" : "생성"}
+                    <div className='pr-10'>
+                      배차요청 {isModify ? "수정" : "생성"}
+                    </div>
+
+                    {dispatch?.isIamweb &&
+                    dispatch.status ===
+                      EnumDispatchStatus.IAMWEB_ORDER.toString() ? (
+                      <Button
+                        variant='contained'
+                        className='mr-2 font-bold text-black bg-green-500 w-44'
+                        onClick={onStatusUpdate}
+                      >
+                        배차요청
+                      </Button>
+                    ) : (
+                      DispatchUtils.getStatusString(dispatch!.status)
+                    )}
                   </div>
                 </Typography>
                 {loading && <div>Loading...</div>}
