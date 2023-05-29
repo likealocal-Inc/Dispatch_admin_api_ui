@@ -38,7 +38,6 @@ export default function Users() {
   };
 
   const headers = [
-    "ID",
     "Email",
     "company",
     "phone",
@@ -48,7 +47,7 @@ export default function Users() {
     "활성화",
     "삭제",
   ];
-  const headerWidths = [3, 60, 30, 40, 30, 30, 10, 10, 30];
+  const headerWidths = [10, 20, 20, 20, 20, 10, 10, 10];
   const body = (res: UserModel[]) => {
     return (
       res &&
@@ -59,82 +58,85 @@ export default function Users() {
             className='transition duration-300 ease-in-out border-b hover:bg-gray-300'
           >
             <StyledTableCell component='th' scope='row'>
-              <Button02 onClick={() => onOpenModify(d)} label={d.id} />
+              <div className='flex justify-center'>
+                <Button02 onClick={() => onOpenModify(d)} label={d.email} />
+              </div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.email}
+              <div className='flex justify-center'>{d.company}</div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.company}
+              <div className='flex justify-center'>{d.phone}</div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.phone}
+              <div className='flex justify-center'>{d.created.toString()}</div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.created.toString()}
+              <div className='flex justify-center'>{d.updated.toString()}</div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.updated.toString()}
+              <div className='flex justify-center'>{d.role}</div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              {d.role}
+              <div className='flex justify-center'>
+                <label className='relative inline-flex items-center cursor-pointer'>
+                  <input
+                    id={"i--" + d.id.toString()}
+                    type='checkbox'
+                    value=''
+                    className='sr-only peer'
+                    {...(d.isActive ? { checked: true } : { checked: false })}
+                    onChange={(e) => {
+                      callAPI({
+                        urlInfo: {
+                          url: `${APIURLs.USER_UPDATE.url}/${
+                            d.id
+                          }/${!d.isActive}`,
+                          method: APIURLs.USER_UPDATE.method,
+                          desc: APIURLs.USER_UPDATE.desc,
+                        },
+                      }).then((res) => {
+                        d.isActive = !d.isActive;
+                        if (d.isActive) {
+                          getHTMLElementByID<HTMLInputElement>(
+                            "i--" + d.id.toString()
+                          ).checked = true;
+                        } else {
+                          getHTMLElementByID<HTMLInputElement>(
+                            "i--" + d.id.toString()
+                          ).checked = false;
+                        }
+
+                        setMessage({
+                          message: `사용자 활성화: UserID:[${d.id}] ${
+                            d.isActive ? "활성화" : "비활성화"
+                          }`,
+                          type: "S",
+                        });
+                      });
+                    }}
+                  />
+                  <div className="w-11 h-6  peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600" />
+                </label>
+              </div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row'>
-              <label className='relative inline-flex items-center cursor-pointer'>
-                <input
-                  id={"i--" + d.id.toString()}
-                  type='checkbox'
-                  value=''
-                  className='sr-only peer'
-                  {...(d.isActive ? { checked: true } : { checked: false })}
-                  onChange={(e) => {
+              <div className='flex justify-center'>
+                <Button02
+                  label={"삭제"}
+                  onClick={() => {
                     callAPI({
                       urlInfo: {
-                        url: `${APIURLs.USER_UPDATE.url}/${
-                          d.id
-                        }/${!d.isActive}`,
-                        method: APIURLs.USER_UPDATE.method,
-                        desc: APIURLs.USER_UPDATE.desc,
+                        url: `${APIURLs.USER_DELETE.url}/${d.id}`,
+                        method: APIURLs.USER_DELETE.method,
+                        desc: APIURLs.USER_DELETE.desc,
                       },
                     }).then((res) => {
-                      d.isActive = !d.isActive;
-                      if (d.isActive) {
-                        getHTMLElementByID<HTMLInputElement>(
-                          "i--" + d.id.toString()
-                        ).checked = true;
-                      } else {
-                        getHTMLElementByID<HTMLInputElement>(
-                          "i--" + d.id.toString()
-                        ).checked = false;
-                      }
-
-                      setMessage({
-                        message: `사용자 활성화: UserID:[${d.id}] ${
-                          d.isActive ? "활성화" : "비활성화"
-                        }`,
-                        type: "S",
-                      });
+                      location.reload();
                     });
                   }}
                 />
-                <div className="w-11 h-6  peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600" />
-              </label>
-            </StyledTableCell>
-            <StyledTableCell component='th' scope='row'>
-              <Button02
-                label={"삭제"}
-                onClick={() => {
-                  callAPI({
-                    urlInfo: {
-                      url: `${APIURLs.USER_DELETE.url}/${d.id}`,
-                      method: APIURLs.USER_DELETE.method,
-                      desc: APIURLs.USER_DELETE.desc,
-                    },
-                  }).then((res) => {
-                    location.reload();
-                  });
-                }}
-              />
+              </div>
             </StyledTableCell>
           </StyledTableRow>
         );

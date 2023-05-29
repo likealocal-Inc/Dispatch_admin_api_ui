@@ -39,8 +39,8 @@ export default function Users() {
     if (isChange) setReload(reload + 1);
   };
 
-  const headers = ["ID", "name", "생성일", "수정일", "활성화", "삭제"];
-  const headerWidths = [5, 30, 20, 20, 10, 20];
+  const headers = ["name", "생성일", "수정일", "활성화", "삭제"];
+  const headerWidths = [10, 20, 20, 10, 10];
   const body = (res: CompanyModel[]) => {
     return (
       res &&
@@ -50,66 +50,73 @@ export default function Users() {
             key={key}
             className='transition duration-300 ease-in-out border-b hover:bg-gray-300'
           >
-            <StyledTableCell component='th' scope='row'>
-              <Button02 onClick={() => handleModalOpen(d)} label={d.id} />
+            <StyledTableCell component='th' scope='row' className=''>
+              <div className='flex justify-center'>
+                <Button02 onClick={() => handleModalOpen(d)} label={d.name} />
+              </div>
+            </StyledTableCell>
+            <StyledTableCell
+              component='th'
+              scope='row'
+              className='flex justify-center'
+            >
+              <div className='flex justify-center'>{d.created.toString()}</div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row' className='text-center'>
-              {d.name}
+              <div className='flex justify-center'>{d.updated.toString()}</div>
             </StyledTableCell>
             <StyledTableCell component='th' scope='row' className='text-center'>
-              {d.created.toString()}
-            </StyledTableCell>
-            <StyledTableCell component='th' scope='row' className='text-center'>
-              {d.updated.toString()}
-            </StyledTableCell>
-            <StyledTableCell component='th' scope='row' className='text-center'>
-              <label className='relative inline-flex items-center cursor-pointer'>
-                <input
-                  id={isHeader + d.id.toString()}
-                  type='checkbox'
-                  value=''
-                  className='sr-only peer'
-                  {...(d.isActive ? { checked: true } : { checked: false })}
-                  onChange={(e) => {
-                    callAPI({
-                      urlInfo: APIURLs.COMPANY_UPDATE,
-                      addUrlParams: `/${d.id}/${!d.isActive}`,
-                    }).then((res) => {
-                      d.isActive = !d.isActive;
-                      if (d.isActive) {
-                        getHTMLElementByID<HTMLInputElement>(
-                          isHeader + d.id.toString()
-                        ).checked = true;
-                      } else {
-                        getHTMLElementByID<HTMLInputElement>(
-                          isHeader + d.id.toString()
-                        ).checked = false;
-                      }
+              <div className='flex justify-center'>
+                <label className='relative inline-flex items-center cursor-pointer'>
+                  <input
+                    id={isHeader + d.id.toString()}
+                    type='checkbox'
+                    value=''
+                    className='sr-only peer'
+                    {...(d.isActive ? { checked: true } : { checked: false })}
+                    onChange={(e) => {
+                      callAPI({
+                        urlInfo: APIURLs.COMPANY_UPDATE,
+                        addUrlParams: `/${d.id}/${!d.isActive}`,
+                      }).then((res) => {
+                        d.isActive = !d.isActive;
+                        if (d.isActive) {
+                          getHTMLElementByID<HTMLInputElement>(
+                            isHeader + d.id.toString()
+                          ).checked = true;
+                        } else {
+                          getHTMLElementByID<HTMLInputElement>(
+                            isHeader + d.id.toString()
+                          ).checked = false;
+                        }
 
-                      setMessage({
-                        message: `업체 활성화: CompanyID:[${d.id}] ${
-                          d.isActive ? "활성화" : "비활성화"
-                        }`,
-                        type: "S",
+                        setMessage({
+                          message: `업체 활성화: CompanyID:[${d.id}] ${
+                            d.isActive ? "활성화" : "비활성화"
+                          }`,
+                          type: "S",
+                        });
                       });
+                    }}
+                  />
+                  <div className="w-11 h-6  peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600" />
+                </label>
+              </div>
+            </StyledTableCell>
+            <StyledTableCell component='th' scope='row' className='text-center'>
+              <div className='flex justify-center'>
+                <Button02
+                  label={"삭제"}
+                  onClick={() => {
+                    callAPI({
+                      urlInfo: APIURLs.COMPANY_DELETE,
+                      addUrlParams: `/${d.id}`,
+                    }).then((res) => {
+                      location.reload();
                     });
                   }}
                 />
-                <div className="w-11 h-6  peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600" />
-              </label>
-            </StyledTableCell>
-            <StyledTableCell component='th' scope='row' className='text-center'>
-              <Button02
-                label={"삭제"}
-                onClick={() => {
-                  callAPI({
-                    urlInfo: APIURLs.COMPANY_DELETE,
-                    addUrlParams: `/${d.id}`,
-                  }).then((res) => {
-                    location.reload();
-                  });
-                }}
-              />
+              </div>
             </StyledTableCell>
           </StyledTableRow>
         );

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateDispatchDto } from './dto/create.dispatch.dto';
 import { UpdateDispatchDto } from './dto/update.dispatch.dto';
 import { PrismaService } from '../../config/core/prisma/prisma.service';
-import { HttpUtils } from 'src/libs/core/utils/http.utils';
 import { OrderService } from '../order/order.service';
 
 @Injectable()
