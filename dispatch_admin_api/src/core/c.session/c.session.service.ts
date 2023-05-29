@@ -4,7 +4,7 @@ import { SecurityUtils } from 'src/libs/core/utils/security.utils';
 import { DefaultConfig } from 'src/config/default.config';
 
 interface SessionValueStructure {
-  userId: number;
+  userId: string;
   token: string;
 }
 
@@ -37,7 +37,7 @@ export class CSessionService {
    */
   getTokenAndUserId = (value: string): SessionValueStructure => {
     const _data = value.split('|');
-    return { userId: +_data[0], token: _data[1] };
+    return { userId: _data[0], token: _data[1] };
   };
 
   /**
@@ -46,7 +46,7 @@ export class CSessionService {
    * @param token
    * @returns 사용자 세션 키값
    */
-  async setSession(userId: number, token: string): Promise<string> {
+  async setSession(userId: string, token: string): Promise<string> {
     const userSessionKey = await this.__makeSessionKey(userId + '');
 
     const map = new Map<string, string>([

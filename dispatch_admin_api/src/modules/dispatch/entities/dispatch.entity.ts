@@ -1,5 +1,7 @@
-export interface DispatchModel {
-  id: number;
+import { Dispatch } from '@prisma/client';
+
+export class DispatchEntity implements Dispatch {
+  id: string;
   created: Date;
   updated: Date;
   carCompany: string;
@@ -12,6 +14,6 @@ export interface DispatchModel {
   else01: string;
   else02: string;
   else03: string;
-  userId: number;
-  orderId: number;
+  userId: string;
+  orderId: string;
 }

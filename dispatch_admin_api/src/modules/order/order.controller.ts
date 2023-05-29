@@ -16,57 +16,80 @@ import { AUTH_MUST } from 'src/config/core/decorators/api/auth.must/auth.must.de
 import { PagingDto } from 'src/libs/core/dtos/paging';
 import { CustomException } from 'src/config/core/exceptions/custom.exception';
 import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
+import { OrderStatus } from '@prisma/client';
 
-@AUTH_MUST()
-@Controller('dispath')
+@Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @AUTH_MUST()
   @Post()
   async create(@Body() createOrderDto: CreateOrderDto, @Req() req: any) {
     const user = req.user;
-    return HttpUtils.makeAPIResponse(
-      true,
-      await this.orderService.create(createOrderDto, user.id),
-    );
+    try {
+      return HttpUtils.makeAPIResponse(
+        true,
+        await this.orderService.create(createOrderDto, user.id),
+      );
+    } catch {
+      throw new CustomException(ExceptionCodeList.ERROR);
+    }
   }
 
+  @AUTH_MUST()
   @Get()
   async findAll(@Query() pagingDto: PagingDto) {
-    return HttpUtils.makeAPIResponse(
-      true,
-      await this.orderService.listOrderWithUser(pagingDto),
-    );
+    try {
+      return HttpUtils.makeAPIResponse(
+        true,
+        await this.orderService.listOrderWithUser(pagingDto),
+      );
+    } catch {
+      throw new CustomException(ExceptionCodeList.ERROR);
+    }
   }
 
+  @AUTH_MUST()
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return HttpUtils.makeAPIResponse(
-      true,
-      await this.orderService.findOne(+id),
-    );
+    try {
+      return HttpUtils.makeAPIResponse(
+        true,
+        await this.orderService.findOne(id),
+      );
+    } catch {
+      throw new CustomException(ExceptionCodeList.ERROR);
+    }
   }
 
+  @AUTH_MUST()
   @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateOrderDto: UpdateOrderDto,
   ) {
-    return HttpUtils.makeAPIResponse(
-      true,
-      await this.orderService.update(+id, updateOrderDto),
-    );
-  }
-
-  @Patch('status/:id/:status')
-  async updateDispatchRequestForIamweb(
-    @Param('id') id: string,
-    @Param('status') status: string,
-  ) {
     try {
       return HttpUtils.makeAPIResponse(
         true,
-        await this.orderService.updateStatus(+id, status),
+        await this.orderService.update(id, updateOrderDto),
+      );
+    } catch {
+      throw new CustomException(ExceptionCodeList.ERROR);
+    }
+  }
+
+  /**
+   * 아임웹 주문 요청
+   * @param id
+   * @returns
+   */
+  @AUTH_MUST()
+  @Patch('status/:id')
+  async updateDispatchRequestForIamweb(@Param('id') id: string) {
+    try {
+      return HttpUtils.makeAPIResponse(
+        true,
+        await this.orderService.updateStatus(id, OrderStatus.DISPATCH_ING),
       );
     } catch {
       throw new CustomException(ExceptionCodeList.ERROR);

@@ -3,7 +3,7 @@ import { Files } from '@prisma/client';
 
 export class CFileEntity implements Files {
   @ApiProperty()
-  id: number;
+  id: string;
 
   @ApiProperty()
   originalname: string;

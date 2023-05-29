@@ -19,7 +19,7 @@ const AdminLayout = ({ menuTitle, children }: AdminProps) => {
         router.push(PageURLs.LOGIN);
       }
     });
-  }, []);
+  });
 
   return (
     <>

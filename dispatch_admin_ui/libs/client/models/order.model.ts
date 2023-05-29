@@ -1,7 +1,7 @@
-import { OrderStatus, Orders } from '@prisma/client';
+import { UserModel } from "./user.model";
 
-export class OrderEntity implements Orders {
-  id: string;
+export interface OrderModel {
+  id: number;
   created: Date;
   updated: Date;
   isIamweb: boolean;
@@ -18,6 +18,7 @@ export class OrderEntity implements Orders {
   information: string;
   else01: string;
   else02: string;
-  status: OrderStatus;
-  userId: string;
+  status: string;
+  userId: number;
+  user: UserModel;
 }

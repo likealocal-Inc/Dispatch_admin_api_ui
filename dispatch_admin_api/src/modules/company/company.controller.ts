@@ -9,8 +9,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
-import { CreateCompanyDto } from './dto/create-company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
+import { CreateCompanyDto } from './dto/create.company.dto';
+import { UpdateCompanyDto } from './dto/update.company.dto';
 import { PagingDto } from 'src/libs/core/dtos/paging';
 import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
 import { ApiCreatedResponse } from '@nestjs/swagger';
@@ -41,7 +41,7 @@ export class CompanyController {
   async findOne(@Param('id') id: string) {
     return HttpUtils.makeAPIResponse(
       true,
-      await this.companyService.findOne(+id),
+      await this.companyService.findOne(id),
     );
   }
 
@@ -55,7 +55,7 @@ export class CompanyController {
     return HttpUtils.makeAPIResponse(
       true,
       await this.companyService.updateAcive(
-        +id,
+        id,
         active === 'true' ? true : false,
       ),
     );
@@ -68,7 +68,7 @@ export class CompanyController {
   ) {
     return HttpUtils.makeAPIResponse(
       true,
-      await this.companyService.update(+id, updateCompanyDto),
+      await this.companyService.update(id, updateCompanyDto),
     );
   }
 
@@ -76,7 +76,7 @@ export class CompanyController {
   async remove(@Param('id') id: string) {
     return HttpUtils.makeAPIResponse(
       true,
-      await this.companyService.remove(+id),
+      await this.companyService.remove(id),
     );
   }
 }

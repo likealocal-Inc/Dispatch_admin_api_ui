@@ -16,6 +16,19 @@ export enum DateAddType {
  * 날짜 및 시간처리 유틸
  */
 export const DateUtils = {
+  iso8601DateToString(isoDateString: string) {
+    let dateObj = new Date(isoDateString);
+
+    let year = dateObj.getFullYear();
+    let month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+    let day = ("0" + dateObj.getDate()).slice(-2);
+
+    let hours = ("0" + dateObj.getHours()).slice(-2);
+    let minutes = ("0" + dateObj.getMinutes()).slice(-2);
+    let seconds = ("0" + dateObj.getSeconds()).slice(-2);
+
+    return `${year}/${month}/${day} ${hours}:${minutes}`;
+  },
   stringToDate(str: string) {
     var d = new Date(parseInt(str) * 1000), // Convert the passed timestamp to milliseconds
       yyyy = d.getFullYear(),
@@ -27,18 +40,18 @@ export const DateUtils = {
       ampm = "AM",
       time;
 
-    if (hh > 12) {
-      h = hh - 12;
-      ampm = "PM";
-    } else if (hh === 12) {
-      h = 12;
-      ampm = "PM";
-    } else if (hh == 0) {
-      h = 12;
-    }
+    // if (hh > 12) {
+    //   h = hh - 12;
+    //   ampm = "PM";
+    // } else if (hh === 12) {
+    //   h = 12;
+    //   ampm = "PM";
+    // } else if (hh == 0) {
+    //   h = 12;
+    // }
 
     // ie: 2013-02-18, 8:35 AM
-    time = yyyy + "년" + mm + "월" + dd + "일" + h + ":" + min + " " + ampm;
+    time = yyyy + "/" + mm + "/" + dd + "/" + h + ":" + min;
 
     return time;
   },

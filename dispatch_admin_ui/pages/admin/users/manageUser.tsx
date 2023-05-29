@@ -13,7 +13,7 @@ import {
 import useCallAPI from "../../../libs/client/hooks/useCallAPI";
 import { UseAPICallResult } from "../../../libs/client/hooks/useCallAPI";
 import { APIURLs } from "@libs/client/constants";
-import { getElementById } from "../../../libs/client/utils/html";
+import { getHTMLElementByID } from "../../../libs/client/utils/html";
 import { useEffect, useState } from "react";
 import { callAPI } from "@libs/client/call/call";
 import { CompanyModel } from "@libs/client/models/company.model";
@@ -66,14 +66,14 @@ export default function ManageUserModal({
   }, []);
 
   const onSubmit = () => {
-    const phone = getElementById<HTMLInputElement>("m-phone").value;
-    const companyObj = getElementById<HTMLSelectElement>("m-company");
+    const phone = getHTMLElementByID<HTMLInputElement>("m-phone").value;
+    const companyObj = getHTMLElementByID<HTMLSelectElement>("m-company");
     const company = companyObj.options[companyObj.selectedIndex].value;
 
-    const password = getElementById<HTMLInputElement>("m-password").value;
-    const email = getElementById<HTMLInputElement>("m-email").value;
-    const position = getElementById<HTMLInputElement>("m-position").value;
-    const name = getElementById<HTMLInputElement>("m-name").value;
+    const password = getHTMLElementByID<HTMLInputElement>("m-password").value;
+    const email = getHTMLElementByID<HTMLInputElement>("m-email").value;
+    const position = getHTMLElementByID<HTMLInputElement>("m-position").value;
+    const name = getHTMLElementByID<HTMLInputElement>("m-name").value;
 
     call({ phone, company, password, email, position, name });
   };

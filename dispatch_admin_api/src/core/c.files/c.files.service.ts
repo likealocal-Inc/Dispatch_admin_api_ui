@@ -27,7 +27,7 @@ export class CFilesService {
    * @param id
    * @returns
    */
-  async findOne(id: number): Promise<CFileEntity> {
+  async findOne(id: string): Promise<CFileEntity> {
     return await this.prisma.files.findUnique({ where: { id } });
   }
 
@@ -38,7 +38,7 @@ export class CFilesService {
    * @returns
    */
   async update(
-    id: number,
+    id: string,
     updateCFileDto: UpdateCFileDto,
   ): Promise<CFileEntity> {
     return await this.prisma.files.update({
@@ -53,7 +53,7 @@ export class CFilesService {
    * @param isDelDisk 디스크에 파일 삭제 여부
    * @returns
    */
-  async remove(id: number, isDelDisk = true): Promise<CFileEntity> {
+  async remove(id: string, isDelDisk = true): Promise<CFileEntity> {
     const file = await this.findOne(id);
     // 파일 삭제
     if (isDelDisk) await fs.unlink(file.path, (err) => err);

@@ -8,6 +8,13 @@ export enum EnumDispatchStatus {
 }
 
 export const DispatchUtils = {
+  statusList: [
+    "DISPATCH_ING",
+    "DISPATCH_COMPLETE",
+    "DISPATCH_NO",
+    "DISPATCH_CANCEL",
+    "DONE",
+  ],
   status: new Map<string, string>([
     [EnumDispatchStatus.IAMWEB_ORDER.toString(), "아임웹주문"],
     [EnumDispatchStatus.DISPATCH_ING.toString(), "확인중"],

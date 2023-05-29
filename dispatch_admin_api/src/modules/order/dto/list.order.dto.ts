@@ -3,7 +3,7 @@ import { CUserEntity } from 'src/core/c.user/entities/c.user.entity';
 import { OrderEntity } from '../entities/order.entity';
 
 export class ListOrderDto implements Orders {
-  id: number;
+  id: string;
   created: Date;
   updated: Date;
   isIamweb: boolean;
@@ -21,7 +21,7 @@ export class ListOrderDto implements Orders {
   else01: string;
   else02: string;
   status: OrderStatus;
-  userId: number;
+  userId: string;
   user: CUserEntity;
 
   constructor(orderEntidy: OrderEntity) {

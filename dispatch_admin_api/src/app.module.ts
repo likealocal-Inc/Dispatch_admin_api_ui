@@ -31,6 +31,7 @@ import { HttpModule } from '@nestjs/axios';
 import { CTelegramModule } from './core/c.telegram/c.telegram.module';
 import { CompanyModule } from './modules/company/company.module';
 import { OrderModule } from './modules/order/order.module';
+import { DispatchModule } from './modules/dispatch/dispatch.module';
 
 @Module({
   imports: [
@@ -62,6 +63,8 @@ import { OrderModule } from './modules/order/order.module';
     CompanyModule,
 
     OrderModule,
+
+    DispatchModule,
   ],
   controllers: [],
   providers: [

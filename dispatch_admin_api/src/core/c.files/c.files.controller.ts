@@ -67,7 +67,7 @@ export class CFilesController {
    */
   @Get('download/:id')
   async download(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Response({ passthrough: true }) res,
   ): Promise<StreamableFile> {
     // 파일 아이디 확인
@@ -91,6 +91,6 @@ export class CFilesController {
   @Delete(':id')
   @ApiCreatedResponse({ type: CFileEntity, isArray: false })
   remove(@Param('id') id: string) {
-    return HttpUtils.makeAPIResponse(true, this.cFilesService.remove(+id));
+    return HttpUtils.makeAPIResponse(true, this.cFilesService.remove(id));
   }
 }

@@ -7,19 +7,24 @@ import TableTemplate from "@components/ListTable/TableTemplate";
 import { DateUtils } from "@libs/date.utils";
 import { DispatchUtils } from "@libs/client/utils/dispatch.utils";
 import { OrderModel } from "@libs/client/models/order.model";
-import ManageDispatchModal, { UIType } from "./manageDispatch";
+import ManageDispatchModal from "./manageDispatch";
 import { Button } from "@mui/material";
 
 export default function Orders() {
   // 메세지 출력관련
   const [message, setMessage] = useState<MessageProps>();
+  const [data, setData] = useState("");
+  const [isJson, setIsJson] = useState(false);
 
+  const [modifyCallback, setModifyCallback] = useState<Function>(
+    () => () => {}
+  );
   // 화면 재로딩
   const [reload, setReload] = useState(0);
 
-  const [uiType, setUiType] = useState<UIType>(UIType.CREATE);
+  const [isModify, setIsModify] = useState(true);
 
-  const [selectOrder, setSelectOrder] = useState<OrderModel>();
+  const [selectDispatch, setSelectDispatch] = useState<OrderModel>();
 
   // 모달 관련 설정
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -30,23 +35,18 @@ export default function Orders() {
   };
 
   const onCreateOpen = () => {
-    setUiType(UIType.CREATE);
+    setIsModify(false);
     setOpenModal(true);
   };
-  const onModifyOpen = (order: OrderModel) => {
-    setUiType(UIType.MODIFY);
+  const onModifyOpen = (dispatch: OrderModel) => {
+    setIsModify(true);
     setOpenModal(true);
-    setSelectOrder(order);
-  };
-
-  const onModifyDispatch = (order: OrderModel) => {
-    setUiType(UIType.DISPATCH);
-    setOpenModal(true);
-    setSelectOrder(order);
+    setSelectDispatch(dispatch);
   };
 
   const headers = [
     "배차상태",
+    "ID",
     "주문일시",
     "주문상품",
     "소속/이름/직급",
@@ -58,7 +58,7 @@ export default function Orders() {
     "배차처리",
   ];
 
-  const headerWidths = [8, 12, 15, 10, 8, 10, 10, 10, 10, 3];
+  const headerWidths = [5, 1, 12, 15, 10, 8, 5, 10, 10, 10, 3];
 
   const body = (res: OrderModel[]) => {
     return (
@@ -67,13 +67,16 @@ export default function Orders() {
         return (
           <StyledTableRow
             key={key}
-            className={`transition duration-300 ease-in-out border-b hover:bg-gray-300`}
+            className='transition duration-300 ease-in-out border-b hover:bg-gray-300'
             onDoubleClick={() => onModifyOpen(d)}
           >
             <StyledTableCell component='th' scope='row'>
               <div className='flex justify-center font-bold text-red-600'>
                 {DispatchUtils.getStatusString(d.status)}
               </div>
+            </StyledTableCell>
+            <StyledTableCell component='th' scope='row'>
+              {d.id}
             </StyledTableCell>
             <StyledTableCell
               component='th'
@@ -98,7 +101,7 @@ export default function Orders() {
               component='th'
               scope='row'
               dangerouslySetInnerHTML={{
-                __html: `${DateUtils.iso8601DateToString(d.boardingDate)}`,
+                __html: `${d.boardingDate}`,
               }}
             ></StyledTableCell>
             <StyledTableCell component='th' scope='row'>
@@ -111,7 +114,7 @@ export default function Orders() {
               <Button
                 variant='contained'
                 className='w-10 mr-2 font-bold text-black bg-green-300 hover:bg-slate-800 hover:text-white'
-                onClick={() => onModifyDispatch(d)}
+                onClick={() => {}}
               >
                 배차
               </Button>
@@ -139,10 +142,10 @@ export default function Orders() {
 
         {openModal ? (
           <ManageDispatchModal
-            uiType={uiType}
+            isModify={isModify}
             open={openModal}
             handleModalClose={handleModalClose}
-            order={selectOrder}
+            dispatch={selectDispatch}
           />
         ) : (
           ""

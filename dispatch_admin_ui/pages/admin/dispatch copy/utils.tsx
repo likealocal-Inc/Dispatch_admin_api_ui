@@ -2,8 +2,6 @@ import { TextField } from "@mui/material";
 import DaumPostcode from "react-daum-postcode";
 import DatePicker from "react-datepicker";
 import { useEffect, useState } from "react";
-import { UIType } from "./manageDispatch";
-import "react-datepicker/dist/react-datepicker.css";
 
 const airportList = ["인천1공항", "인천2공항", "김포공항"];
 export const airportSelectTag = (id: string, isSelect?: string) => {
@@ -20,33 +18,46 @@ export const airportSelectTag = (id: string, isSelect?: string) => {
   );
 };
 
-export function InfoBox({ info }: any) {
-  return (
-    <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
-      <div className=''>{info}</div>
-    </div>
-  );
-}
-export function InfoBoxWithTitle({ title, info }: any) {
-  return (
-    <div className={`flex flex-row items-center my-1`}>
-      <div className='w-28'>{title}</div>
-      <InfoBox info={info} />
-    </div>
-  );
-}
-
 export const orderTypeList = ["공항픽업", "공항샌딩", "시간대절"];
 
 // 사용자 정보 출력 컴포넌트
 export function UserInfomation({ me }: any) {
   return (
     <>
-      <InfoBoxWithTitle title='소속' info={me?.company} />
-      <InfoBoxWithTitle title='직급' info={me?.position} />
-      <InfoBoxWithTitle title='이름' info={me?.name} />
-      <InfoBoxWithTitle title='번호' info={me?.phone} />
-      <InfoBoxWithTitle title='이메일' info={me?.email} />
+      <div className='flex flex-row items-center my-1 w-72'>
+        <div className='w-28'>소속</div>
+        <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
+          <div className=''>{me?.company}</div>
+        </div>
+      </div>
+
+      <div className='flex flex-row items-center my-1 w-72'>
+        <div className='w-28'>직급</div>
+        <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
+          <div className=''>{me?.position}</div>
+        </div>
+      </div>
+
+      <div className='flex flex-row items-center my-1 w-72'>
+        <div className='w-28'>이름</div>
+        <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
+          <div className=''>{me?.name}</div>
+        </div>
+      </div>
+
+      <div className='flex flex-row items-center my-1 w-72'>
+        <div className='w-28'>번호</div>
+        <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
+          <div className=''>{me?.phone}</div>
+        </div>
+      </div>
+
+      <div className='flex flex-row items-center my-1 w-72'>
+        <div className='w-28'>이메일</div>
+        <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
+          <div className=''>{me?.email}</div>
+        </div>
+      </div>
     </>
   );
 }
@@ -75,7 +86,7 @@ export function LocationAndAddress({
   title,
   selectType,
   orderType,
-  uiType,
+  isModify,
   address,
   setIsAddressSearchShow,
   locationStr,
@@ -87,7 +98,7 @@ export function LocationAndAddress({
         <div className='w-28'>{title}명</div>
         {selectType === orderType ? (
           <>
-            {uiType === UIType.MODIFY
+            {isModify
               ? airportSelectTag(locationStr, locationObj)
               : airportSelectTag(locationStr)}
           </>
@@ -95,7 +106,7 @@ export function LocationAndAddress({
           <div className='w-full m-3'>
             <TextField
               id={locationStr}
-              defaultValue={uiType === UIType.MODIFY ? locationObj : ""}
+              defaultValue={isModify ? locationObj : ""}
               className='w-full'
             />
           </div>
@@ -127,12 +138,12 @@ export function LocationAndAddress({
   );
 }
 
-export function InfomationComponent({ uiType, information, isIamweb }: any) {
+export function InfomationComponent({ isModify, information, isIamweb }: any) {
   const [infoData, setInfoData] = useState<any>();
 
   let infos: any;
 
-  if (uiType === UIType.MODIFY || uiType === UIType.DISPATCH) {
+  if (isModify) {
     if (isIamweb) {
       infos = JSON.parse(information);
     } else {
@@ -154,43 +165,29 @@ export function InfomationComponent({ uiType, information, isIamweb }: any) {
               {Object.keys(infos).map((d) => {
                 return (
                   <div key={d} className='flex flex-row justify-between'>
-                    <div className='w-64 p-2 m-1 rounded-lg bg-slate-200'>
+                    <div className='w-full p-2 m-1 rounded-lg bg-slate-200'>
                       {d}
                     </div>
-                    {uiType === UIType.DISPATCH ? (
-                      <div className='w-full p-2 m-1 bg-white border-2 rounded-lg'>
-                        {infos[d]}
-                      </div>
-                    ) : (
-                      <input
-                        id={d}
-                        defaultValue={infos[d]}
-                        className='w-full p-2 m-1 bg-white border-2 rounded-lg'
-                        onChange={(e) => {
-                          const div = document.getElementById(d);
-                          div!.innerHTML = e.target.value;
-                          infos[d] = e.target.value;
-                          setInfoData(JSON.stringify(infos));
-                        }}
-                      />
-                    )}
+                    <input
+                      id={d}
+                      defaultValue={infos[d]}
+                      className='p-2 m-1 bg-white border-2 rounded-lg'
+                      onChange={(e) => {
+                        const div = document.getElementById(d);
+                        div!.innerHTML = e.target.value;
+                        infos[d] = e.target.value;
+                        setInfoData(JSON.stringify(infos));
+                      }}
+                    />
                   </div>
                 );
               })}
               <TextField id='infomation' value={infoData} hidden />
             </>
-          ) : uiType === UIType.DISPATCH ? (
-            <>
-              <div className='w-full h-full'>{infos}</div>
-            </>
           ) : (
             <TextField
               id='infomation'
-              defaultValue={
-                uiType === UIType.MODIFY || uiType === UIType.DISPATCH
-                  ? infos
-                  : ""
-              }
+              defaultValue={isModify ? infos : ""}
               className='w-full'
               multiline
               rows={5}
@@ -222,32 +219,5 @@ export function BoardingDateComponent({ startDate, setStartDate }: any) {
         </div>
       </div>
     </>
-  );
-}
-
-export function DispatchProcessInfo({
-  title,
-  value,
-  id,
-  isNumber = false,
-}: any) {
-  const [val, setVal] = useState("");
-
-  useEffect(() => {
-    setVal(value);
-  }, [value]);
-
-  return (
-    <div className='flex flex-row items-center w-72'>
-      <div className='w-28'>{title}</div>
-      <div className='w-full m-3'>
-        <input
-          id={id}
-          defaultValue={val}
-          className='w-full p-3 border-dashed rounded-lg '
-          type={isNumber ? "number" : "text"}
-        />
-      </div>
-    </div>
   );
 }

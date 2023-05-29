@@ -34,7 +34,6 @@ const Join: NextPage = () => {
   const onValid = (validForm: JoinForm) => {
     if (loading) return;
 
-    console.log(validForm);
     if (
       validForm.email.trim() === "" ||
       validForm.company.trim() === "" ||

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
-import { Paper, Table, TableBody, TableContainer } from "@mui/material";
+import { Button, Paper, Table, TableBody, TableContainer } from "@mui/material";
 
 import AdminLayout from "@components/layouts/AdminLayout";
 import useCallAPI from "@libs/client/hooks/useCallAPI";
@@ -75,7 +75,13 @@ export default function TableTemplate({
         <div className='bg-gray-500'>
           {onCreate && (
             <div className='flex justify-end pt-2 pb-1 pr-2'>
-              <Button01 label={"생성"} onClick={() => onCreate()} />
+              <Button
+                variant='contained'
+                className='w-24 mr-2 font-bold text-black bg-slate-300 hover:bg-amber-300 hover:text-black'
+                onClick={() => onCreate()}
+              >
+                생성
+              </Button>
             </div>
           )}
           <div className='flex flex-col'>

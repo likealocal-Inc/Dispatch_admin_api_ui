@@ -16,12 +16,10 @@ function EmailAuth({
   //   });
   // }, []);
 
-  console.log(data);
   return <></>;
 }
 
 export const getServerSideProps = async (context: any) => {
-  console.log(context.query);
   const data: Data = { godo: "godo" };
   // return { notFound: true };
   return {

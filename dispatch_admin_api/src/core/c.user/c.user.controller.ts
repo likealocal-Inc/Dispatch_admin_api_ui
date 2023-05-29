@@ -67,7 +67,7 @@ export class CUserController {
   @Get(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async findOne(@Param('id') id: string): Promise<APIResponseObj> {
-    return HttpUtils.makeAPIResponse(true, this.cUserService.findId(+id));
+    return HttpUtils.makeAPIResponse(true, this.cUserService.findId(id));
   }
 
   /**
@@ -85,7 +85,7 @@ export class CUserController {
   ): Promise<APIResponseObj> {
     return HttpUtils.makeAPIResponse(
       true,
-      await this.cUserService.update(+id, updateCUserDto),
+      await this.cUserService.update(id, updateCUserDto),
     );
   }
 
@@ -115,10 +115,7 @@ export class CUserController {
   ): Promise<APIResponseObj> {
     return HttpUtils.makeAPIResponse(
       true,
-      await this.cUserService.updateAcive(
-        +id,
-        active === 'true' ? true : false,
-      ),
+      await this.cUserService.updateAcive(id, active === 'true' ? true : false),
     );
   }
 
@@ -131,7 +128,7 @@ export class CUserController {
   @Delete(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async remove(@Param('id') id: string): Promise<APIResponseObj> {
-    return HttpUtils.makeAPIResponse(true, await this.cUserService.remove(+id));
+    return HttpUtils.makeAPIResponse(true, await this.cUserService.remove(id));
   }
 
   @AUTH_MUST()
@@ -148,6 +145,6 @@ export class CUserController {
   @Get('/user/:id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async findUser(@Param('id') id: string): Promise<APIResponseObj> {
-    return HttpUtils.makeAPIResponse(true, await this.cUserService.findId(+id));
+    return HttpUtils.makeAPIResponse(true, await this.cUserService.findId(id));
   }
 }

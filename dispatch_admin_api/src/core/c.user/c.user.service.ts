@@ -51,7 +51,7 @@ export class CUserService {
         skip: page,
         take: size,
         orderBy: {
-          id: 'desc',
+          created: 'desc',
         },
       });
     });
@@ -64,7 +64,7 @@ export class CUserService {
   }
 
   // 아이디로 조회
-  async findId(id: number): Promise<CUserEntity> {
+  async findId(id: string): Promise<CUserEntity> {
     const user = await this.prisma.user.findUnique({ where: { id } });
     user.password = '';
     return user;
@@ -76,7 +76,7 @@ export class CUserService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateCUserDto: UpdateCUserDto,
   ): Promise<CUserEntity> {
     // const user = await this.findCompany(updateCUserDto.company);
@@ -108,7 +108,7 @@ export class CUserService {
     });
   }
 
-  async updateAcive(id: number, active: boolean): Promise<CUserEntity> {
+  async updateAcive(id: string, active: boolean): Promise<CUserEntity> {
     console.log(id, active);
     return await this.prisma.user.update({
       where: { id },
@@ -116,7 +116,7 @@ export class CUserService {
     });
   }
 
-  async remove(id: number): Promise<CUserEntity> {
+  async remove(id: string): Promise<CUserEntity> {
     return await this.prisma.user.delete({ where: { id } });
   }
 

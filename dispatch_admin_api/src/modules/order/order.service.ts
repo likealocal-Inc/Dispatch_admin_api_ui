@@ -15,7 +15,7 @@ export class OrderService {
     private readonly userService: CUserService,
   ) {}
 
-  async create(createOrderDto: CreateOrderDto, userId: number) {
+  async create(createOrderDto: CreateOrderDto, userId: string) {
     return this.prisma.orders.create({
       data: {
         ...createOrderDto,
@@ -38,10 +38,9 @@ export class OrderService {
    */
   async listOrderWithUser(pagingDto: PagingDto) {
     const orders = await this.findAll(pagingDto);
-    console.log(orders);
     const res = { count: orders.count, data: [] };
     const data = [];
-    const userMap = new Map<number, CUserEntity>();
+    const userMap = new Map<string, CUserEntity>();
 
     for (let index = 0; index < orders.data.length; index++) {
       const order: OrderEntity = orders.data[index];
@@ -71,7 +70,7 @@ export class OrderService {
       orders = await tx.orders.findMany({
         skip,
         take,
-        orderBy: { id: 'desc' },
+        orderBy: { created: 'desc' },
       });
     });
     return {
@@ -80,11 +79,11 @@ export class OrderService {
     };
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return await this.prisma.orders.findFirst({ where: { id } });
   }
 
-  async update(id: number, updateOrderDto: UpdateOrderDto) {
+  async update(id: string, updateOrderDto: UpdateOrderDto) {
     return this.prisma.orders.update({
       where: { id: id },
       data: updateOrderDto,
@@ -96,10 +95,17 @@ export class OrderService {
    * @param id
    * @returns
    */
-  async updateStatus(id: number, status: any) {
-    return await this.prisma.orders.update({
-      where: { id },
-      data: { status: status },
-    });
+  async updateStatus(id: string, status: any, tx = null) {
+    if (tx === null) {
+      return await this.prisma.orders.update({
+        where: { id },
+        data: { status: status },
+      });
+    } else {
+      return await tx.orders.update({
+        where: { id },
+        data: { status: status },
+      });
+    }
   }
 }

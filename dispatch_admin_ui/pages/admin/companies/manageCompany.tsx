@@ -13,7 +13,7 @@ import {
 import useCallAPI from "../../../libs/client/hooks/useCallAPI";
 import { UseAPICallResult } from "../../../libs/client/hooks/useCallAPI";
 import { APIURLs } from "@libs/client/constants";
-import { getElementById } from "../../../libs/client/utils/html";
+import { getHTMLElementByID } from "../../../libs/client/utils/html";
 import { useEffect, useState } from "react";
 import { CompanyModel } from "@libs/client/models/company.model";
 
@@ -53,7 +53,7 @@ export default function ManageCompanyModal({
   }, [loading]);
 
   const onSubmit = () => {
-    const name = getElementById<HTMLInputElement>("m-name").value;
+    const name = getHTMLElementByID<HTMLInputElement>("m-name").value;
     if (name.trim() === "") {
       setMessage("업체명을 넣어 주세요");
     } else {

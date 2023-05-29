@@ -1,7 +1,7 @@
 import { Gender, Role, User } from '@prisma/client';
 
 export class CUserEntity implements User {
-  id: number;
+  id: string;
   created: Date;
   updated: Date;
   name: string;
@@ -11,7 +11,7 @@ export class CUserEntity implements User {
   password: string;
   gender: Gender;
   isActive: boolean;
-  profileImgId: number;
+  profileImgId: string;
   role: Role;
   company: string;
 }

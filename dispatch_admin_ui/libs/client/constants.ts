@@ -103,30 +103,50 @@ export const APIURLs = {
     method: METHOD.DELTE,
     desc: "업체 제거",
   },
-  DISPATCH_CREATE: <APIURLType>{
-    url: makeAPIURL("dispath"),
+  ORDER_CREATE: <APIURLType>{
+    url: makeAPIURL("order"),
     method: METHOD.POST,
-    desc: "배치생성",
+    desc: "주문생성",
   },
-  DISPATCH_UPDATE: <APIURLType>{
-    url: makeAPIURL("dispath"),
+  ORDER_UPDATE: <APIURLType>{
+    url: makeAPIURL("order"),
     method: METHOD.PATCH,
-    desc: "배치수정",
+    desc: "주문수정",
   },
-  DISPATCH_LIST: <APIURLType>{
-    url: makeAPIURL("dispath"),
+  ORDER_LIST: <APIURLType>{
+    url: makeAPIURL("order"),
     method: METHOD.GET,
     desc: "주문리스트 조회",
   },
-  DISPATCH_MODIFY: <APIURLType>{
-    url: makeAPIURL("dispath"),
+  ORDER_MODIFY: <APIURLType>{
+    url: makeAPIURL("order"),
     method: METHOD.PATCH,
     desc: "주문 데이터 수정",
   },
-  DISPATCH_STATUS_UPDATE: <APIURLType>{
-    url: makeAPIURL("dispath/status"),
+  ORDER_STATUS_UPDATE: <APIURLType>{
+    url: makeAPIURL("order/status"),
     method: METHOD.PATCH,
     desc: "배차 상태값 변경",
+  },
+  DISPATCH_CREATE: <APIURLType>{
+    url: makeAPIURL("dispatch"),
+    method: METHOD.POST,
+    desc: "배차 생성",
+  },
+  DISPATCH_UPDATE: <APIURLType>{
+    url: makeAPIURL("dispatch"),
+    method: METHOD.PATCH,
+    desc: "배차 생성",
+  },
+  DISPATCH_GET: <APIURLType>{
+    url: makeAPIURL("dispatch"),
+    method: METHOD.GET,
+    desc: "배차 생성",
+  },
+  DISPATCH_GET_BY_ORDERID: <APIURLType>{
+    url: makeAPIURL("dispatch/order"),
+    method: METHOD.GET,
+    desc: "배차 생성",
   },
 };
 

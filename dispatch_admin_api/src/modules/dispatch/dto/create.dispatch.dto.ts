@@ -1,7 +1,4 @@
-export interface DispatchModel {
-  id: number;
-  created: Date;
-  updated: Date;
+export class CreateDispatchDto {
   carCompany: string;
   jiniName: string;
   carInfo: string;
@@ -12,6 +9,6 @@ export interface DispatchModel {
   else01: string;
   else02: string;
   else03: string;
-  userId: number;
-  orderId: number;
+  userId: string;
+  orderId: string;
 }

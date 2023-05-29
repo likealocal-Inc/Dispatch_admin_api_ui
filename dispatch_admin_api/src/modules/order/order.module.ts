@@ -10,5 +10,6 @@ import { CUserModule } from 'src/core/c.user/c.user.module';
   imports: [HttpModule, PrismaModule, CUserModule],
   controllers: [OrderController],
   providers: [OrderService, IamwebOrderBatch],
+  exports: [OrderService],
 })
 export class OrderModule {}

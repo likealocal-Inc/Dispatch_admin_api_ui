@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { APIURLs } from "@libs/client/constants";
-import { getElementById } from "@libs/client/utils/html";
+import { getHTMLElementByID } from "@libs/client/utils/html";
 import { StyledTableCell, StyledTableRow } from "@libs/client/ui/table";
 import { callAPI } from "@libs/client/call/call";
 import { MessageProps } from "@components/MessageShow/show";
@@ -77,11 +77,11 @@ export default function Users() {
                     }).then((res) => {
                       d.isActive = !d.isActive;
                       if (d.isActive) {
-                        getElementById<HTMLInputElement>(
+                        getHTMLElementByID<HTMLInputElement>(
                           isHeader + d.id.toString()
                         ).checked = true;
                       } else {
-                        getElementById<HTMLInputElement>(
+                        getHTMLElementByID<HTMLInputElement>(
                           isHeader + d.id.toString()
                         ).checked = false;
                       }

@@ -50,7 +50,7 @@ export class CreateCUserDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  profileImgId?: number;
+  profileImgId?: string;
 
   @ApiProperty({ required: false })
   @IsString()

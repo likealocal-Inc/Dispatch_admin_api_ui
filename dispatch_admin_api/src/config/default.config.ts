@@ -136,7 +136,7 @@ export const DefaultConfig = {
       waypoint: ['경유지'],
     },
 
-    iamwebOrderUserId: 1,
+    iamwebOrderUserId: '1',
   },
   telegram: {
     botKey: '6018333651:AAHcYRghyBYDo9BpY9Wd5xvrHXguwHxcbI4',

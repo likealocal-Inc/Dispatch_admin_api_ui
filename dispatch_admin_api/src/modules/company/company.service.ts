@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCompanyDto } from './dto/create-company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
+import { CreateCompanyDto } from './dto/create.company.dto';
+import { UpdateCompanyDto } from './dto/update.company.dto';
 import { PrismaService } from 'src/config/core/prisma/prisma.service';
 import { PagingDto } from '../../libs/core/dtos/paging';
 import { CompanyEntiry } from './entities/company.entity';
@@ -45,18 +45,18 @@ export class CompanyService {
     };
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.company.findFirst({ where: { id } });
   }
 
-  update(id: number, updateCompanyDto: UpdateCompanyDto) {
+  update(id: string, updateCompanyDto: UpdateCompanyDto) {
     return this.prisma.company.update({
       where: { id },
       data: updateCompanyDto,
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.company.delete({ where: { id } });
   }
 
@@ -66,7 +66,7 @@ export class CompanyService {
    * @param active
    * @returns
    */
-  async updateAcive(id: number, active: boolean): Promise<CompanyEntiry> {
+  async updateAcive(id: string, active: boolean): Promise<CompanyEntiry> {
     return await this.prisma.company.update({
       where: { id },
       data: { isActive: active },
