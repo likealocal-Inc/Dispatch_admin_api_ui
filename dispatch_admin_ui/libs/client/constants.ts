@@ -25,7 +25,7 @@ export const PageURLs = {
   ROOT: "/",
   LOGIN: "/auth/login",
   JOIN: "/auth/join",
-  MAIN: "/admin/dashboard",
+  MAIN: "/admin/dispatch",
 };
 
 export interface APIURLType {
