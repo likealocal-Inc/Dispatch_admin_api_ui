@@ -22,15 +22,15 @@ export const airportSelectTag = (id: string, isSelect?: string) => {
 
 export function InfoBox({ info }: any) {
   return (
-    <div className='flex items-center justify-center w-full h-full m-3 rounded-lg bg-slate-300'>
-      <div className=''>{info}</div>
+    <div className='flex items-center justify-center w-full h-full m-2 rounded-lg bg-slate-300'>
+      <div className='text-sm'>{info}</div>
     </div>
   );
 }
 export function InfoBoxWithTitle({ title, info }: any) {
   return (
-    <div className={`flex flex-row items-center my-1`}>
-      <div className='w-28'>{title}</div>
+    <div className='flex flex-row items-center my-1'>
+      <div className='text-sm w-28'>{title}</div>
       <InfoBox info={info} />
     </div>
   );
@@ -83,8 +83,8 @@ export function LocationAndAddress({
 }: any) {
   return (
     <>
-      <div className='flex flex-row items-center w-72'>
-        <div className='w-28'>{title}명</div>
+      <div className='flex flex-row items-center w-96'>
+        <div className='text-sm w-28'>{title}명</div>
         {selectType === orderType ? (
           <>
             {uiType === UIType.MODIFY
@@ -92,7 +92,7 @@ export function LocationAndAddress({
               : airportSelectTag(locationStr)}
           </>
         ) : (
-          <div className='w-full m-3'>
+          <div className='w-full m-1'>
             <TextField
               id={locationStr}
               defaultValue={uiType === UIType.MODIFY ? locationObj : ""}
@@ -101,21 +101,21 @@ export function LocationAndAddress({
           </div>
         )}
       </div>
-      <div className='flex flex-row items-center w-72'>
-        <div className='w-28'>{title}주소</div>
-        <div className='w-full m-3'>
+      <div className='flex flex-row items-center w-96'>
+        <div className='text-sm w-28'>{title}주소</div>
+        <div className='w-full m-1'>
           {selectType === orderType ? (
             <>
               <TextField
                 value={selectType}
-                className='w-full bg-slate-300'
+                className='w-full text-sm bg-slate-300'
                 disabled
               />
             </>
           ) : (
             <TextField
               value={address}
-              className='w-full'
+              className='w-full text-sm'
               onClick={() => {
                 setIsAddressSearchShow(true);
               }}
@@ -147,25 +147,25 @@ export function InfomationComponent({ uiType, information, isIamweb }: any) {
   return (
     <>
       <div className='flex flex-row items-center w-full'>
-        <div className='w-28'>전달사항</div>
+        <div className='text-sm w-28'>전달사항</div>
         <div className='w-full p-2 border-2'>
           {isIamweb === true && infos !== undefined ? (
             <>
               {Object.keys(infos).map((d) => {
                 return (
                   <div key={d} className='flex flex-row justify-between'>
-                    <div className='w-64 p-2 m-1 rounded-lg bg-slate-200'>
+                    <div className='p-2 m-1 text-sm rounded-lg w-96 bg-slate-200'>
                       {d}
                     </div>
                     {uiType === UIType.DISPATCH ? (
-                      <div className='w-full p-2 m-1 bg-white border-2 rounded-lg'>
+                      <div className='w-full p-2 m-1 text-sm bg-white border-2 rounded-lg'>
                         {infos[d]}
                       </div>
                     ) : (
                       <input
                         id={d}
                         defaultValue={infos[d]}
-                        className='w-full p-2 m-1 bg-white border-2 rounded-lg'
+                        className='w-full p-2 m-1 text-sm bg-white border-2 rounded-lg'
                         onChange={(e) => {
                           const div = document.getElementById(d);
                           div!.innerHTML = e.target.value;
@@ -181,7 +181,7 @@ export function InfomationComponent({ uiType, information, isIamweb }: any) {
             </>
           ) : uiType === UIType.DISPATCH ? (
             <>
-              <div className='w-full h-full'>{infos}</div>
+              <div className='w-full h-full text-sm'>{infos}</div>
             </>
           ) : (
             <TextField
@@ -191,7 +191,7 @@ export function InfomationComponent({ uiType, information, isIamweb }: any) {
                   ? infos
                   : ""
               }
-              className='w-full'
+              className='w-full text-sm'
               multiline
               rows={5}
             />
@@ -206,9 +206,9 @@ export function InfomationComponent({ uiType, information, isIamweb }: any) {
 export function BoardingDateComponent({ startDate, setStartDate }: any) {
   return (
     <>
-      <div className='flex flex-row items-center w-72'>
+      <div className='flex flex-row items-center w-96'>
         <div className='w-28'>탑승일시</div>
-        <div className='w-full m-3'>
+        <div className='w-full m-1'>
           <DatePicker
             className='rounded-lg'
             selected={startDate}

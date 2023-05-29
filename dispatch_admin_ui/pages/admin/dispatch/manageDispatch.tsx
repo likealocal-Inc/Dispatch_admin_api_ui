@@ -347,9 +347,13 @@ export default function ManageDispatchModal({
                       <div className='flex flex-row'>
                         <div className='flex flex-col p-3'>
                           <div className='flex flex-row items-center w-72'>
-                            <div className='w-28'>상품구분</div>
+                            <div className='text-sm w-28'>상품구분</div>
                             {uiType === UIType.DISPATCH || order?.isIamweb ? (
-                              <InfoBox info={order!.orderTitle} />
+                              <div className='flex items-center justify-center w-full h-full m-2 rounded-lg bg-slate-300'>
+                                <div className='px-2 text-xs'>
+                                  {order!.orderTitle}{" "}
+                                </div>
+                              </div>
                             ) : (
                               <select
                                 className='w-full m-3 rounded-lg'
@@ -450,7 +454,7 @@ export default function ManageDispatchModal({
                       />
                     </Card>
                     {uiType === UIType.DISPATCH ? (
-                      <Card className='p-6'>
+                      <Card className='p-6 w-[450px]'>
                         <div className='flex flex-row'>
                           <div className='flex flex-col p-3'>
                             <DispatchProcessInfo
